@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <jaxb:bindings schemaLocation="docbook.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.docbook.model"/>
+        </jaxb:schemaBindings>
+        <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='info']/xs:complexType/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='book']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='book']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='sidebar']">
+            <jaxb:class name="SideBar"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='sidebar']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='sidebar']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:attributeGroup[@name='db.common.attributes']/xs:attribute[@name='revision']">
+            <jaxb:property name="revisionAttribute"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='title']">
+            <jaxb:property name="titleAttribute"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orderedlist']">
+            <jaxb:class name="OrderedList"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='itemizedlist']">
+            <jaxb:class name="ItemizedList"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='itemizedlist']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='itemizedlist']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='listitem']">
+            <jaxb:class name="ListItem"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='listitem']/xs:complexType/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='simpara']">
+            <jaxb:class name="SimplePara"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="xlink.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.w3.xlink"/>
+        </jaxb:schemaBindings>
+        <jaxb:bindings node="xs:attribute[@name='role']">
+            <jaxb:bindings node=".">
+                <jaxb:property name="xlinkRole"/>
+            </jaxb:bindings>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:attribute[@name='type']">
+            <jaxb:bindings node=".">
+                <jaxb:property name="xlinkType"/>
+            </jaxb:bindings>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:attribute[@name='title']">
+            <jaxb:bindings node=".">
+                <jaxb:property name="xlinkTitle"/>
+            </jaxb:bindings>
+        </jaxb:bindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="xml.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.w3.xml"/>
+        </jaxb:schemaBindings>
+        <jaxb:bindings node="xs:attribute[@name='lang']">
+            <jaxb:bindings node=".">
+                <jaxb:property name="xmlLang"/>
+            </jaxb:bindings>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>
