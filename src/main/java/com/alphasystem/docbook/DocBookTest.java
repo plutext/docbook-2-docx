@@ -1,10 +1,9 @@
 package com.alphasystem.docbook;
 
-import com.alphasystem.xml.DocumentInfo;
-import org.docbook.model.Article;
+import java.awt.*;
+import java.nio.file.Path;
 
-import static java.lang.String.format;
-import static java.lang.System.out;
+import static java.nio.file.Paths.get;
 
 /**
  * @author sali
@@ -12,29 +11,17 @@ import static java.lang.System.out;
 public class DocBookTest {
 
     public static void main(String[] args) {
-        // initialize Application controller
-        ApplicationController.getInstance();
-        final long overallTime = System.currentTimeMillis();
 
-        String dir = "C:\\Users\\sali\\ascii_doc";
-        String fileNamePrefix = "test2";
+        String path = "C:\\Users\\sali\\ascii_doc\\test2.xml";
 
-        dir = "C:\\Users\\sali\\Arabic\\documents\\";
-        fileNamePrefix = "Lesson-001-01";
+        path = "C:\\Users\\sali\\Arabic\\documents\\Lesson-001-01.adoc";
+        path = "C:\\tools\\asciidoc-8.6.9\\asciidoctor.org-master\\docs\\asciidoc-writers-guide.adoc";
 
-        dir="C:\\tools\\asciidoc-8.6.9\\asciidoctor.org-master\\docs";
-        fileNamePrefix = "asciidoc-writers-guide";
         try {
-            final DocumentInfo<Article> documentInfo = DocBookUtil.getArticle(format("%s\\%s.xml", dir, fileNamePrefix));
-            final long finishTime = System.currentTimeMillis();
-            out.println(format("Total time taken to parse: %s.", (finishTime - overallTime)));
-            DocumentBuilder documentBuilder = new DocumentBuilder();
-            documentBuilder.buildDocument(documentInfo, format("%s\\%s.docx", dir, fileNamePrefix));
+            final Path destPath = DocumentBuilder.buildDocument(get(path));
+            Desktop.getDesktop().open(destPath.toFile());
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            final long finishTime = System.currentTimeMillis();
-            out.println(format("Total time taken: %s\nDone.", (finishTime - overallTime)));
         }
 
     }

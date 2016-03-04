@@ -1,6 +1,6 @@
 package com.alphasystem.docbook;
 
-import com.alphasystem.xml.DocumentInfo;
+import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import org.docbook.model.Article;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
 
@@ -20,22 +20,28 @@ public final class DocumentContext {
 
     private final Map<Long, Object> listNumbersMap = new HashMap<>();
     private final List<String> documentStyles;
-    private final DocumentInfo documentInfo;
+    private final Object document;
+    private final AsciiDocumentInfo documentInfo;
     private final boolean article;
     private NumberingDefinitionsPart numberingDefinitionsPart;
 
-    public DocumentContext(final DocumentInfo documentInfo) {
+    public DocumentContext(final AsciiDocumentInfo documentInfo, final Object document) {
         this.documentInfo = documentInfo;
+        this.document = document;
         this.documentStyles = new ArrayList<>();
-        article = isInstanceOf(Article.class, this.documentInfo.getDocument());
+        article = isInstanceOf(Article.class, document);
+    }
+
+    public AsciiDocumentInfo getDocumentInfo() {
+        return documentInfo;
+    }
+
+    public Object getDocument() {
+        return document;
     }
 
     public List<String> getDocumentStyles() {
         return documentStyles;
-    }
-
-    public DocumentInfo getDocumentInfo() {
-        return documentInfo;
     }
 
     public boolean isArticle() {

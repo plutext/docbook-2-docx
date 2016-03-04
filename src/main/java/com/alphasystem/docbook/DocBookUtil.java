@@ -1,6 +1,5 @@
 package com.alphasystem.docbook;
 
-import com.alphasystem.xml.DocumentInfo;
 import org.docbook.model.Article;
 import org.docbook.model.Book;
 import org.xml.sax.SAXException;
@@ -18,14 +17,28 @@ import static com.alphasystem.xml.UnmarshallerUtil.unmarshal;
  */
 public final class DocBookUtil {
 
-    public static DocumentInfo<Book> getBook(String systemId) throws SAXException, JAXBException,
+    public static Book getBook(String systemId) throws SAXException, JAXBException,
             ParserConfigurationException, IOException {
         return unmarshal(systemId, Book.class);
     }
 
-    public static DocumentInfo<Article> getArticle(String systemId) throws SAXException, JAXBException,
+    public static Article getArticle(String systemId) throws SAXException, JAXBException,
             ParserConfigurationException, IOException {
         return unmarshal(systemId, Article.class);
+    }
+
+    public static Object getDocument(String systemId) {
+        Object document = null;
+        try {
+            document = getBook(systemId);
+        } catch (Exception ex) {
+            try {
+                document = getArticle(systemId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return document;
     }
 
     @SuppressWarnings({"unchecked"})

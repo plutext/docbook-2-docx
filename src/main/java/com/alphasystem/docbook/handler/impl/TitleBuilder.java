@@ -45,7 +45,7 @@ public class TitleBuilder extends AbstractBuilder<Title> {
             logger.warn("Unhandled parent in title {}", parent.getClass().getName());
         }
         titleStyle = applicationController.getConfiguration().getString(key);
-        final boolean numbered = ApplicationController.getContext().getDocumentInfo().isNumbered();
+        final boolean numbered = ApplicationController.getContext().getDocumentInfo().isSectionNumbers();
         if (section && numbered) {
             titleStyle = format("List%s", titleStyle);
         }

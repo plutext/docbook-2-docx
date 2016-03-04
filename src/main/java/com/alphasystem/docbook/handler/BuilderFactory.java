@@ -4,7 +4,6 @@ import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.DocumentContext;
 import com.alphasystem.docbook.handler.impl.RoleBuilder;
 import com.alphasystem.docbook.handler.impl.TextBuilder;
-import com.alphasystem.xml.DocumentInfo;
 import org.docbook.model.Article;
 
 import java.lang.reflect.Constructor;
@@ -62,9 +61,8 @@ public class BuilderFactory {
 
     public List<Object> buildDocument() {
         DocumentContext documentContext = ApplicationController.getContext();
-        final DocumentInfo documentInfo = documentContext.getDocumentInfo();
         if (documentContext.isArticle()) {
-            return handleArticle((Article) documentInfo.getDocument());
+            return handleArticle((Article) documentContext.getDocument());
         }
         return Collections.emptyList();
     }

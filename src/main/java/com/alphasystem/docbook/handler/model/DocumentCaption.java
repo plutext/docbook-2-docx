@@ -1,8 +1,8 @@
 package com.alphasystem.docbook.handler.model;
 
+import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.openxml.builder.wml.AbstractListItem;
-import com.alphasystem.xml.DocumentInfo;
 import org.docx4j.wml.NumberFormat;
 
 import static com.alphasystem.docbook.ApplicationController.getInstance;
@@ -19,7 +19,7 @@ public abstract class DocumentCaption extends AbstractListItem<DocumentCaption> 
 
         @Override
         public String getValue(int i) {
-            final DocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
+            final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
             return format("%s %%%s.", documentInfo.getExampleCaption(), i);
         }
 
