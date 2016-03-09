@@ -1,7 +1,6 @@
 package com.alphasystem.docbook;
 
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
-import com.alphasystem.docbook.builder.model.BlockType;
 import org.docbook.model.Article;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
@@ -32,7 +31,6 @@ public final class DocumentContext {
     private final Object document;
     private final AsciiDocumentInfo documentInfo;
     private final boolean article;
-    private BlockType blockType;
     private MainDocumentPart mainDocumentPart;
     private NumberingDefinitionsPart numberingDefinitionsPart;
 
@@ -41,7 +39,6 @@ public final class DocumentContext {
         this.document = document;
         this.documentStyles = new ArrayList<>();
         article = isInstanceOf(Article.class, document);
-        unsetBlock();
     }
 
     public AsciiDocumentInfo getDocumentInfo() {
@@ -86,18 +83,6 @@ public final class DocumentContext {
             numberId = numberingDefinitionsPart.restart(numberId, level, 1);
         }
         return numberId;
-    }
-
-    public BlockType getBlock() {
-        return blockType;
-    }
-
-    public void setBlock(BlockType blockType) {
-        this.blockType = (blockType == null) ? BlockType.DEFAULT : blockType;
-    }
-
-    public void unsetBlock() {
-        setBlock(null);
     }
 
 }
