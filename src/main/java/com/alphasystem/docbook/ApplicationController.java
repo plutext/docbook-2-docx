@@ -82,8 +82,14 @@ public final class ApplicationController {
         return configuration;
     }
 
-    public Object handleScript(String functionName, Object... args) throws ScriptException, NoSuchMethodException {
-        return engine.invokeFunction(functionName, args);
+    public Object handleScript(String functionName, Object... args) {
+        Object result = null;
+        try {
+            result = engine.invokeFunction(functionName, args);
+        } catch (ScriptException | NoSuchMethodException e) {
+            // ignore
+        }
+        return result;
     }
 
     public Tbl getExampleTable() {
@@ -123,13 +129,7 @@ public final class ApplicationController {
     }
 
     private Tbl getTable(String functionName, Object... args) {
-        Tbl tbl;
-        try {
-            tbl = (Tbl) handleScript(functionName, args);
-        } catch (ScriptException | NoSuchMethodException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-        return tbl;
+        return (Tbl) handleScript(functionName, args);
     }
 
     private ScriptEngine initScriptEngine() {

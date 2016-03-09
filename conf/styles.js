@@ -34,6 +34,10 @@ var handleHyperlink = function (rprBuilder) {
     return rprBuilder.withRStyle(adapter.getRStyle("Hyperlink"));
 };
 
+var handleColor = function (rprBuilder, color){
+    return rprBuilder.withColor(adapter.getColor(color));
+};
+
 var handleStyle = function (rprBuilder, styleName) {
     return rprBuilder.withRStyle(adapter.getRStyle(styleName));
 };
