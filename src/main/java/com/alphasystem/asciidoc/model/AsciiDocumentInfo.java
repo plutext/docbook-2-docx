@@ -73,6 +73,7 @@ public class AsciiDocumentInfo {
     private String versionLabel;
     private String warningCaption;
     private boolean sectionNumbers;
+    private boolean hideUriSchema;
     private File srcFile;
     private File previewFile;
 
@@ -137,10 +138,6 @@ public class AsciiDocumentInfo {
         setUntitledLabel(src.getUntitledLabel());
         setVersionLabel(src.getVersionLabel());
         setWarningCaption(src.getWarningCaption());
-    }
-
-    public AttributesBuilder getAttributesBuilder() {
-        return attributesBuilder;
     }
 
     public OptionsBuilder getOptionsBuilder() {
@@ -256,8 +253,8 @@ public class AsciiDocumentInfo {
 
     public void setIconFontName(String iconFontName) {
         this.iconFontName = iconFontName;
-        boolean localFontName = isNotBlank(getIconFontName());
-        attributesBuilder.iconFontName(localFontName ? this.iconFontName : null).iconFontRemote(!localFontName);
+        boolean localFontName = isNotBlank(iconFontName);
+        attributesBuilder.iconFontName(this.iconFontName).iconFontRemote(!localFontName);
     }
 
     public String getIdPrefix() {
@@ -468,6 +465,14 @@ public class AsciiDocumentInfo {
         this.warningCaption = warningCaption;
     }
 
+    public boolean isHideUriSchema() {
+        return hideUriSchema;
+    }
+
+    public void setHideUriSchema(boolean hideUriSchema) {
+        this.hideUriSchema = hideUriSchema;
+    }
+
     public File getSrcFile() {
         return srcFile;
     }
@@ -514,6 +519,7 @@ public class AsciiDocumentInfo {
         setCompact(getFailSafeBoolean(attributes, "compat-mode"));
         setExperimental(getFailSafeBoolean(attributes, "experimental"));
         setSectionNumbers(getFailSafeBoolean(attributes, "sectnums"));
+        setHideUriSchema(getFailSafeBoolean(attributes, "hide-uri-scheme"));
         s = getFailSafeString(attributes, "iconsdir");
         if (s != null) {
             setIconsDir(s);
@@ -569,7 +575,7 @@ public class AsciiDocumentInfo {
         }
         s = getFailSafeString(attributes, "caution-caption");
         if (s != null) {
-            setAppendixCaption(s);
+            setCautionCaption(s);
         }
         s = getFailSafeString(attributes, "example-caption");
         if (s != null) {

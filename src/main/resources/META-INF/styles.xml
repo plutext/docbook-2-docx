@@ -35,4 +35,74 @@
             <w:szCs w:val="32"/>
         </w:rPr>
     </w:style>
+    <w:style w:type="paragraph" w:customStyle="1" w:styleId="AdmonitionCaption">
+        <w:name w:val="Admonition Caption"/>
+        <w:basedOn w:val="Normal"/>
+        <w:link w:val="AdmonitionCaptionChar"/>
+        <w:qFormat/>
+        <w:rsid w:val="00E94931"/>
+        <w:pPr>
+            <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+            <w:jc w:val="center"/>
+        </w:pPr>
+        <w:rPr>
+            <w:rFonts w:ascii="Century Gothic" w:hAnsi="Century Gothic"/>
+            <w:b/>
+            <w:smallCaps/>
+            <w:color w:val="0D0D0D" w:themeColor="text1" w:themeTint="F2"/>
+            <w:sz w:val="24"/>
+            <w:szCs w:val="24"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:customStyle="1" w:styleId="Admonition">
+        <w:name w:val="Admonition"/>
+        <w:basedOn w:val="Normal"/>
+        <w:link w:val="AdmonitionContentChar"/>
+        <w:qFormat/>
+        <w:rsid w:val="002510FC"/>
+        <w:pPr>
+            <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+        </w:pPr>
+        <w:rPr>
+            <w:color w:val="808080"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:customStyle="1" w:styleId="AdmonitionListParagraph">
+        <w:name w:val="Admonition List Paragraph"/>
+        <w:basedOn w:val="Normal"/>
+        <w:link w:val="AdmonitionContentChar"/>
+        <w:qFormat/>
+        <w:rsid w:val="002510FC"/>
+        <w:pPr>
+            <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+            <w:ind w:left="720"/>
+            <w:contextualSpacing/>
+        </w:pPr>
+        <w:rPr>
+            <w:color w:val="808080"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:customStyle="1" w:styleId="AdmonitionCaptionChar">
+        <w:name w:val="AdmonitionCaption Char"/>
+        <w:basedOn w:val="DefaultParagraphFont"/>
+        <w:link w:val="AdmonitionCaption"/>
+        <w:rsid w:val="00E94931"/>
+        <w:rPr>
+            <w:rFonts w:ascii="Century Gothic" w:hAnsi="Century Gothic"/>
+            <w:b/>
+            <w:smallCaps/>
+            <w:color w:val="0D0D0D" w:themeColor="text1" w:themeTint="F2"/>
+            <w:sz w:val="24"/>
+            <w:szCs w:val="24"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:customStyle="1" w:styleId="AdmonitionContentChar">
+        <w:name w:val="AdmonitionContent Char"/>
+        <w:basedOn w:val="DefaultParagraphFont"/>
+        <w:link w:val="AdmonitionContent"/>
+        <w:rsid w:val="002510FC"/>
+        <w:rPr>
+            <w:color w:val="808080"/>
+        </w:rPr>
+    </w:style>
 </w:styles>

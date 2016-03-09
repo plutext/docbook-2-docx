@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0">
     <jaxb:bindings schemaLocation="docbook.xsd">
         <jaxb:schemaBindings>
             <jaxb:package name="org.docbook.model"/>
@@ -60,6 +60,39 @@
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='simpara']">
             <jaxb:class name="SimplePara"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='note']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='note']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='caution']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='caution']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='important']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='important']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tip']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tip']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='warning']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='warning']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='xref']">
+            <jaxb:class name="CrossReference"/>
         </jaxb:bindings>
     </jaxb:bindings>
 

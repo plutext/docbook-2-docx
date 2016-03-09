@@ -1,6 +1,7 @@
 package com.alphasystem.docbook;
 
-import com.alphasystem.openxml.builder.wml.RPrBuilder;
+import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
+import com.alphasystem.docbook.builder.model.Admonition;
 import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.SystemConfiguration;
@@ -8,25 +9,21 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.lang3.ArrayUtils;
-import org.docx4j.Docx4J;
-import org.docx4j.XmlUtils;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.Tbl;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import static com.alphasystem.util.nio.NIOFileUtils.USER_DIR;
+import static java.lang.String.format;
 import static java.nio.file.Files.newBufferedReader;
-import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Paths.get;
 
 /**
@@ -35,6 +32,7 @@ import static java.nio.file.Paths.get;
 public final class ApplicationController {
 
     public static final String CONF = "conf";
+    private static final String CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF).toString();
     private static final ThreadLocal<DocumentContext> CONTEXT = new ThreadLocal<>();
     private static ApplicationController instance;
 
@@ -69,7 +67,7 @@ public final class ApplicationController {
      */
     private ApplicationController() throws ConfigurationException {
         Parameters parameters = new Parameters();
-        final File file = get(USER_DIR, CONF, "system-defaults.properties").toFile();
+        final File file = get(CONF_PATH, "system-defaults.properties").toFile();
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<>(
                 PropertiesConfiguration.class).configure(parameters.fileBased().setFile(file));
 
@@ -84,42 +82,64 @@ public final class ApplicationController {
         return configuration;
     }
 
-    public RPrBuilder applyStyle(RPrBuilder rPrBuilder, String styleHandler, String styleName) throws ScriptException,
-            NoSuchMethodException {
-        return (RPrBuilder) engine.invokeFunction(styleHandler, rPrBuilder, styleName);
+    public Object handleScript(String functionName, Object... args) throws ScriptException, NoSuchMethodException {
+        return engine.invokeFunction(functionName, args);
     }
 
     public Tbl getExampleTable() {
-        return getTable(1);
+        return getTable("handleExample");
     }
 
     public Tbl getSideBarTable() {
-        return getTable(2);
+        return getTable("handleSideBar");
     }
 
-    private Tbl getTable(int index) {
-        try (InputStream inputStream = newInputStream(get(USER_DIR, CONF, "template.docx"))) {
-            final WordprocessingMLPackage wordprocessingMLPackage = Docx4J.load(inputStream);
-            final MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
-            String xpath = String.format("//w:tbl[%s]", index);
-            final List<Object> objects = mainDocumentPart.getJAXBNodesViaXPath(xpath, false);
-            return (Tbl) XmlUtils.unwrap(objects.get(0));
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex.getMessage(), ex);
-        } catch (Docx4JException | JAXBException e) {
-            e.printStackTrace();
+    public Tbl getAdmonitionTable(Admonition admonition) {
+        final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
+        final String captionText = getAdmonitionCaption(admonition, documentInfo);
+        return getTable("handleAdmonition", admonition.name(), captionText);
+    }
+
+    public String getAdmonitionCaption(Admonition admonition, AsciiDocumentInfo documentInfo) {
+        String title = null;
+        switch (admonition) {
+            case CAUTION:
+                title = documentInfo.getCautionCaption();
+                break;
+            case IMPORTANT:
+                title = documentInfo.getImportantCaption();
+                break;
+            case NOTE:
+                title = documentInfo.getNoteCaption();
+                break;
+            case TIP:
+                title = documentInfo.getTipCaption();
+                break;
+            case WARNING:
+                title = documentInfo.getWarningCaption();
+                break;
         }
-        return null;
+        return title;
+    }
+
+    private Tbl getTable(String functionName, Object... args) {
+        Tbl tbl;
+        try {
+            tbl = (Tbl) handleScript(functionName, args);
+        } catch (ScriptException | NoSuchMethodException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return tbl;
     }
 
     private ScriptEngine initScriptEngine() {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
         Path[] paths = new Path[1];
-        paths[0] = get(USER_DIR, CONF, "styles.js");
-        final String customPath = getConfiguration().getString("custom-style-path");
-        if (customPath != null) {
-            paths = ArrayUtils.add(paths, get(customPath));
+        paths[0] = get(CONF_PATH, "styles.js");
+        final String customStyleName = getConfiguration().getString("custom.style.name");
+        if (customStyleName != null) {
+            paths = ArrayUtils.add(paths, get(CONF_PATH, "custom", format("%s.js", customStyleName)));
         }
         for (Path path : paths) {
             try (Reader reader = newBufferedReader(path)) {
