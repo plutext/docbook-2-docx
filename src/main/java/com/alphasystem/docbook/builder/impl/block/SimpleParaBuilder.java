@@ -4,7 +4,9 @@ import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.PPrBuilder;
+import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import org.docbook.model.SimplePara;
+import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 
 import java.util.Collections;
@@ -58,7 +60,9 @@ public class SimpleParaBuilder extends BlockBuilder<SimplePara> {
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         pBuilder.addContent(processedChildContent.toArray());
-        return Collections.singletonList(pBuilder.getObject());
+        final P p = pBuilder.getObject();
+        WmlAdapter.addBookMark(p, source.getId());
+        return Collections.singletonList(p);
     }
 
 }
