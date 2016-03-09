@@ -1,20 +1,19 @@
 package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
-import org.docbook.model.SimplePara;
+import org.docbook.model.Para;
 
 /**
  * @author sali
  */
-public class SimpleParaBuilder extends AbstractParaBuilder<SimplePara> {
+public class ParaBuilder extends AbstractParaBuilder<Para> {
 
-    public SimpleParaBuilder(Builder parent, SimplePara simplePara) {
-        super(parent, simplePara);
+    public ParaBuilder(Builder parent, Para obj) {
+        super(parent, obj);
     }
 
     @Override
     protected void initContent() {
         content = source.getContent();
     }
-
 }

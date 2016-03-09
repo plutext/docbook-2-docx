@@ -61,6 +61,12 @@
         <jaxb:bindings node="xs:element[@name='simpara']">
             <jaxb:class name="SimplePara"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='formalpara']">
+            <jaxb:class name="FormalPara"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='formalpara']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='note']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
             <jaxb:property name="titleContent"/>
         </jaxb:bindings>

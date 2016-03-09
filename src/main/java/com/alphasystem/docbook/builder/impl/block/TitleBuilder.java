@@ -6,6 +6,7 @@ import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import org.docbook.model.Title;
+import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 
 import java.util.Collections;
@@ -41,18 +42,17 @@ public class TitleBuilder extends BlockBuilder<Title> {
         final PPr pPr = getPPrBuilder().withPStyle(getPStyle(titleStyle)).getObject();
         String rsidP = nextId();
         pBuilder = getPBuilder().withRsidP(rsidP).withRsidRDefault(rsidP).withRsidR(nextId()).withPPr(pPr);
-        final Builder parent = getParent();
-        if (parent != null) {
-            final Object source = parent.getSource();
-            final String id = (String) invokeMethod(source, "getId");
-            WmlAdapter.addBookMark(pBuilder, id);
-        }
     }
 
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         pBuilder.addContent(processedChildContent.toArray());
-        return Collections.singletonList(pBuilder.getObject());
+        final P p = pBuilder.getObject();
+        final Builder parent = getParent();
+        if (parent != null) {
+            WmlAdapter.addBookMark(p, getId(parent.getSource()));
+        }
+        return Collections.singletonList(p);
     }
 
     private void initTitleStyle() {
