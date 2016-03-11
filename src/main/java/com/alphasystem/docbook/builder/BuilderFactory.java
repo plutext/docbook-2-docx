@@ -6,6 +6,7 @@ import com.alphasystem.docbook.builder.impl.AbstractBuilder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.builder.impl.InlineBuilder;
 import org.docbook.model.Article;
+import org.docbook.model.Title;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.alphasystem.util.AppUtil.isInstanceOf;
+import static java.lang.String.format;
 
 /**
  * @author sali
@@ -42,21 +44,19 @@ public class BuilderFactory {
             return null;
         }
 
-        final String sourceName = o.getClass().getName();
+        String sourceName = o.getClass().getName();
+        if (isInstanceOf(Title.class, o)) {
+            String parentName = ((parent == null) || isInstanceOf(BlockBuilder.class, parent)) ?
+                    BlockBuilder.class.getSimpleName() : InlineBuilder.class.getSimpleName();
+            sourceName = format("%s.%s", parentName, sourceName);
+        }
         String builderFqn = applicationController.getConfiguration().getString(sourceName);
         if (builderFqn == null) {
-            final String prefix = isInstanceOf(InlineBuilder.class, parent) ? InlineBuilder.class.getSimpleName() :
-                    BlockBuilder.class.getSimpleName();
-            final String key = String.format("%s.%s", prefix, sourceName);
-            builderFqn = applicationController.getConfiguration().getString(key);
-            if (builderFqn == null) {
-                return null;
-            }
+            return null;
         }
         AbstractBuilder builder = null;
-        Class<?> builderClass;
         try {
-            builderClass = Class.forName(builderFqn);
+            Class<?> builderClass = Class.forName(builderFqn);
             final Constructor<?> constructor = builderClass.getConstructor(Builder.class, o.getClass());
             builder = (AbstractBuilder) constructor.newInstance(parent, o);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException |
