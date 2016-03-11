@@ -17,4 +17,5 @@ public class TitleBuilder extends InlineBuilder<Title> {
     protected void initContent() {
         content = source.getContent();
     }
+
 }

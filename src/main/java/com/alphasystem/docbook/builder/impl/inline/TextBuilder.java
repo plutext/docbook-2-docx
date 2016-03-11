@@ -2,10 +2,13 @@ package com.alphasystem.docbook.builder.impl.inline;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.InlineBuilder;
-import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import org.docx4j.wml.R;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getText;
+import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getRBuilder;
 
 /**
  * @author sali
@@ -18,13 +21,11 @@ public class TextBuilder extends InlineBuilder<String> {
 
     @Override
     protected void initContent() {
-
     }
 
     @Override
-    protected R handleChildContent() {
-        return WmlBuilderFactory.getRBuilder().withRPr(WmlBuilderFactory.getRPrBuilder().getObject())
-                .addContent(getText(source)).getObject();
+    protected List<R> processContent() {
+        return Collections.singletonList(getRBuilder().addContent(getText(source)).getObject());
     }
 
 }

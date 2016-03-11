@@ -32,7 +32,7 @@ public class LinkSupportBuilder<T> extends InlineBuilder<T> {
 
     @Override
     public List<Object> buildContent() {
-        final PHyperlinkBuilder hyperlinkBuilder = getPHyperlinkBuilder().withHistory(true).addContent(handleChildContent());
+        final PHyperlinkBuilder hyperlinkBuilder = getPHyperlinkBuilder().withHistory(true).addContent(processContent().toArray());
 
         if (external) {
             hyperlinkBuilder.withId(getContext().addHyperlink(href));
