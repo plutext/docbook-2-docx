@@ -14,6 +14,7 @@ import java.util.List;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getListParagraphProperties;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPPrBuilder;
+import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static com.alphasystem.util.IdGenerator.nextId;
 
 /**
@@ -33,7 +34,7 @@ public abstract class AbstractParaBuilder<T> extends BlockBuilder<T> {
         String rsidR = nextId();
         pBuilder = getPBuilder().withRsidP(rsidP).withRsidRDefault(rsidR).withRsidR(nextId());
         PPr pPr = pBuilder.getObject().getPPr();
-        boolean listType = hasParent(ListItemBuilder.class);
+        boolean listType = isInstanceOf(ListItemBuilder.class, parent);
         boolean admonition = hasParent(AdmonitionBuilder.class);
         if (listType) {
             ListItemBuilder listItemBuilder = (ListItemBuilder) parent;
