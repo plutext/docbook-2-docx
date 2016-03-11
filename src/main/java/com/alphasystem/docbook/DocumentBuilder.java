@@ -57,11 +57,17 @@ public class DocumentBuilder {
         UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
 
         final Path docxPath = FileUtil.getDocxFile(documentInfo.getSrcFile().toPath());
-        buildDocument(docxPath, documentInfo, getDocument(docBookContent, unmarshallerTool));
+        buildDocument(docxPath, new DocumentContext(documentInfo, getDocument(docBookContent, unmarshallerTool)));
         return docxPath;
     }
 
     public static Path buildDocument(Path srcPath) throws SystemException {
+        final Path docxPath = FileUtil.getDocxFile(srcPath);
+        buildDocument(docxPath, createContext(srcPath));
+        return docxPath;
+    }
+
+    public static DocumentContext createContext(Path srcPath) throws SystemException {
         final File srcFile = srcPath.toFile();
         if (!exists(srcPath)) {
             throw new NullPointerException("Source file does not exists.");
@@ -95,25 +101,22 @@ public class DocumentBuilder {
         if (documentInfo == null) {
             documentInfo = unmarshallerTool.getDocumentInfo();
         }
-
-        final Path docxPath = FileUtil.getDocxFile(srcPath);
-        buildDocument(docxPath, documentInfo, document);
-        return docxPath;
+        return new DocumentContext(documentInfo, document);
     }
 
-    public static void buildDocument(Path docxPath, final AsciiDocumentInfo documentInfo, final Object document) throws SystemException {
-        DocumentContext documentContext = new DocumentContext(documentInfo, document);
+    public static WordprocessingMLPackage buildDocument(final DocumentContext documentContext) throws SystemException {
         ApplicationController.startContext(documentContext);
-
+        WordprocessingMLPackage wordprocessingMLPackage = null;
         try {
             WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder();
-            WordprocessingMLPackage wordprocessingMLPackage = wmlPackageBuilder.getPackage();
+            wordprocessingMLPackage = wmlPackageBuilder.getPackage();
             MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
             final Styles styles = styleDefinitionsPart.getContents();
             final List<Style> list = styles.getStyle();
             list.forEach(style -> documentContext.getDocumentStyles().add(style.getStyleId()));
 
+            AsciiDocumentInfo documentInfo = documentContext.getDocumentInfo();
             if (documentInfo.isSectionNumbers()) {
                 wmlPackageBuilder.multiLevelHeading();
             }
@@ -129,7 +132,7 @@ public class DocumentBuilder {
             final List<Object> content = BuilderFactory.getInstance().buildDocument();
             if (content == null || content.isEmpty()) {
                 ApplicationController.endContext();
-                return;
+                return wordprocessingMLPackage;
             }
             //Adding Print View and Setting Update Field to true
             DocumentSettingsPart dsp = mainDocumentPart.getDocumentSettingsPart();
@@ -150,11 +153,19 @@ public class DocumentBuilder {
                 paras.forEach(mainDocumentPart::addObject);
             }
             content.forEach(mainDocumentPart::addObject);
-            save(docxPath.toFile(), wordprocessingMLPackage);
         } catch (Docx4JException e) {
             throw new SystemException(e.getMessage(), e);
         } finally {
             ApplicationController.endContext();
+        }
+        return wordprocessingMLPackage;
+    }
+
+    public static void buildDocument(final Path docxPath, final DocumentContext documentContext) throws SystemException {
+        try {
+            save(docxPath.toFile(), buildDocument(documentContext));
+        } catch (Docx4JException e) {
+            throw new SystemException(e.getMessage(), e);
         }
     }
 
