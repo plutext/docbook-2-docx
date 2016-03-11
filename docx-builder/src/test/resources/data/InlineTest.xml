@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+    <simpara>This is a simple text using default style.</simpara>
+    <simpara>This is a paragraph containing styled text, for example,<emphasis role="strong">bold</emphasis>,
+        <emphasis>italic</emphasis>
+        and
+        <emphasis role="strong">
+            <emphasis>mixed bold + italic</emphasis>
+        </emphasis>
+    </simpara>
+    <simpara>
+        <phrase role="red">C</phrase>
+        <phrase role="green">O</phrase>
+        <phrase role="blue">L</phrase>
+        <phrase role="fuchsia">O</phrase>
+        <phrase role="maroon">R</phrase>
+    </simpara>
+    <formalpara xml:id="_id1">
+        <title>Title of
+            <phrase role="red">formalpara</phrase>
+        </title>
+        <para>Paragraph description</para>
+    </formalpara>
+    <simpara>Link to
+        <xref linkend="_id1"/>
+    </simpara>
+</article>
