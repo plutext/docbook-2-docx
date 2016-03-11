@@ -2,13 +2,14 @@ package com.alphasystem.docbook.builder.impl;
 
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.builder.Builder;
+import com.alphasystem.docbook.model.ColorCode;
 import com.alphasystem.openxml.builder.wml.RBuilder;
 import com.alphasystem.openxml.builder.wml.RPrBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
 
-import javax.script.ScriptException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,54 +40,74 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
         RPrBuilder rPrBuilder = WmlBuilderFactory.getRPrBuilder();
         String styleHandler = applicationController.getConfiguration().getString(style);
         styleHandler = (styleHandler == null) ? style : styleHandler;
-        boolean styleHandled = true;
-        try {
-            rPrBuilder = (RPrBuilder) applicationController.handleScript(styleHandler, rPrBuilder);
-        } catch (ScriptException | NoSuchMethodException ex) {
-            styleHandled = false;
+
+        // assume we have a function
+        Object o = applicationController.handleScript(styleHandler, rPrBuilder);
+        if (o != null) {
+            return ((RPrBuilder) o).getObject();
         }
-        if (!styleHandled && ApplicationController.getContext().getDocumentStyles().contains(style)) {
-            try {
-                rPrBuilder = (RPrBuilder) applicationController.handleScript("handleStyle", rPrBuilder, style);
-            } catch (ScriptException | NoSuchMethodException ex) {
-                styleHandled = false;
+
+        final ColorCode colorCode = ColorCode.getByName(style);
+        if (colorCode != null) {
+            o = applicationController.handleScript("handleColor", rPrBuilder, colorCode.getCode());
+            if (o != null) {
+                return ((RPrBuilder) o).getObject();
             }
         }
-        if (!styleHandled) {
-            logger.warn("Not sure how to handle style \"{}\" in builder \"{}\".", style, builderName);
+
+        if (ApplicationController.getContext().getDocumentStyles().contains(style)) {
+            o = applicationController.handleScript("handleStyle", rPrBuilder, style);
+            if (o != null) {
+                return ((RPrBuilder) o).getObject();
+            }
         }
+        logger.warn("Not sure how to handle style \"{}\" in builder \"{}\".", style, builderName);
         return rPrBuilder.getObject();
     }
 
-    protected R handleChildContent() {
+    protected List<R> processChildContent(Object childContent, RPr runProperties) {
+        final Builder builder = factory.getBuilder(this, childContent);
+        if (builder == null) {
+            logUnhandledContentWarning(childContent);
+            return Collections.emptyList();
+        }
+        if (!isInstanceOf(InlineBuilder.class, builder)) {
+            throw new RuntimeException(format("\"%s\" does not implement InlineBuilder in builder \"%s\"",
+                    childContent.getClass().getSimpleName(), getClass().getSimpleName()));
+        }
+        InlineBuilder inlineBuilder = (InlineBuilder) builder;
+        final List<R> list = inlineBuilder.processContent();
+        List<R> content = new ArrayList<>();
+        for (R r : list) {
+            content.add(copyRun(r, null, runProperties));
+        }
+        return content;
+    }
+
+
+    protected List<R> processContent() {
         if (isNull(content) || content.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
-        R run = null;
         RPr rPr = handleStyle(style);
+        List<R> resultRuns = new ArrayList<>();
         for (Object o : content) {
-            final Builder builder = factory.getBuilder(this, o);
-            if (builder == null) {
-                logUnhandledContentWarning(o);
-                continue;
-            }
-            if (!isInstanceOf(InlineBuilder.class, builder)) {
-                throw new RuntimeException(format("\"%s\" does not implement InlineBuilder in builder \"%s\"",
-                        o.getClass().getSimpleName(), getClass().getSimpleName()));
-            }
-            InlineBuilder inlineBuilder = (InlineBuilder) builder;
-            final R src = inlineBuilder.handleChildContent();
-            RBuilder rBuilder = new RBuilder(src, run);
-            run = rBuilder.getObject();
-            RPrBuilder rPrBuilder = new RPrBuilder(run.getRPr(), rPr);
-            rPr = rPrBuilder.getObject();
-            run.setRPr(rPr);
+            resultRuns.addAll(processChildContent(o, rPr));
         }
-        return run;
+        return resultRuns;
+    }
+
+    private R copyRun(R src, R target, RPr rPr) {
+        RBuilder rBuilder = new RBuilder(src, target);
+        R result = rBuilder.getObject();
+        RPrBuilder rPrBuilder = new RPrBuilder(rPr, result.getRPr());
+        rPr = rPrBuilder.getObject();
+        result.setRPr(rPr);
+        return result;
     }
 
     @Override
     public List<Object> buildContent() {
-        return Collections.singletonList(handleChildContent());
+        return new ArrayList<>(processContent());
     }
 }
