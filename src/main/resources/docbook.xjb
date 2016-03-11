@@ -100,6 +100,9 @@
         <jaxb:bindings node="xs:element[@name='xref']">
             <jaxb:class name="CrossReference"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='literallayout']">
+            <jaxb:class name="LiteralLayout"/>
+        </jaxb:bindings>
     </jaxb:bindings>
 
     <jaxb:bindings schemaLocation="xlink.xsd">
