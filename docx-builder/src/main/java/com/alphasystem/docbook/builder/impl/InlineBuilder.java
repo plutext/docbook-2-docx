@@ -100,12 +100,8 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
     private R copyRun(R src, R target, RPr rPr) {
         RBuilder rBuilder = new RBuilder(src, target);
         R result = rBuilder.getObject();
-        try {
-            rPr = new RPrBuilder(rPr, result.getRPr()).getObject();
-        } catch (NullPointerException e) {
-            // ignore
-        }
-
+        final RPr tRPr = result.getRPr();
+        rPr = (rPr == null) ? tRPr : new RPrBuilder(rPr, tRPr).getObject();
         result.setRPr(rPr);
         return result;
     }
