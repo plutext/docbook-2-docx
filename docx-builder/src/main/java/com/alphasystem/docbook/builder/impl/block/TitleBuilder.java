@@ -3,7 +3,6 @@ package com.alphasystem.docbook.builder.impl.block;
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
-import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import org.docbook.model.Title;
 import org.docx4j.wml.P;
@@ -13,10 +12,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getPStyle;
-import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPPrBuilder;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
-import static com.alphasystem.util.IdGenerator.nextId;
 import static java.lang.String.format;
 
 /**
@@ -25,7 +22,7 @@ import static java.lang.String.format;
 public class TitleBuilder extends BlockBuilder<Title> {
 
     private String titleStyle;
-    private PBuilder pBuilder;
+    private PPr pPr;
 
     public TitleBuilder(Builder parent, Title title) {
         super(parent, title);
@@ -39,16 +36,15 @@ public class TitleBuilder extends BlockBuilder<Title> {
 
     @Override
     protected void preProcess() {
-        final PPr pPr = getPPrBuilder().withPStyle(getPStyle(titleStyle)).getObject();
-        String rsidP = nextId();
-        pBuilder = getPBuilder().withRsidP(rsidP).withRsidRDefault(rsidP).withRsidR(nextId()).withPPr(pPr);
+        pPr = getPPrBuilder().withPStyle(getPStyle(titleStyle)).getObject();
     }
 
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
-        pBuilder.addContent(processedChildContent.toArray());
-        final P p = pBuilder.getObject();
-        final Builder parent = getParent();
+        final P p = (P) processedChildContent.get(0);
+        if (pPr != null) {
+            p.setPPr(pPr);
+        }
         if (parent != null) {
             WmlAdapter.addBookMark(p, getId(parent.getSource()));
         }
@@ -70,7 +66,7 @@ public class TitleBuilder extends BlockBuilder<Title> {
             section = ((level >= 1) && (level <= 5));
             key = section ? format("heading-level-%s", level) : "heading-strong";
         } else {
-            logger.warn("Unhandled parent in title {}", parent.getClass().getName());
+            logger.debug("using default title in {}", parent.getClass().getName());
         }
         titleStyle = applicationController.getConfiguration().getString(key);
         final boolean numbered = ApplicationController.getContext().getDocumentInfo().isSectionNumbers();

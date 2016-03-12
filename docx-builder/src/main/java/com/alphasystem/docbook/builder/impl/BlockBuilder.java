@@ -1,12 +1,14 @@
 package com.alphasystem.docbook.builder.impl;
 
 import com.alphasystem.docbook.builder.Builder;
+import com.alphasystem.openxml.builder.wml.PBuilder;
+import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 /**
  * @author sali
@@ -74,20 +76,46 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         return result;
     }
 
+    /**
+     * Iterates through the child content of source object calls {@link #buildContent()} on each builder and adds the
+     * processed content into the result.
+     *
+     * @param content the child content of the source object.
+     * @param target  list of all processed child content
+     */
     protected void parseContent(List<Object> content, List<Object> target) {
         if (isNull(content) || content.isEmpty()) {
             return;
         }
+        PBuilder pBuilder = null;
         for (Object o : content) {
             final Builder builder = factory.getBuilder(this, o);
             if (builder == null) {
                 logUnhandledContentWarning(o);
                 continue;
             }
-            final List buildContent = builder.buildContent();
-            if (nonNull(buildContent) && !buildContent.isEmpty()) {
-                target.addAll(buildContent);
+            final List childContent = builder.buildContent();
+            // take all consecutive inline items and create a para
+            if (isInstanceOf(InlineBuilder.class, builder)) {
+                if (pBuilder == null) {
+                    pBuilder = WmlBuilderFactory.getPBuilder();
+                }
+                pBuilder.addContent(childContent.toArray());
+            } else {
+                // we found a BlockBuilder, we might have been updating pBuilder with the running text, now it is a
+                // good time to add that in the result
+                if (pBuilder != null) {
+                    target.add(pBuilder.getObject());
+                }
+
+                // add content of block as well
+                target.addAll(childContent);
             }
+        } // end of for loop
+
+        // at the end of all this me might not have added content of pBuilder into result, add it now
+        if (pBuilder != null) {
+            target.add(pBuilder.getObject());
         }
     }
 }
