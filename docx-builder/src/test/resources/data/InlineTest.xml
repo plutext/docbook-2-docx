@@ -8,4 +8,13 @@
         <para>Paragraph description is very <emphasis role="bold">important</emphasis>.</para>
     </formalpara>
     <simpara>Link to <xref linkend="_id1"/></simpara>
+    <itemizedlist>
+        <listitem>
+            <simpara>list item text 1</simpara>
+            <simpara>list item text 2</simpara>
+        </listitem>
+        <listitem>
+            <simpara>second point</simpara>
+        </listitem>
+    </itemizedlist>
 </article>

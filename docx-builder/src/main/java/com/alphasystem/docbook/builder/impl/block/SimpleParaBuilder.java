@@ -37,10 +37,14 @@ public class SimpleParaBuilder extends BlockBuilder<SimplePara> {
         boolean admonition = hasParent(AdmonitionBuilder.class);
         if (listType) {
             ListItemBuilder listItemBuilder = (ListItemBuilder) parent;
-            String style = admonition ? "AdmonitionListParagraph" : null;
-            final PPr listPpr = getListParagraphProperties(listItemBuilder.getNumber(), listItemBuilder.getLevel(), style);
+            String style = admonition ? "AdmonitionListParagraph" : "ListParagraph";
+            final boolean applyNumber = listItemBuilder.isApplyNumber();
+            final PPr listPpr = getListParagraphProperties(listItemBuilder.getNumber(), listItemBuilder.getLevel(), style, applyNumber);
             PPrBuilder pPrBuilder = new PPrBuilder(listPpr, pPr);
             pPr = pPrBuilder.getObject();
+            if(applyNumber){
+                listItemBuilder.setApplyNumber(false);
+            }
         } else if (admonition) {
             if (pPr == null) {
                 pPr = getPPrBuilder().getObject();

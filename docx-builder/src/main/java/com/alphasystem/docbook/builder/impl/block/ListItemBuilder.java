@@ -11,6 +11,7 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
 
     private long number;
     private long level;
+    private boolean applyNumber = true;
 
     public ListItemBuilder(Builder parent, ListItem listitem) {
         super(parent, listitem);
@@ -35,5 +36,13 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
 
     public void setLevel(long level) {
         this.level = level;
+    }
+
+    public boolean isApplyNumber() {
+        return applyNumber;
+    }
+
+    public void setApplyNumber(boolean applyNumber) {
+        this.applyNumber = applyNumber;
     }
 }
