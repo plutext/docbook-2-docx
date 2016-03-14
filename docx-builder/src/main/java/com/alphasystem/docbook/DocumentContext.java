@@ -9,10 +9,7 @@ import org.docx4j.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static org.docx4j.openpackaging.parts.relationships.Namespaces.HYPERLINK;
@@ -33,6 +30,7 @@ public final class DocumentContext {
     private final boolean article;
     private MainDocumentPart mainDocumentPart;
     private NumberingDefinitionsPart numberingDefinitionsPart;
+    private final Deque<String> styleStack = new ArrayDeque<>();
 
     public DocumentContext(final AsciiDocumentInfo documentInfo, final Object document) {
         this.documentInfo = documentInfo;
@@ -85,4 +83,15 @@ public final class DocumentContext {
         return numberId;
     }
 
+    public void setStyle(String style){
+        styleStack.offerFirst(style);
+    }
+
+    public String getCurrentStyle(){
+        return styleStack.peekFirst();
+    }
+
+    public void unsetStyle(){
+        styleStack.pollFirst();
+    }
 }
