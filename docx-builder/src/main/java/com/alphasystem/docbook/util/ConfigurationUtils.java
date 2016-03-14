@@ -68,12 +68,20 @@ public class ConfigurationUtils {
         return configuration.getString(titleKey, defaultTitle);
     }
 
+    public String getDefaultListStyle(){
+        return getString("default.list.style");
+    }
+
     public String getAdmonitionStyle(Admonition admonition) {
         return getString(format("%s.style", admonition.name()));
     }
 
     public String getAdmonitionCaptionStyle(Admonition admonition) {
         return getString(format("%s.caption.style", admonition.name()));
+    }
+
+    public String getAdmonitionListStyle(Admonition admonition){
+        return getString(format("%s.list.style", admonition.name()));
     }
 
     public String getExampleCaption() {
