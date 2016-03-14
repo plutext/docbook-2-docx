@@ -4,6 +4,7 @@ package com.alphasystem.docbook.builder.impl;
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.BuilderFactory;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.docbook.model.Title;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,7 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected final ApplicationController applicationController = ApplicationController.getInstance();
+    protected final ConfigurationUtils configurationUtils = ConfigurationUtils.getInstance();
     protected final BuilderFactory factory = BuilderFactory.getInstance();
     protected final Builder parent;
     protected T source;

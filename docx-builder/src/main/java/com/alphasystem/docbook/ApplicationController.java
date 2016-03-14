@@ -2,12 +2,7 @@ package com.alphasystem.docbook;
 
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.model.Admonition;
-import org.apache.commons.configuration2.CompositeConfiguration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.SystemConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.ex.ConfigurationException;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.docx4j.wml.Tbl;
 
@@ -15,7 +10,6 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -32,7 +26,7 @@ import static java.nio.file.Paths.get;
 public final class ApplicationController {
 
     public static final String CONF = "conf";
-    private static final String CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF).toString();
+    public static final String CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF).toString();
     private static final ThreadLocal<DocumentContext> CONTEXT = new ThreadLocal<>();
     private static ApplicationController instance;
 
@@ -50,36 +44,20 @@ public final class ApplicationController {
 
     public static synchronized ApplicationController getInstance() {
         if (instance == null) {
-            try {
-                instance = new ApplicationController();
-            } catch (ConfigurationException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
+            instance = new ApplicationController();
         }
         return instance;
     }
 
+    protected ConfigurationUtils configurationUtils;
     protected final Invocable engine;
-    private final CompositeConfiguration configuration;
 
     /**
      * Do not let anyone instantiate this class
      */
-    private ApplicationController() throws ConfigurationException {
-        Parameters parameters = new Parameters();
-        final File file = get(CONF_PATH, "system-defaults.properties").toFile();
-        FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<>(
-                PropertiesConfiguration.class).configure(parameters.fileBased().setFile(file));
-
-        configuration = new CompositeConfiguration();
-        configuration.addConfiguration(new SystemConfiguration());
-        configuration.addConfiguration(builder.getConfiguration());
-
+    private ApplicationController() {
+        configurationUtils = ConfigurationUtils.getInstance();
         engine = (Invocable) initScriptEngine();
-    }
-
-    public CompositeConfiguration getConfiguration() {
-        return configuration;
     }
 
     public Object handleScript(String functionName, Object... args) {
@@ -102,8 +80,10 @@ public final class ApplicationController {
 
     public Tbl getAdmonitionTable(Admonition admonition) {
         final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
+        final String handler = configurationUtils.getString(format("%s.handler", admonition.name()));
+        final String admonitionCaptionStyle = configurationUtils.getAdmonitionCaptionStyle(admonition);
         final String captionText = getAdmonitionCaption(admonition, documentInfo);
-        return getTable("handleAdmonition", admonition.name(), captionText);
+        return getTable(handler, admonitionCaptionStyle, captionText);
     }
 
     public String getAdmonitionCaption(Admonition admonition, AsciiDocumentInfo documentInfo) {
@@ -137,7 +117,7 @@ public final class ApplicationController {
 
         Path[] paths = new Path[1];
         paths[0] = get(CONF_PATH, "styles.js");
-        final String customStyleName = getConfiguration().getString("custom.style.name");
+        final String customStyleName = configurationUtils.getString("custom.style.name");
         if (customStyleName != null) {
             paths = ArrayUtils.add(paths, get(CONF_PATH, "custom", format("%s.js", customStyleName)));
         }

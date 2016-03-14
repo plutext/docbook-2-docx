@@ -5,6 +5,7 @@ import com.alphasystem.docbook.DocumentContext;
 import com.alphasystem.docbook.builder.impl.AbstractBuilder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.builder.impl.InlineBuilder;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.docbook.model.Article;
 import org.docbook.model.Title;
 
@@ -31,7 +32,7 @@ public class BuilderFactory {
         return instance;
     }
 
-    private ApplicationController applicationController = ApplicationController.getInstance();
+    private ConfigurationUtils configurationUtils = ConfigurationUtils.getInstance();
 
     /**
      * Do not let any one instantiate this class.
@@ -50,7 +51,7 @@ public class BuilderFactory {
                     BlockBuilder.class.getSimpleName() : InlineBuilder.class.getSimpleName();
             sourceName = format("%s.%s", parentName, sourceName);
         }
-        String builderFqn = applicationController.getConfiguration().getString(sourceName);
+        String builderFqn = configurationUtils.getString(sourceName);
         if (builderFqn == null) {
             return null;
         }

@@ -68,22 +68,27 @@ var handleSideBar = function () {
     return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr).endRow().getTable();
 };
 
-var handleAdmonition = function (type, captionText) {
-    switch (type) {
-        case "CAUTION":
-            return _handleAdmonition(15, captionText);
-        case "IMPORTANT":
-            return _handleAdmonition(20, captionText);
-        case "NOTE":
-            return _handleAdmonition(15, captionText);
-        case "TIP":
-            return _handleAdmonition(15, captionText);
-        case "WARNING":
-            return _handleAdmonition(15, captionText);
-    }
-}
+var handleCaution = function(admonitionCaptionStyle, captionText){
+    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+};
 
-var _handleAdmonition = function (widthOfCaptionColumn, captionText) {
+var handleImportant = function(admonitionCaptionStyle, captionText){
+    return handleAdmonition(20, admonitionCaptionStyle, captionText);
+};
+
+var handleNote = function(admonitionCaptionStyle, captionText){
+    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+};
+
+var handleTip = function(admonitionCaptionStyle, captionText){
+    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+};
+
+var handleWarning = function(admonitionCaptionStyle, captionText){
+    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+};
+
+var handleAdmonition = function (widthOfCaptionColumn, admonitionCaptionStyle, captionText) {
     var widthOfContentColumn = 100.0 - widthOfCaptionColumn;
     var nilBorder = adapter.getNilBorder();
     var tblBorders = factory.getTblBordersBuilder().withTop(nilBorder).withLeft(nilBorder).withBottom(nilBorder)
@@ -94,8 +99,9 @@ var _handleAdmonition = function (widthOfCaptionColumn, captionText) {
 
     var border = adapter.getBorder(org.docx4j.wml.STBorder.SINGLE, 8, 0, "DDDDD8");
     var columnBorders = factory.getTcPrInnerBuilder().getTcBordersBuilder().withRight(border).getObject();
-    var tcPr = factory.getTcPrBuilder().withTcBorders(columnBorders).getObject();
-    tableAdapter.addColumn(0, null, tcPr, adapter.getParagraphWithStyle("AdmonitionCaption", captionText));
+    var vertAlign = factory.getCTVerticalJcBuilder().withVal(org.docx4j.wml.STVerticalJc.CENTER).getObject();
+    var tcPr = factory.getTcPrBuilder().withVAlign(vertAlign).withTcBorders(columnBorders).getObject();
+    tableAdapter.addColumn(0, null, tcPr, adapter.getParagraphWithStyle(admonitionCaptionStyle, captionText));
 
     columnBorders = factory.getTcPrInnerBuilder().getTcBordersBuilder().withLeft(border).getObject();
     tcPr = factory.getTcPrBuilder().withTcBorders(columnBorders).getObject();

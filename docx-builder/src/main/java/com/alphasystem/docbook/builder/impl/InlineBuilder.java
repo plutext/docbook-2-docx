@@ -38,7 +38,7 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
             return null;
         }
         RPrBuilder rPrBuilder = WmlBuilderFactory.getRPrBuilder();
-        String styleHandler = applicationController.getConfiguration().getString(style);
+        String styleHandler = configurationUtils.getString(style);
         styleHandler = (styleHandler == null) ? style : styleHandler;
 
         // assume we have a function

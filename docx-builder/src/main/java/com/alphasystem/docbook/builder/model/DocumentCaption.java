@@ -2,10 +2,10 @@ package com.alphasystem.docbook.builder.model;
 
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.ApplicationController;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import com.alphasystem.openxml.builder.wml.AbstractListItem;
 import org.docx4j.wml.NumberFormat;
 
-import static com.alphasystem.docbook.ApplicationController.getInstance;
 import static java.lang.String.format;
 import static org.docx4j.wml.NumberFormat.DECIMAL;
 
@@ -15,7 +15,7 @@ import static org.docx4j.wml.NumberFormat.DECIMAL;
 public abstract class DocumentCaption extends AbstractListItem<DocumentCaption> {
 
     public static final DocumentCaption EXAMPLE = new DocumentCaption(12,
-            getInstance().getConfiguration().getString("example-title"), DECIMAL) {
+            ConfigurationUtils.getInstance().getString("example-title"), DECIMAL) {
 
         @Override
         public String getValue(int i) {

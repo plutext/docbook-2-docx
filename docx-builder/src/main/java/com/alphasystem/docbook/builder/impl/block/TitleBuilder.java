@@ -13,8 +13,6 @@ import java.util.List;
 
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getPStyle;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPPrBuilder;
-import static com.alphasystem.util.AppUtil.isInstanceOf;
-import static java.lang.String.format;
 
 /**
  * @author sali
@@ -52,26 +50,7 @@ public class TitleBuilder extends BlockBuilder<Title> {
     }
 
     private void initTitleStyle() {
-        boolean section = false;
-        String key = "heading-strong";
-        if (isInstanceOf(ArticleBuilder.class, parent)) {
-            key = "document-title";
-        } else if (isInstanceOf(ExampleBuilder.class, parent)) {
-            key = "example-title";
-        } else if (isInstanceOf(SideBarBuilder.class, parent)) {
-            key = "sidebar-title";
-        } else if (isInstanceOf(SectionBuilder.class, parent)) {
-            SectionBuilder sectionBuilder = (SectionBuilder) parent;
-            final int level = sectionBuilder.getLevel();
-            section = ((level >= 1) && (level <= 5));
-            key = section ? format("heading-level-%s", level) : "heading-strong";
-        } else {
-            logger.debug("using default title in {}", parent.getClass().getName());
-        }
-        titleStyle = applicationController.getConfiguration().getString(key);
         final boolean numbered = ApplicationController.getContext().getDocumentInfo().isSectionNumbers();
-        if (section && numbered) {
-            titleStyle = format("List%s", titleStyle);
-        }
+        titleStyle = configurationUtils.getTitleStyle(parent, numbered);
     }
 }
