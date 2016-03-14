@@ -125,6 +125,20 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
         return result;
     }
 
+    @SuppressWarnings({"unchecked"})
+    protected <T extends BlockBuilder> T getParent(Class<T> builderClass) {
+        T result = null;
+        Builder currentParent = parent;
+        while (currentParent != null) {
+            if (isInstanceOf(builderClass, currentParent)) {
+                result = (T) currentParent;
+                break;
+            }
+            currentParent = currentParent.getParent();
+        }
+        return result;
+    }
+
     protected void logUnhandledContentWarning(Object o) {
         logger.warn("Unhandled type \"{}\" in builder \"{}\"", o.getClass().getName(), getClass().getName());
     }
