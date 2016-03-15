@@ -3,6 +3,7 @@ package com.alphasystem.docbook.builder.impl;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
+import org.docx4j.wml.PPr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,19 @@ import static java.util.Objects.isNull;
  */
 public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
 
+    protected PPr paraProperties;
+    protected PPr listParaProperties;
+
     protected BlockBuilder(Builder parent, T obj) {
         super(parent, obj);
+    }
+
+    public PPr getParaProperties() {
+        return paraProperties;
+    }
+
+    public PPr getListParaProperties() {
+        return listParaProperties;
     }
 
     @Override
@@ -88,13 +100,14 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
             return;
         }
         PBuilder pBuilder = null;
-        for (Object o : content) {
+        for (int i = 0; i < content.size(); i++) {
+            final Object o = content.get(i);
             final Builder builder = factory.getBuilder(this, o);
             if (builder == null) {
                 logUnhandledContentWarning(o);
                 continue;
             }
-            final List childContent = builder.buildContent();
+            final List<Object> childContent = buildChildContent(builder, i);
             // take all consecutive inline items and create a para
             if (isInstanceOf(InlineBuilder.class, builder)) {
                 if (pBuilder == null) {
@@ -117,5 +130,10 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         if (pBuilder != null) {
             target.add(pBuilder.getObject());
         }
+    }
+
+    protected List<Object> buildChildContent(Builder builder, int iteration) {
+        // TODO: needto revisit later
+        return builder.buildContent();
     }
 }
