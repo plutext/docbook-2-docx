@@ -14,7 +14,7 @@ public class DocBookTest {
 
         String path = "C:\\Users\\sali\\ascii_doc\\test2.adoc";
         // path = "C:\\Users\\sali\\Arabic\\documents\\Lesson-001-01.adoc";
-        // path = "C:\\tools\\asciidoc-8.6.9\\asciidoctor.org-master\\docs\\asciidoc-writers-guide.adoc";
+        path = "C:\\tools\\asciidoc-8.6.9\\asciidoctor.org-master\\docs\\asciidoc-writers-guide.adoc";
 
         try {
             final Path destPath = DocumentBuilder.buildDocument(get(path));

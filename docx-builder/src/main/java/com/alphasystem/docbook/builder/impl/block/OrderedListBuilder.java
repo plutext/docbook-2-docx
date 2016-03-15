@@ -34,7 +34,7 @@ public class OrderedListBuilder extends ListBuilder<OrderedList> {
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         final List<Object> result = super.postProcess(processedTitleContent, processedChildContent);
-        processListItems(source.getListitem(), result);
+        processListItems(source.getListItem(), result);
         return result;
     }
 

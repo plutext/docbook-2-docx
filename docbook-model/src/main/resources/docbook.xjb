@@ -43,6 +43,9 @@
         <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:sequence/xs:choice">
             <jaxb:property name="content"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:sequence/xs:element">
+            <jaxb:property name="listItem"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='itemizedlist']">
             <jaxb:class name="ItemizedList"/>
         </jaxb:bindings>
@@ -52,11 +55,32 @@
         <jaxb:bindings node="xs:element[@name='itemizedlist']/xs:complexType/xs:sequence/xs:choice">
             <jaxb:property name="content"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='itemizedlist']/xs:complexType/xs:sequence/xs:element">
+            <jaxb:property name="listItem"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='listitem']">
             <jaxb:class name="ListItem"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='listitem']/xs:complexType/xs:choice">
             <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='variablelist']">
+            <jaxb:class name="VariableList"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='variablelist']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
+            <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='variablelist']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='variablelist']/xs:complexType/xs:sequence/xs:element">
+            <jaxb:property name="variableListEntry"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='varlistentry']">
+            <jaxb:class name="VariableListEntry"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='varlistentry']/xs:complexType/xs:sequence/xs:element[@ref='docbook:listitem']">
+            <jaxb:property name="listItem"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='simpara']">
             <jaxb:class name="SimplePara"/>
