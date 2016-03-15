@@ -10,8 +10,8 @@
     <simpara>Link to <xref linkend="_id1"/></simpara>
     <itemizedlist>
         <listitem>
-            <simpara>list item text 1</simpara>
-            <simpara>list item text 2</simpara>
+            <simpara>List <emphasis role="strong">item</emphasis> text 1</simpara>
+            <simpara>List item <emphasis>text 2</emphasis></simpara>
         </listitem>
         <listitem>
             <simpara>second point</simpara>

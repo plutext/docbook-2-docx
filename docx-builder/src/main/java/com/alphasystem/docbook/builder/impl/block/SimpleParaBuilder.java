@@ -4,7 +4,6 @@ import com.alphasystem.docbook.builder.Builder;
 import org.docbook.model.SimplePara;
 import org.docx4j.wml.P;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,8 +21,8 @@ public class SimpleParaBuilder extends AbstractParaBuilder<SimplePara> {
     }
 
     @Override
-    protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
-        return Collections.singletonList(addParaProperties((P) processedChildContent.get(0)));
+    protected void postProcessContent(List<Object> processedChildContent, List<Object> result) {
+        result.add(addParaProperties((P) processedChildContent.get(0)));
     }
 
 }

@@ -46,7 +46,7 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
 
     @Override
     protected List<Object> buildChildContent(Builder builder, int iteration) {
-        if(iteration == 1){
+        if (iteration == 1) {
             paraProperties.setNumPr(null);
         }
         return super.buildChildContent(builder, iteration);

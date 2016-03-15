@@ -83,9 +83,17 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
      */
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         List<Object> result = new ArrayList<>();
-        result.addAll(processedTitleContent);
-        result.addAll(processedChildContent);
+        postProcessTitleContent(processedTitleContent, result);
+        postProcessContent(processedChildContent, result);
         return result;
+    }
+
+    protected void postProcessTitleContent(List<Object> processedTitleContent, List<Object> result) {
+        result.addAll(processedTitleContent);
+    }
+
+    protected void postProcessContent(List<Object> processedChildContent, List<Object> result) {
+        result.addAll(processedChildContent);
     }
 
     /**
@@ -132,8 +140,9 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         }
     }
 
+    @SuppressWarnings({"unchecked"})
     protected List<Object> buildChildContent(Builder builder, int iteration) {
-        // TODO: needto revisit later
+        // TODO: need to revisit later
         return builder.buildContent();
     }
 }
