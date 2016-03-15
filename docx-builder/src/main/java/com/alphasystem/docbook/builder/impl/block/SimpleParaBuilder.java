@@ -11,16 +11,10 @@ import org.docx4j.wml.PPr;
 import java.util.Collections;
 import java.util.List;
 
-import static com.alphasystem.openxml.builder.wml.WmlAdapter.getListParagraphProperties;
-import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPPrBuilder;
-import static com.alphasystem.util.AppUtil.isInstanceOf;
-
 /**
  * @author sali
  */
 public class SimpleParaBuilder extends BlockBuilder<SimplePara> {
-
-    protected PPr pPr;
 
     public SimpleParaBuilder(Builder parent, SimplePara simplePara) {
         super(parent, simplePara);
@@ -33,32 +27,17 @@ public class SimpleParaBuilder extends BlockBuilder<SimplePara> {
 
     @Override
     protected void preProcess() {
-        boolean listType = isInstanceOf(ListItemBuilder.class, parent);
-        boolean admonition = hasParent(AdmonitionBuilder.class);
-        if (listType) {
-            ListItemBuilder listItemBuilder = (ListItemBuilder) parent;
-            String style = admonition ? "AdmonitionListParagraph" : "ListParagraph";
-            final boolean applyNumber = listItemBuilder.isApplyNumber();
-            final PPr listPpr = getListParagraphProperties(listItemBuilder.getNumber(), listItemBuilder.getLevel(), style, applyNumber);
-            PPrBuilder pPrBuilder = new PPrBuilder(listPpr, pPr);
-            pPr = pPrBuilder.getObject();
-            if(applyNumber){
-                listItemBuilder.setApplyNumber(false);
-            }
-        } else if (admonition) {
-            if (pPr == null) {
-                pPr = getPPrBuilder().getObject();
-            }
-            PPrBuilder pPrBuilder = new PPrBuilder(pPr, null).withPStyle("Admonition");
-            pPr = pPrBuilder.getObject();
+        final PPr ppr = ((BlockBuilder) parent).getParaProperties();
+        if(ppr != null) {
+            paraProperties = new PPrBuilder(ppr, paraProperties).getObject();
         }
     }
 
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         final P p = (P) processedChildContent.get(0);
-        if (pPr != null) {
-            p.setPPr(pPr);
+        if (paraProperties != null) {
+            p.setPPr(paraProperties);
         }
         WmlAdapter.addBookMark(p, source.getId());
         return Collections.singletonList(p);
