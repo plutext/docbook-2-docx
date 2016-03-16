@@ -76,6 +76,9 @@ public final class DocumentContext {
     }
 
     public long getListNumber(long numberId, long level) {
+        if(numberId < 0 || level < 0){
+            return -1;
+        }
         final Object o = listNumbersMap.get(numberId);
         if (o == null) {
             listNumbersMap.put(numberId, DUMMY);
