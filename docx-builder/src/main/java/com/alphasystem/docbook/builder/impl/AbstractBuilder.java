@@ -140,7 +140,7 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
     }
 
     protected void logUnhandledContentWarning(Object o) {
-        logger.warn("Unhandled type \"{}\" in builder \"{}\"", o.getClass().getName(), getClass().getName());
+        logger.warn("Unhandled type \"{}\".", o.getClass().getName());
     }
 
 
