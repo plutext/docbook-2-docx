@@ -3,7 +3,7 @@
 <suite name="Suite">
     <test name="Test" preserve-order="true">
         <classes>
-            <class name="com.alphasystem.docbook.builder.test.InlineTest"/>
+            <class name="com.alphasystem.docbook.builder.test.BuilderTest"/>
         </classes>
     </test>
     <!-- Test -->
