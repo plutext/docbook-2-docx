@@ -2,7 +2,9 @@ package com.alphasystem.docbook.builder.impl;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.openxml.builder.wml.PBuilder;
+import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
+import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 
 import java.util.ArrayList;
@@ -135,7 +137,8 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
                 // we found a BlockBuilder, we might have been updating pBuilder with the running text, now it is a
                 // good time to add that in the result
                 if (pBuilder != null) {
-                    target.add(pBuilder.getObject());
+                    addPara(pBuilder.getObject(), target);
+                    pBuilder = null;
                 }
 
                 // add content of block as well
@@ -145,7 +148,7 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
 
         // at the end of all this me might not have added content of pBuilder into result, add it now
         if (pBuilder != null) {
-            target.add(pBuilder.getObject());
+            addPara(pBuilder.getObject(), target);
         }
     }
 
@@ -154,4 +157,10 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         // TODO: need to revisit later
         return builder.buildContent();
     }
+
+    private void addPara(P p, List<Object> target) {
+        WmlAdapter.addBookMark(p, getId(source));
+        target.add(p);
+    }
+
 }
