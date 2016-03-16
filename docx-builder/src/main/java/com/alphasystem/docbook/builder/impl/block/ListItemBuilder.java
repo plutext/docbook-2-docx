@@ -5,6 +5,7 @@ import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import org.docbook.model.ListItem;
 import org.docx4j.wml.PPr;
+import org.docx4j.wml.PPrBase.NumPr;
 
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
             }
             currentParent = (BlockBuilder) currentParent.getParent();
         }
-        paraProperties = new PPrBuilder(pPr, paraProperties).withNumPr(getNumPr(getNumber(), getLevel())).getObject();
+        NumPr numPr = ((getNumber() < 0) || (getLevel() < 0)) ? null : getNumPr(getNumber(), getLevel());
+        paraProperties = new PPrBuilder(pPr, paraProperties).withNumPr(numPr).getObject();
     }
 
     @Override
