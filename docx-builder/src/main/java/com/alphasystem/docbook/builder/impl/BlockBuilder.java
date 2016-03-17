@@ -92,17 +92,15 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
      */
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         List<Object> result = new ArrayList<>();
-        postProcessTitleContent(processedTitleContent, result);
-        postProcessContent(processedChildContent, result);
+        processedTitleContent.forEach(o -> result.add(postProcessContent(o)));
+        processedChildContent.forEach(o -> result.add(postProcessContent(o)));
         return result;
     }
 
-    protected void postProcessTitleContent(List<Object> processedTitleContent, List<Object> result) {
-        result.addAll(processedTitleContent);
-    }
-
-    protected void postProcessContent(List<Object> processedChildContent, List<Object> result) {
-        result.addAll(processedChildContent);
+    protected Object postProcessContent(Object o) {
+        String parentType = (parent == null) ? null : parent.getClass().getSimpleName();
+        logger.info("Object Type: \"{}\", Parent Type: \"{}\"", o.getClass().getSimpleName(), parentType);
+        return o;
     }
 
     /**

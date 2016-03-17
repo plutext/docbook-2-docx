@@ -57,13 +57,11 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
     }
 
     @Override
-    protected void postProcessContent(List<Object> processedChildContent, List<Object> result) {
-        processedChildContent.forEach(o -> {
-            if (isInstanceOf(P.class, o)) {
-                ((P) o).setPPr(paraProperties);
-            }
-        });
-        super.postProcessContent(processedChildContent, result);
+    protected Object postProcessContent(Object o) {
+        if (isInstanceOf(P.class, o)) {
+            ((P) o).setPPr(paraProperties);
+        }
+        return super.postProcessContent(o);
     }
 
     public long getNumber() {
