@@ -11,8 +11,7 @@ import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.xml.UnmarshallerTool;
-import org.docbook.model.VariableList;
-import org.docbook.model.VariableListEntry;
+import org.docbook.model.*;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -94,7 +93,7 @@ public class BuilderTest {
             wmlPackage = new WmlPackageBuilder().getPackage();
             mainDocumentPart = wmlPackage.getMainDocumentPart();
 
-            DocumentContext documentContext = new DocumentContext(new AsciiDocumentInfo(), createEmptyArticle());
+            DocumentContext documentContext = new DocumentContext(new AsciiDocumentInfo(), new Article());
             documentContext.setMainDocumentPart(mainDocumentPart);
 
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
@@ -122,6 +121,12 @@ public class BuilderTest {
             mainDocumentPart.addObject(o);
         }
         mainDocumentPart.addObject(getHorizontalLine());
+    }
+
+    private void addResult(Builder parent, Object o, int expectedSize, String title) {
+        final List<Object> content = buildContent(parent, o);
+        assertEquals(content.size(), expectedSize);
+        addResult(title, content.toArray());
     }
 
     private void addResult(String title, R... runs) {
@@ -152,7 +157,7 @@ public class BuilderTest {
         }
     }
 
-    @Test
+    @Test(groups = "inlineGroup")
     public void testBold() {
         final List<Object> content = buildContent(createBold("Bold Text"));
         assertEquals(content.size(), 1);
@@ -161,7 +166,7 @@ public class BuilderTest {
         addResult("Bold Test", r);
     }
 
-    @Test
+    @Test(groups = "inlineGroup")
     public void testItalic() {
         final List<Object> content = buildContent(createItalic("Italic Text"));
         assertEquals(content.size(), 1);
@@ -170,7 +175,7 @@ public class BuilderTest {
         addResult("Italic Test", r);
     }
 
-    @Test(dependsOnMethods = {"testItalic"})
+    @Test(groups = "inlineGroup")
     public void testTermBuilder() {
         final List<Object> content = buildContent(createTerm("Term Title"));
         assertEquals(content.size(), 1);
@@ -179,19 +184,79 @@ public class BuilderTest {
         addResult("Term Test", r);
     }
 
-    @Test
+    @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
+    public void testDocumentTitle() {
+        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Title title = createTitle("Document Title");
+        final List<Object> content = buildContent(parent, title);
+        assertEquals(content.size(), 1);
+        addResult("Document Title Test", content.toArray());
+    }
+
+    @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
+    public void testDocumentTitleWithCustomStyle() {
+        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Title title = createTitle("Document Title ", createPhrase("arabicLabel", "س ل م"));
+        addResult(parent, title, 1, "Document Title with custom style Test");
+    }
+
+    @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
+    public void testSectionLevel1Title() {
+        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Title title = createTitle("Section 1");
+        addResult(parent, createSection("section-1", title), 1, "Section Level 1 Test");
+    }
+
+    @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
+    public void testSectionLevel2Title() {
+        final Builder p1 = builderFactory.getBuilder(null, new Article());
+        final Builder p2 = builderFactory.getBuilder(p1, new Section());
+        final Title title = createTitle("Section 2");
+        addResult(p2, createSection("section-2", title), 1, "Section Level 2 Test");
+    }
+
+    @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
+    public void testSectionLevel3Title() {
+        final Builder p1 = builderFactory.getBuilder(null, new Article());
+        final Builder p2 = builderFactory.getBuilder(p1, new Section());
+        final Builder p3 = builderFactory.getBuilder(p2, new Section());
+        final Title title = createTitle("Section 3");
+        addResult(p3, createSection("section-3", title), 1, "Section Level 3 Test");
+    }
+
+    @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
+    public void testSectionLevel4Title() {
+        final Builder p1 = builderFactory.getBuilder(null, new Article());
+        final Builder p2 = builderFactory.getBuilder(p1, new Section());
+        final Builder p3 = builderFactory.getBuilder(p2, new Section());
+        final Builder p4 = builderFactory.getBuilder(p3, new Section());
+        final Title title = createTitle("Section 4");
+        addResult(p4, createSection("section-4", title), 1, "Section Level 4 Test");
+    }
+
+    @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
+    public void testSectionLevel5Title() {
+        final Builder p1 = builderFactory.getBuilder(null, new Article());
+        final Builder p2 = builderFactory.getBuilder(p1, new Section());
+        final Builder p3 = builderFactory.getBuilder(p2, new Section());
+        final Builder p4 = builderFactory.getBuilder(p3, new Section());
+        final Builder p5 = builderFactory.getBuilder(p4, new Section());
+        final Title title = createTitle("Section 5");
+        addResult(p5, createSection("section-5", title), 1, "Section Level 5 Test");
+    }
+
+    @Test(dependsOnGroups = "titleGroup")
     public void testVariableListEntryBuilder() {
-        final List<Object> content = buildContent(null, readXml("varlistentry", VariableListEntry.class));
-        assertEquals(content.size(), 2);
-        addResult("VariableListEntry Test", content.toArray());
+        final Term term = createTerm("Entry title");
+        final SimplePara simplePara = createSimplePara(null, "This text is under simple para and it has to be indented using \"ListParagraph\" style without any numbering.");
+        final ListItem listItem = createListItem(null, simplePara);
+        addResult(null, createVariableListEntry(listItem, term), 2, "VariableListEntry Test");
     }
 
     @Test(dependsOnMethods = {"testVariableListEntryBuilder"})
-    public void testVariableList() {
+    public void testVariableListBuilder() {
         final Object o = readXml("variablelist", VariableList.class);
-        final List<Object> content = buildContent(null, o);
-        assertEquals(content.size(), 12);
-        addResult("VariableList Test", content.toArray());
+        addResult(null, o, 12, "VariableList Test");
     }
 
 }

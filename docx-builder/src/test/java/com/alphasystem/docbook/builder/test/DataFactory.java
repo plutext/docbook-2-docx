@@ -9,10 +9,6 @@ public final class DataFactory {
 
     private static ObjectFactory objectFactory = new ObjectFactory();
 
-    public static Article createEmptyArticle() {
-        return objectFactory.createArticle();
-    }
-
     public static Emphasis createBold(Object... content) {
         return createEmphasis("strong", content);
     }
@@ -33,6 +29,14 @@ public final class DataFactory {
         return objectFactory.createListItem().withId(id).withContent(content);
     }
 
+    public static Phrase createPhrase(String role, Object... content) {
+        return objectFactory.createPhrase().withRole(role).withContent(content);
+    }
+
+    public static Section createSection(String id, Object... content){
+        return objectFactory.createSection().withId(id).withContent(content);
+    }
+
     public static SimplePara createSimplePara(Object... content) {
         return createSimplePara(null, content);
     }
@@ -43,6 +47,10 @@ public final class DataFactory {
 
     public static Term createTerm(Object... content) {
         return objectFactory.createTerm().withContent(content);
+    }
+
+    public static Title createTitle(Object... content) {
+        return objectFactory.createTitle().withContent(content);
     }
 
     public static VariableList createVariableList(String id, Object[] content, VariableListEntry... entries) {
