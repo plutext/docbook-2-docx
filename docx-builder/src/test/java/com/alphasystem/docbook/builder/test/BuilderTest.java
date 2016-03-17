@@ -10,7 +10,6 @@ import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
-import org.docbook.model.*;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -30,6 +29,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.alphasystem.docbook.builder.test.DataFactory.*;
+import static com.alphasystem.docbook.builder.test.StaticDataFactory.VARIABLE_LIST_ENTRIES;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
 import static java.lang.String.format;
 import static java.nio.file.Paths.get;
@@ -42,7 +43,6 @@ import static org.testng.Assert.fail;
 public class BuilderTest {
 
     private static final String DEFAULT_TITLE = "DefaultTitle";
-    private static ObjectFactory objectFactory = new ObjectFactory();
     private static final String TARGET_PATH = System.getProperty("target.path");
 
     static {
@@ -78,7 +78,7 @@ public class BuilderTest {
             wmlPackage = new WmlPackageBuilder().getPackage();
             mainDocumentPart = wmlPackage.getMainDocumentPart();
 
-            DocumentContext documentContext = new DocumentContext(new AsciiDocumentInfo(), objectFactory.createArticle());
+            DocumentContext documentContext = new DocumentContext(new AsciiDocumentInfo(), createEmptyArticle());
             documentContext.setMainDocumentPart(mainDocumentPart);
 
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
@@ -106,7 +106,10 @@ public class BuilderTest {
             mainDocumentPart.addObject(o);
         }
         mainDocumentPart.addObject(getHorizontalLine());
-        mainDocumentPart.addObject(getEmptyParaNoSpacing());
+    }
+
+    private void addResult(String title, R... runs) {
+        addResult(title, buildPara(runs));
     }
 
     @SuppressWarnings("unchecked")
@@ -135,55 +138,50 @@ public class BuilderTest {
 
     @Test
     public void testBold() {
-        final Emphasis emphasis = objectFactory.createEmphasis();
-        emphasis.setRole("strong");
-        emphasis.getContent().add("Bold Text");
-        final List<Object> content = buildContent(emphasis);
+        final List<Object> content = buildContent(createBold("Bold Text"));
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
-        addResult("Bold Test", buildPara(r));
+        addResult("Bold Test", r);
     }
 
     @Test
+    public void testItalic() {
+        final List<Object> content = buildContent(createItalic("Italic Text"));
+        assertEquals(content.size(), 1);
+        final R r = (R) content.get(0);
+        assertEquals(r.getClass().getName(), R.class.getName());
+        addResult("Italic Test", r);
+    }
+
+    @Test(dependsOnMethods = {"testItalic"})
     public void testTermBuilder() {
-        final Term term = objectFactory.createTerm();
-        term.getContent().add("Term Title");
-        final List<Object> content = buildContent(term);
+        final List<Object> content = buildContent(createTerm("Term Title"));
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
-        addResult("Term Test", buildPara(r));
+        addResult("Term Test", r);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testTermBuilder"})
     public void testVariableListEntryBuilder() {
-        final Term term = objectFactory.createTerm();
-        term.getContent().add("CPU");
-        final ListItem listItem = objectFactory.createListItem();
-        listItem.getContent().add("The brain of the computer.");
-        final VariableListEntry variableListEntry = objectFactory.createVariableListEntry();
-        variableListEntry.getTerm().add(term);
-        variableListEntry.setListItem(listItem);
-        final List<Object> content = buildContent(null, variableListEntry);
+        final List<Object> content = buildContent(null, VARIABLE_LIST_ENTRIES[0]);
         assertEquals(content.size(), 2);
         addResult("VariableListEntry Test", content.toArray());
     }
 
     @Test
-    public void testVariableListEntryBuilderV2() {
-        final Term term = objectFactory.createTerm();
-        term.getContent().add("Hard drive");
-        final ListItem listItem = objectFactory.createListItem();
-        final SimplePara simplePara = objectFactory.createSimplePara();
-        simplePara.getContent().add("Permanent storage for operating system and/or user files.");
-        listItem.getContent().add(simplePara);
-        final VariableListEntry variableListEntry = objectFactory.createVariableListEntry();
-        variableListEntry.getTerm().add(term);
-        variableListEntry.setListItem(listItem);
-        final List<Object> content = buildContent(null, variableListEntry);
+    public void testVariableListEntryBuilderWithSimplePara() {
+        final List<Object> content = buildContent(null, VARIABLE_LIST_ENTRIES[1]);
         assertEquals(content.size(), 2);
-        addResult("VariableListEntry Test With SimplePara", content.toArray());
+        addResult("VariableListEntry with SimplePara Test", content.toArray());
+    }
+
+    @Test(dependsOnMethods = {"testVariableListEntryBuilderWithSimplePara"})
+    public void testVariableList() {
+        final List<Object> content = buildContent(null, createVariableList(null, null, VARIABLE_LIST_ENTRIES));
+        assertEquals(content.size(), VARIABLE_LIST_ENTRIES.length * 2);
+        addResult("VariableList Test", content.toArray());
     }
 
 }
