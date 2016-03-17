@@ -10,6 +10,9 @@ import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
+import com.alphasystem.xml.UnmarshallerTool;
+import org.docbook.model.VariableList;
+import org.docbook.model.VariableListEntry;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -30,9 +33,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static com.alphasystem.docbook.builder.test.DataFactory.*;
-import static com.alphasystem.docbook.builder.test.StaticDataFactory.VARIABLE_LIST_ENTRIES;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
 import static java.lang.String.format;
+import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
@@ -43,6 +46,7 @@ import static org.testng.Assert.fail;
 public class BuilderTest {
 
     private static final String DEFAULT_TITLE = "DefaultTitle";
+    private static final String DATA_PATH = System.getProperty("data.path");
     private static final String TARGET_PATH = System.getProperty("target.path");
 
     static {
@@ -57,7 +61,7 @@ public class BuilderTest {
     }
 
     @SuppressWarnings({"unused"})
-    private void build(String dir, String fileNamePrefix) {
+    private static void build(String dir, String fileNamePrefix) {
         final Path sourcePath = get(dir, format("%s.xml", fileNamePrefix));
         try {
             final DocumentContext context = DocumentBuilder.createContext(sourcePath);
@@ -66,6 +70,18 @@ public class BuilderTest {
         } catch (SystemException | Docx4JException e) {
             fail(e.getMessage(), e);
         }
+    }
+
+    private static Object readXml(String name, Class<?> declaredType) {
+        UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
+        final Path sourcePath = get(DATA_PATH, format("%s.xml", name));
+        try {
+            final String source = new String(readAllBytes(sourcePath));
+            return unmarshallerTool.unmarshal(source, declaredType);
+        } catch (Exception e) {
+            fail(e.getMessage(), e);
+        }
+        return null;
     }
 
     private BuilderFactory builderFactory = BuilderFactory.getInstance();
@@ -163,24 +179,18 @@ public class BuilderTest {
         addResult("Term Test", r);
     }
 
-    @Test(dependsOnMethods = {"testTermBuilder"})
+    @Test
     public void testVariableListEntryBuilder() {
-        final List<Object> content = buildContent(null, VARIABLE_LIST_ENTRIES[0]);
+        final List<Object> content = buildContent(null, readXml("varlistentry", VariableListEntry.class));
         assertEquals(content.size(), 2);
         addResult("VariableListEntry Test", content.toArray());
     }
 
-    @Test
-    public void testVariableListEntryBuilderWithSimplePara() {
-        final List<Object> content = buildContent(null, VARIABLE_LIST_ENTRIES[1]);
-        assertEquals(content.size(), 2);
-        addResult("VariableListEntry with SimplePara Test", content.toArray());
-    }
-
-    @Test(dependsOnMethods = {"testVariableListEntryBuilderWithSimplePara"})
+    @Test(dependsOnMethods = {"testVariableListEntryBuilder"})
     public void testVariableList() {
-        final List<Object> content = buildContent(null, createVariableList(null, null, VARIABLE_LIST_ENTRIES));
-        assertEquals(content.size(), VARIABLE_LIST_ENTRIES.length * 2);
+        final Object o = readXml("variablelist", VariableList.class);
+        final List<Object> content = buildContent(null, o);
+        assertEquals(content.size(), 12);
         addResult("VariableList Test", content.toArray());
     }
 
