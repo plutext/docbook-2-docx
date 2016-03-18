@@ -4,7 +4,7 @@ import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.openxml.builder.wml.ListItem;
 import org.docbook.model.OrderedList;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author sali
@@ -18,7 +18,9 @@ public class OrderedListBuilder extends ListBuilder<OrderedList> {
     @Override
     protected void initContent() {
         titleContent = source.getTitleContent();
-        content = source.getContent();
+        content = new ArrayList<>();
+        content.addAll(source.getContent());
+        content.addAll(source.getListItem());
     }
 
     @Override
@@ -29,13 +31,6 @@ public class OrderedListBuilder extends ListBuilder<OrderedList> {
     @Override
     protected void preProcess() {
         parseStyleAndLevel(source.getNumeration());
-    }
-
-    @Override
-    protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
-        final List<Object> result = super.postProcess(processedTitleContent, processedChildContent);
-        processListItems(source.getListItem(), result);
-        return result;
     }
 
 }

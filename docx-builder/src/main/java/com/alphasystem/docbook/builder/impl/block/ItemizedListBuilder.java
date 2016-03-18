@@ -5,7 +5,7 @@ import com.alphasystem.openxml.builder.wml.ListItem;
 import com.alphasystem.openxml.builder.wml.UnorderedList;
 import org.docbook.model.ItemizedList;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author sali
@@ -19,7 +19,9 @@ public class ItemizedListBuilder extends ListBuilder<ItemizedList> {
     @Override
     protected void initContent() {
         titleContent = source.getTitleContent();
-        content = source.getContent();
+        content = new ArrayList<>();
+        content.addAll(source.getContent());
+        content.addAll(source.getListItem());
     }
 
     @Override
@@ -30,13 +32,6 @@ public class ItemizedListBuilder extends ListBuilder<ItemizedList> {
     @Override
     protected void preProcess() {
         parseStyleAndLevel(source.getMark());
-    }
-
-    @Override
-    protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
-        final List<Object> result = super.postProcess(processedTitleContent, processedChildContent);
-        processListItems(source.getListItem(), result);
-        return result;
     }
 
 }

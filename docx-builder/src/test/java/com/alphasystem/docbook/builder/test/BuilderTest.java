@@ -245,7 +245,27 @@ public class BuilderTest {
         addResult(p5, createSection("section-5", title), 1, "Section Level 5 Test");
     }
 
-    @Test(dependsOnGroups = "titleGroup")
+    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
+    public void testItemizedList() {
+        addResult(null, readXml("itemizedlist", ItemizedList.class), 3, "ItemizedList Test");
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
+    public void testNestedItemizedList() {
+        addResult(null, readXml("nested-itemizedlist", ItemizedList.class), 6, "ItemizedList Test");
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
+    public void testOrderedList() {
+        addResult(null, readXml("orderedlist", OrderedList.class), 3, "OrderedList Test");
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
+    public void testNestedOrderedList() {
+        addResult(null, readXml("nested-orderedlist", OrderedList.class), 5, "OrderedList Test");
+    }
+
+    @Test(dependsOnGroups = "listGroup")
     public void testVariableListEntryBuilder() {
         final Term term = createTerm("Entry title");
         final SimplePara simplePara = createSimplePara(null, "This text is under simple para and it has to be indented using \"ListParagraph\" style without any numbering.");

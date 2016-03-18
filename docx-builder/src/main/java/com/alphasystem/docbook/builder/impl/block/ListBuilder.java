@@ -2,12 +2,11 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
-import org.docbook.model.ListItem;
 
 import java.util.List;
 
 import static com.alphasystem.docbook.ApplicationController.getContext;
-import static java.util.Objects.isNull;
+import static com.alphasystem.util.AppUtil.isInstanceOf;
 
 /**
  * @author sali
@@ -33,20 +32,19 @@ public abstract class ListBuilder<T> extends BlockBuilder<T> {
         } else {
             number = getItemByName(styleName).getNumberId();
             level = 0;
+            number = getContext().getListNumber(number, level);
         }
     }
 
-    protected void processListItems(List<ListItem> listItems, List<Object> target) {
-        if (isNull(listItems) || listItems.isEmpty()) {
-            logger.error("No list item found");
-            return;
+
+    @Override
+    protected List<Object> buildChildContent(Builder builder, int iteration) {
+        if (isInstanceOf(ListItemBuilder.class, builder)) {
+            ListItemBuilder listItemBuilder = (ListItemBuilder) builder;
+            listItemBuilder.setNumber(number);
+            listItemBuilder.setLevel(level);
         }
-        final long listNumber = getContext().getListNumber(number, level);
-        listItems.forEach(listItem -> {
-            final ListItemBuilder builder = (ListItemBuilder) factory.getBuilder(this, listItem);
-            builder.setNumber(listNumber);
-            builder.setLevel(level);
-            target.addAll(builder.buildContent());
-        });
+        return super.buildChildContent(builder, iteration);
     }
+
 }
