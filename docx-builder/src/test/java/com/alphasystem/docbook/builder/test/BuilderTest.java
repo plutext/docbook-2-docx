@@ -1,7 +1,6 @@
 package com.alphasystem.docbook.builder.test;
 
 import com.alphasystem.SystemException;
-import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.DocumentBuilder;
 import com.alphasystem.docbook.DocumentContext;
@@ -93,7 +92,8 @@ public class BuilderTest {
             wmlPackage = new WmlPackageBuilder().getPackage();
             mainDocumentPart = wmlPackage.getMainDocumentPart();
 
-            DocumentContext documentContext = new DocumentContext(new AsciiDocumentInfo(), new Article());
+            UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
+            DocumentContext documentContext = new DocumentContext(unmarshallerTool.getDocumentInfo(), new Article());
             documentContext.setMainDocumentPart(mainDocumentPart);
 
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
@@ -265,7 +265,7 @@ public class BuilderTest {
         addResult(null, readXml("nested-orderedlist", OrderedList.class), 5, "OrderedList Test");
     }
 
-    @Test(dependsOnGroups = "listGroup")
+    @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
     public void testVariableListEntryBuilder() {
         final Term term = createTerm("Entry title");
         final SimplePara simplePara = createSimplePara(null, "This text is under simple para and it has to be indented using \"ListParagraph\" style without any numbering.");
@@ -273,10 +273,34 @@ public class BuilderTest {
         addResult(null, createVariableListEntry(listItem, term), 2, "VariableListEntry Test");
     }
 
-    @Test(dependsOnMethods = {"testVariableListEntryBuilder"})
+    @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"}, dependsOnMethods = {"testVariableListEntryBuilder"})
     public void testVariableListBuilder() {
-        final Object o = readXml("variablelist", VariableList.class);
-        addResult(null, o, 12, "VariableList Test");
+        addResult(null, readXml("variablelist", VariableList.class), 12, "VariableList Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testCaution() {
+        addResult(null, readXml("caution", Caution.class), 3, "Caution Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testImportant() {
+        addResult(null, readXml("important", Important.class), 3, "Important Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testNote() {
+        addResult(null, readXml("note", Note.class), 3, "Note Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTip() {
+        addResult(null, readXml("tip", Tip.class), 3, "Tip Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testWarning() {
+        addResult(null, readXml("warning", Warning.class), 3, "Warning Test");
     }
 
 }

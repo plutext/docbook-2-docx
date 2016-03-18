@@ -98,8 +98,8 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
     }
 
     protected Object postProcessContent(Object o) {
-        String parentType = (parent == null) ? null : parent.getClass().getSimpleName();
-        logger.info("Object Type: \"{}\", Parent Type: \"{}\"", o.getClass().getSimpleName(), parentType);
+        // String parentType = (parent == null) ? null : parent.getClass().getSimpleName();
+        //logger.info("Object Type: \"{}\", Parent Type: \"{}\"", o.getClass().getSimpleName(), parentType);
         return o;
     }
 

@@ -2,6 +2,8 @@ package com.alphasystem.xml;
 
 import com.alphasystem.SystemException;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
+import com.alphasystem.docbook.builder.model.Admonition;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -34,7 +36,20 @@ public class UnmarshallerTool {
         }
     }
 
-    private AsciiDocumentInfo documentInfo = new AsciiDocumentInfo();
+    private static ConfigurationUtils configurationUtils = ConfigurationUtils.getInstance();
+
+    private final AsciiDocumentInfo documentInfo;
+
+    public UnmarshallerTool() {
+        documentInfo = new AsciiDocumentInfo();
+        documentInfo.setCautionCaption(configurationUtils.getAdmonitionCaption(Admonition.CAUTION));
+        documentInfo.setImportantCaption(configurationUtils.getAdmonitionCaption(Admonition.IMPORTANT));
+        documentInfo.setNoteCaption(configurationUtils.getAdmonitionCaption(Admonition.NOTE));
+        documentInfo.setTipCaption(configurationUtils.getAdmonitionCaption(Admonition.TIP));
+        documentInfo.setWarningCaption(configurationUtils.getAdmonitionCaption(Admonition.WARNING));
+        documentInfo.setExampleCaption(configurationUtils.getExampleCaption());
+        documentInfo.setTableCaption(configurationUtils.getTableOfContentCaption());
+    }
 
     public <T> T unmarshal(String source, Class<T> declaredType) throws SystemException {
         T document;

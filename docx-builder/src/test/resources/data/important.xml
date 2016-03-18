@@ -1,0 +1,3 @@
+<important xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
+    <simpara>There should be no blank lines between the first attribute entry and the rest of the header.</simpara>
+</important>

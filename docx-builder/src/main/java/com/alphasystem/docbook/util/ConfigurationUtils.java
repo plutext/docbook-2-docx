@@ -84,12 +84,16 @@ public class ConfigurationUtils {
         return getString(format("%s.list.style", admonition.name()));
     }
 
+    public String getAdmonitionCaption(Admonition admonition){
+        return getString(format("%s.caption", admonition.name()));
+    }
+
     public String getExampleCaption() {
-        return configuration.getString("example-caption");
+        return configuration.getString("example.caption");
     }
 
     public String getTableOfContentCaption() {
-        return configuration.getString("toc-caption");
+        return configuration.getString("toc.caption");
     }
 
     public String getString(String key) {
