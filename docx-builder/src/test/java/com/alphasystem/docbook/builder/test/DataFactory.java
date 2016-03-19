@@ -17,6 +17,10 @@ public final class DataFactory {
         return objectFactory.createEmphasis().withRole(role).withContent(content);
     }
 
+    public static Example createExample(String title, Object... content){
+        return objectFactory.createExample().withTitleContent(createTitle(title)).withContent(content);
+    }
+
     public static Emphasis createItalic(Object... content) {
         return createEmphasis(null, content);
     }

@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.docbook.builder.test.DataFactory.*;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
 import static java.lang.String.format;
@@ -89,19 +90,19 @@ public class BuilderTest {
     @BeforeClass
     public void setup() {
         try {
-            wmlPackage = new WmlPackageBuilder().getPackage();
-            mainDocumentPart = wmlPackage.getMainDocumentPart();
-
+            final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder();
             UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
             DocumentContext documentContext = new DocumentContext(unmarshallerTool.getDocumentInfo(), new Article());
-            documentContext.setMainDocumentPart(mainDocumentPart);
+            ApplicationController.startContext(documentContext);
 
-            final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
+            final StyleDefinitionsPart styleDefinitionsPart = wmlPackageBuilder.getPackage().getMainDocumentPart().getStyleDefinitionsPart();
             final Styles styles = styleDefinitionsPart.getContents();
             final List<Style> list = styles.getStyle();
             list.forEach(style -> documentContext.getDocumentStyles().add(style.getStyleId()));
-
-            ApplicationController.startContext(documentContext);
+            wmlPackageBuilder.styles("example-with-caption.xml").multiLevelHeading(EXAMPLE);
+            wmlPackage = wmlPackageBuilder.getPackage();
+            mainDocumentPart = wmlPackage.getMainDocumentPart();
+            documentContext.setMainDocumentPart(mainDocumentPart);
         } catch (Exception e) {
             fail(e.getMessage(), e);
         }
@@ -198,6 +199,12 @@ public class BuilderTest {
         final Builder parent = builderFactory.getBuilder(null, new Article());
         final Title title = createTitle("Document Title ", createPhrase("arabicLabel", "س ل م"));
         addResult(parent, title, 1, "Document Title with custom style Test");
+    }
+
+    @Test(groups = "titleGroup", dependsOnMethods = {"testDocumentTitleWithCustomStyle"}, dependsOnGroups = "inlineGroup")
+    public void testExampleTitle() {
+        final Builder parent = builderFactory.getBuilder(null, new Example());
+        addResult(parent, createExample("Example Title"), 3, "Example Title Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
@@ -301,6 +308,11 @@ public class BuilderTest {
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testWarning() {
         addResult(null, readXml("warning", Warning.class), 3, "Warning Test");
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnMethods = {"testWarning"}, dependsOnGroups = {"listGroup"})
+    public void testExample() {
+        addResult(null, readXml("example", Example.class), 3, "Example Test");
     }
 
 }

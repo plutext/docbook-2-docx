@@ -4,7 +4,6 @@ import com.alphasystem.SystemException;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.docbook.util.FileUtil;
-import com.alphasystem.openxml.builder.wml.NumberingBuilder;
 import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
@@ -31,7 +30,6 @@ import java.util.List;
 
 import static com.alphasystem.asciidoc.model.Backend.DOC_BOOK;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
-import static com.alphasystem.openxml.builder.wml.NumberingHelper.populate;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.save;
 import static java.nio.file.Files.exists;
 import static org.apache.commons.io.FilenameUtils.getExtension;
@@ -123,9 +121,7 @@ public class DocumentBuilder {
             if (documentInfo.getExampleCaption() == null) {
                 wmlPackageBuilder.styles("example-no-caption.xml");
             } else {
-                final NumberingBuilder numberingBuilder = WmlBuilderFactory.getNumberingBuilder();
-                populate(numberingBuilder, EXAMPLE);
-                wmlPackageBuilder.styles("example-with-caption.xml").numbering(numberingBuilder.getObject());
+                wmlPackageBuilder.styles("example-with-caption.xml").multiLevelHeading(EXAMPLE);
             }
             documentContext.setMainDocumentPart(mainDocumentPart);
 
