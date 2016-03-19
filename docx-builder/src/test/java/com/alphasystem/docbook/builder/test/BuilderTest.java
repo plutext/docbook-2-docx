@@ -287,27 +287,33 @@ public class BuilderTest {
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testCaution() {
-        addResult(null, readXml("caution", Caution.class), 3, "Caution Test");
+        Caution caution = createCaution(createSimplePara(null, "If the title line is not offset by a blank line, it gets interpreted as a section title, which we&#8217;ll discuss later."));
+        addResult(null, caution, 3, "Caution Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testImportant() {
-        addResult(null, readXml("important", Important.class), 3, "Important Test");
+        Important important = createImportant(createSection(null, "There should be no blank lines between the first attribute entry and the rest of the header."));
+        addResult(null, important, 3, "Important Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testNote() {
-        addResult(null, readXml("note", Note.class), 3, "Note Test");
+        Note note = createNote(createSimplePara(null, "Admonitions can also encapsulate any block content, which we&#8217;ll cover later."));
+        addResult(null, note, 3, "Note Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTip() {
-        addResult(null, readXml("tip", Tip.class), 3, "Tip Test");
+        Tip tip = createTip(createSimplePara(null, "A document title is an <emphasis>optional</emphasis> feature of an AsciiDoc document."));
+        addResult(null, tip, 3, "Tip Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testWarning() {
-        addResult(null, readXml("warning", Warning.class), 3, "Warning Test");
+        Warning warning = createWarning(createSimplePara(null, "Wolpertingers are known to nest in server racks.\n" +
+                "        Enter at your own risk."));
+        addResult(null, warning, 3, "Warning Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnMethods = {"testWarning"}, dependsOnGroups = {"listGroup"})
