@@ -55,6 +55,10 @@ var handleExample = function () {
     return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr).endRow().getTable();
 };
 
+var handleInformalExample = function () {
+    handleExample();
+}
+
 var handleSideBar = function () {
     var border = adapter.getBorder(org.docx4j.wml.STBorder.SINGLE, 4, 0, "E0E0DC");
     var tblBorders = factory.getTblBordersBuilder().withTop(border).withLeft(border)

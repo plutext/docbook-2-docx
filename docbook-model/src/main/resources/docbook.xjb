@@ -145,11 +145,11 @@
                 <jaxb:typesafeEnumMember name="COLUMN_GROUP" value="colgroup"/>
             </jaxb:typesafeEnumClass>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='titleabbrev']">
+            <jaxb:class name="TitleAbbreviation"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='systemitem']">
             <jaxb:class name="SystemItem"/>
-        </jaxb:bindings>
-        <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:choice">
-            <jaxb:property name="content"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='info']/xs:complexType/xs:choice">
             <jaxb:property name="content"/>
@@ -162,6 +162,12 @@
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:sequence/xs:choice">
             <jaxb:property name="titleContent"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:attribute[@name='floatstyle']">
+            <jaxb:property name="floatStyle"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='sidebar']">
             <jaxb:class name="SideBar"/>
