@@ -2,6 +2,7 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.openxml.builder.wml.ListItem;
+import org.docbook.model.Numeration;
 import org.docbook.model.OrderedList;
 
 import java.util.ArrayList;
@@ -30,7 +31,9 @@ public class OrderedListBuilder extends ListBuilder<OrderedList> {
 
     @Override
     protected void preProcess() {
-        parseStyleAndLevel(source.getNumeration());
+        final Numeration numeration = source.getNumeration();
+        String styleName = (numeration == null) ? null : numeration.value();
+        parseStyleAndLevel(styleName);
     }
 
 }
