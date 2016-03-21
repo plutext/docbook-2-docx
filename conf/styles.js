@@ -56,8 +56,8 @@ var handleExample = function () {
 };
 
 var handleInformalExample = function () {
-    handleExample();
-}
+    return handleExample();
+};
 
 var handleSideBar = function () {
     var border = adapter.getBorder(org.docx4j.wml.STBorder.SINGLE, 4, 0, "E0E0DC");

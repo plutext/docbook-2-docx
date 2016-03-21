@@ -74,6 +74,10 @@ public final class ApplicationController {
         return getTable("handleExample");
     }
 
+    public Tbl getInformalExampleTable() {
+        return getTable("handleInformalExample");
+    }
+
     public Tbl getSideBarTable() {
         return getTable("handleSideBar");
     }

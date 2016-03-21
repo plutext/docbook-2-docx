@@ -321,4 +321,9 @@ public class BuilderTest {
         addResult(null, readXml("example", Example.class), 3, "Example Test");
     }
 
+    @Test(groups = {"blockGroup"}, dependsOnMethods = {"testExample"}, dependsOnGroups = {"listGroup"})
+    public void testInformalExample() {
+        addResult(null, readXml("informal-example", InformalExample.class), 3, "Informal Example Test");
+    }
+
 }
