@@ -4,6 +4,150 @@
         <jaxb:schemaBindings>
             <jaxb:package name="org.docbook.model"/>
         </jaxb:schemaBindings>
+        <jaxb:bindings node="xs:simpleType[@name='dir']">
+            <jaxb:typesafeEnumClass name="Direction"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='revisionflag']">
+            <jaxb:typesafeEnumClass name="RevisionFlag"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='basicvalign']">
+            <jaxb:typesafeEnumClass name="BasicVerticalAlign"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='valign']">
+            <jaxb:typesafeEnumClass name="VerticalAlign"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='choice']">
+            <jaxb:typesafeEnumClass name="Choice">
+                <jaxb:typesafeEnumMember name="ZERO" value="0"/>
+                <jaxb:typesafeEnumMember name="ONE" value="1"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='orient']">
+            <jaxb:typesafeEnumClass name="Orientation">
+                <jaxb:typesafeEnumMember name="LANDSCAPE" value="land"/>
+                <jaxb:typesafeEnumMember name="PORTRAIT" value="port"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='frame']">
+            <jaxb:typesafeEnumClass name="Frame">
+                <jaxb:typesafeEnumMember name="TOP_AND_BOTTOM" value="topbot"/>
+                <jaxb:typesafeEnumMember name="HORIZONTAL_SIDES" value="hsides"/>
+                <jaxb:typesafeEnumMember name="VERTICAL_SIDES" value="vsides"/>
+                <jaxb:typesafeEnumMember name="LEFT_HAND_SIDE" value="lhs"/>
+                <jaxb:typesafeEnumMember name="RIGHT_HAND_SIDE" value="rhs"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='rowheader']">
+            <jaxb:typesafeEnumClass name="RowHeader">
+                <jaxb:typesafeEnumMember name="FIRST_COL" value="firstcol"/>
+                <jaxb:typesafeEnumMember name="NO_ROW_HEADER" value="norowheader"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='rules']">
+            <jaxb:typesafeEnumClass name="Rules"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='linenumbering']">
+            <jaxb:typesafeEnumClass name="LineNumbering"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='rep']">
+            <jaxb:typesafeEnumClass name="Repeat">
+                <jaxb:typesafeEnumMember name="NO_REPEAT" value="norepeat"/>
+                <jaxb:typesafeEnumMember name="REPEAT" value="repeat"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='units']">
+            <jaxb:typesafeEnumClass name="Units">
+                <jaxb:typesafeEnumMember name="CALS_PAIR" value="calspair"/>
+                <jaxb:typesafeEnumMember name="LINE_COLUMN" value="linecolumn"/>
+                <jaxb:typesafeEnumMember name="LINE_COLUMN_PAIR" value="linecolumnpair"/>
+                <jaxb:typesafeEnumMember name="LINE_RANGE" value="linerange"/>
+                <jaxb:typesafeEnumMember name="OTHER" value="other"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='action']">
+            <jaxb:typesafeEnumClass name="Action"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='pubwork']">
+            <jaxb:typesafeEnumClass name="PublicationWork">
+                <jaxb:typesafeEnumMember name="EMAIL_MESSAGE" value="emailmessage"/>
+                <jaxb:typesafeEnumMember name="CD_ROM" value="cdrom"/>
+                <jaxb:typesafeEnumMember name="MANU_SCRIPT" value="manuscript"/>
+                <jaxb:typesafeEnumMember name="NEWS_POSTING" value="newsposting"/>
+                <jaxb:typesafeEnumMember name="REF_ENTRY" value="refentry"/>
+                <jaxb:typesafeEnumMember name="WEB_PAGE" value="webpage"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='spatial']">
+            <jaxb:typesafeEnumClass name="Spatial">
+                <jaxb:typesafeEnumMember name="DCMI_POINT" value="dcmipoint"/>
+                <jaxb:typesafeEnumMember name="ISO_3166" value="iso3166"/>
+                <jaxb:typesafeEnumMember name="DCMI_BOX" value="dcmibox"/>
+                <jaxb:typesafeEnumMember name="OTHER_SPATIAL" value="otherspatial"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='temporal']">
+            <jaxb:typesafeEnumClass name="Temporal">
+                <jaxb:typesafeEnumMember name="DCMI_PERIOD" value="dcmiperiod"/>
+                <jaxb:typesafeEnumMember name="OTHER_TEMPORAL" value="othertemporal"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='inheritnum']">
+            <jaxb:typesafeEnumClass name="InheritNumber"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='numeration']">
+            <jaxb:typesafeEnumClass name="Numeration">
+                <jaxb:typesafeEnumMember name="UPPER_ALPHA" value="upperalpha"/>
+                <jaxb:typesafeEnumMember name="LOWER_ALPHA" value="loweralpha"/>
+                <jaxb:typesafeEnumMember name="UPPER_ROMAN" value="upperroman"/>
+                <jaxb:typesafeEnumMember name="LOWER_ROMAN" value="lowerroman"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='bibliorelationtype']">
+            <jaxb:typesafeEnumClass name="BibliographicRelationType">
+                <jaxb:typesafeEnumMember name="HAS_FORMAT" value="hasformat"/>
+                <jaxb:typesafeEnumMember name="HAS_PART" value="haspart"/>
+                <jaxb:typesafeEnumMember name="HAS_VERSION" value="hasversion"/>
+                <jaxb:typesafeEnumMember name="IS_FORMAT_OF" value="isformatof"/>
+                <jaxb:typesafeEnumMember name="IS_PART_OF" value="ispartof"/>
+                <jaxb:typesafeEnumMember name="IS_REFERENCED_BY" value="isreferencedby"/>
+                <jaxb:typesafeEnumMember name="IS_REPLACED_BY" value="isreplacedby"/>
+                <jaxb:typesafeEnumMember name="IS_REQUIRED_BY" value="isrequiredby"/>
+                <jaxb:typesafeEnumMember name="IS_VERSION_OF" value="isversionof"/>
+                <jaxb:typesafeEnumMember name="OTHER_TYPE" value="othertype"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='systemitemclass']">
+            <jaxb:typesafeEnumClass name="SystemItemClass">
+                <jaxb:typesafeEnumMember name="DOMAIN_NAME" value="domainname"/>
+                <jaxb:typesafeEnumMember name="ETHER_ADDRESS" value="etheraddress"/>
+                <jaxb:typesafeEnumMember name="EVENT_HANDLER" value="eventhandler"/>
+                <jaxb:typesafeEnumMember name="FILE_SYSTEM" value="filesystem"/>
+                <jaxb:typesafeEnumMember name="FULLY_QUALIFIED_DOMAIN_NAME" value="fqdomainname"/>
+                <jaxb:typesafeEnumMember name="GROUP_NAME" value="groupname"/>
+                <jaxb:typesafeEnumMember name="IP_ADDRESS" value="ipaddress"/>
+                <jaxb:typesafeEnumMember name="NET_MASK" value="netmask"/>
+                <jaxb:typesafeEnumMember name="news_group" value="newsgroup"/>
+                <jaxb:typesafeEnumMember name="OS_NAME" value="osname"/>
+                <jaxb:typesafeEnumMember name="SYSTEM_NAME" value="systemname"/>
+                <jaxb:typesafeEnumMember name="USER_NAME" value="username"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='paramchoice']">
+            <jaxb:typesafeEnumClass name="ParamChoice">
+                <jaxb:typesafeEnumMember name="OPTIONAL" value="opt"/>
+                <jaxb:typesafeEnumMember name="REQUIRED" value="req"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:simpleType[@name='scope']">
+            <jaxb:typesafeEnumClass name="Scope">
+                <jaxb:typesafeEnumMember name="COLUMN" value="col"/>
+                <jaxb:typesafeEnumMember name="ROW_GROUP" value="rowgroup"/>
+                <jaxb:typesafeEnumMember name="COLUMN_GROUP" value="colgroup"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='systemitem']">
+            <jaxb:class name="SystemItem"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='example']/xs:complexType/xs:sequence/xs:choice">
             <jaxb:property name="content"/>
         </jaxb:bindings>
@@ -46,6 +190,9 @@
         <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:sequence/xs:element">
             <jaxb:property name="listItem"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orderedlist']/xs:complexType/xs:attribute[@name='startingnumber']">
+            <jaxb:property name="startigNumber"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='itemizedlist']">
             <jaxb:class name="ItemizedList"/>
         </jaxb:bindings>
@@ -79,7 +226,8 @@
         <jaxb:bindings node="xs:element[@name='varlistentry']">
             <jaxb:class name="VariableListEntry"/>
         </jaxb:bindings>
-        <jaxb:bindings node="xs:element[@name='varlistentry']/xs:complexType/xs:sequence/xs:element[@ref='docbook:listitem']">
+        <jaxb:bindings
+                node="xs:element[@name='varlistentry']/xs:complexType/xs:sequence/xs:element[@ref='docbook:listitem']">
             <jaxb:property name="listItem"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='simpara']">
@@ -126,6 +274,356 @@
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='literallayout']">
             <jaxb:class name="LiteralLayout"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='literallayout']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='informalexample']">
+            <jaxb:class name="InformalExample"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='informalexample']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='informalexample']/xs:complexType/xs:attribute[@name='floatstyle']">
+            <jaxb:property name="floatStyle"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='textdata']">
+            <jaxb:class name="TextData"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='textobject']">
+            <jaxb:class name="TextObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='textobject']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='mediaobject']">
+            <jaxb:class name="MediaObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='mediaobject']/xs:complexType/xs:sequence/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']">
+            <jaxb:class name="TableGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']/xs:complexType/xs:sequence/xs:element[@ref='docbook:colspec']">
+            <jaxb:property name="colSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']/xs:complexType/xs:sequence/xs:element[@ref='docbook:spanspec']">
+            <jaxb:property name="spanSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']/xs:complexType/xs:sequence/xs:element[@ref='docbook:thead']">
+            <jaxb:property name="tableHeader"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']/xs:complexType/xs:sequence/xs:element[@ref='docbook:tfoot']">
+            <jaxb:property name="tableFooter"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tgroup']/xs:complexType/xs:sequence/xs:element[@ref='docbook:tbody']">
+            <jaxb:property name="tableBody"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']">
+            <jaxb:class name="ColumnSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='colnum']">
+            <jaxb:property name="columnNumber"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='colsep']">
+            <jaxb:property name="columnSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='colwidth']">
+            <jaxb:property name="columnWidth"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='charoff']">
+            <jaxb:property name="charOff"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='colname']">
+            <jaxb:property name="columnName"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='rowsep']">
+            <jaxb:property name="rowSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']">
+            <jaxb:class name="SpanSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='spanname']">
+            <jaxb:property name="spanName"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='namest']">
+            <jaxb:property name="nameStart"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='nameend']">
+            <jaxb:property name="namEnd"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='colsep']">
+            <jaxb:property name="columnSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='charoff']">
+            <jaxb:property name="charOff"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='spanspec']/xs:complexType/xs:attribute[@name='rowsep']">
+            <jaxb:property name="rowSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='thead']">
+            <jaxb:class name="TableHeader"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='thead']/xs:complexType/xs:sequence/xs:element">
+            <jaxb:property name="colSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='thead']/xs:complexType/xs:attribute[@name='valign']">
+            <jaxb:property name="vAlign"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tbody']">
+            <jaxb:class name="TableBody"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tbody']/xs:complexType/xs:attribute[@name='valign']">
+            <jaxb:property name="vAlign"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tr']/xs:complexType/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='row']/xs:complexType/xs:choice">
+            <jaxb:property name="content"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tfoot']">
+            <jaxb:class name="TableFooter"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tfoot']/xs:complexType/xs:sequence/xs:element">
+            <jaxb:property name="colSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='tfoot']/xs:complexType/xs:attribute[@name='valign']">
+            <jaxb:property name="vAlign"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bridgehead']">
+            <jaxb:class name="BridgeHead"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='bridgehead']/xs:complexType/xs:attribute[@name='renderas']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="RenderAs"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bridgehead']/xs:complexType/xs:attribute[@name='renderas']">
+            <jaxb:property name="renderAs"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bridgehead']/xs:complexType/xs:attribute[@name='otherrenderas']">
+            <jaxb:property name="otherRenderAs"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='orgname']">
+            <jaxb:class name="OrganizationName"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='orgname']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='biblioid']">
+            <jaxb:class name="BibliographicIdentifier"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='biblioid']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='citebiblioid']">
+            <jaxb:class name="CiteBibliographicIdentifier"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='citetitle']">
+            <jaxb:class name="CiteTitle"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='citebiblioid']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bibliorelation']">
+            <jaxb:class name="BibliographicRelation"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bibliorelation']/xs:complexType/xs:attribute[@name='otherclass']">
+            <jaxb:property name="otherClass"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bibliorelation']/xs:complexType/xs:attribute[@name='othertype']">
+            <jaxb:property name="otherType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='bibliorelation']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bibliocoverage']">
+            <jaxb:class name="BibliographicCoverage"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='bibliosource']">
+            <jaxb:class name="BibliographicSource"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='bibliosource']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='othercredit']">
+            <jaxb:class name="OtherCredit"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='othercredit']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='parameter']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='replaceable']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='trademark']">
+            <jaxb:class name="TradeMark"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='trademark']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='article']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='refmiscinfo']">
+            <jaxb:class name="ReferenceMiscInfo"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='refmiscinfo']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='indexterm']">
+            <jaxb:class name="IndexTerm"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='indexterm']/xs:complexType/xs:attribute[@name='scope']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Scope"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='indexterm']/xs:complexType/xs:attribute[@name='significance']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Significance"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='indexterm']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='tag']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='symbol']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='constant']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='productname']">
+            <jaxb:class name="ProductName"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='productname']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='database']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='application']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='filename']">
+            <jaxb:class name="FileName"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='filename']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='classsynopsis']">
+            <jaxb:class name="ClassSynopsis"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='classsynopsis']/xs:complexType/xs:attribute[@name='class']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="ClassType"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='methodparam']">
+            <jaxb:class name="MethodParam"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='paramdef']">
+            <jaxb:class name="ParameterDefinition"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='paramdef']/xs:complexType/xs:attribute[@name='choice']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Choice"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='arg']">
+            <jaxb:class name="Argument"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='keycombo']">
+            <jaxb:class name="KeyCombo"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='keycap']">
+            <jaxb:class name="KeyCap"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='keycap']/xs:complexType/xs:attribute[@name='function']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Function"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='qandaset']">
+            <jaxb:class name="QuestionAndAnswerSet"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='qandaset']/xs:complexType/xs:attribute[@name='defaultlabel']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="DefaultLabel"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='informaltable']">
+            <jaxb:class name="InformalTable"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:element[@ref='docbook:textobject']">
+            <jaxb:property name="textObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:mediaobject']">
+            <jaxb:property name="mediaObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:tgroup']">
+            <jaxb:property name="tGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:element[@ref='docbook:thead']">
+            <jaxb:property name="tHead"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:element[@ref='docbook:tfoot']">
+            <jaxb:property name="tFoot"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='tabstyle']">
+            <jaxb:property name="tableStyle"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='floatstyle']">
+            <jaxb:property name="floatStyle"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='colsep']">
+            <jaxb:property name="colSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='rowsep']">
+            <jaxb:property name="rowSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='pgwide']">
+            <jaxb:property name="pgWide"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='rowheader']">
+            <jaxb:property name="rowHeader"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='areaspec']">
+            <jaxb:class name="AreaSpec"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='areaset']">
+            <jaxb:class name="AreaSet"/>
         </jaxb:bindings>
     </jaxb:bindings>
 

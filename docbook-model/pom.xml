@@ -22,7 +22,8 @@
                             <bindingFile>${basedir}/src/main/resources/docbook.xjb</bindingFile>
                             <extensionArgs>
                                 <extensionArg>-Xfluent-api</extensionArg>
-                                <extensionArg>-Xcollection-setter-injector</extensionArg>
+                                <extensionArg>-Xdefault-value</extensionArg>
+                                <!--<extensionArg>-Xcollection-setter-injector</extensionArg>-->
                             </extensionArgs>
                         </xsdOption>
                     </xsdOptions>
