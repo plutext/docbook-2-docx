@@ -591,15 +591,27 @@
         </jaxb:bindings>
         <jaxb:bindings
                 node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:tgroup']">
-            <jaxb:property name="tGroup"/>
+            <jaxb:property name="tableGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:col']">
+            <jaxb:property name="column"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:colgroup']">
+            <jaxb:property name="columnGroup"/>
         </jaxb:bindings>
         <jaxb:bindings
                 node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:element[@ref='docbook:thead']">
-            <jaxb:property name="tHead"/>
+            <jaxb:property name="tableHeader"/>
         </jaxb:bindings>
         <jaxb:bindings
                 node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:element[@ref='docbook:tfoot']">
-            <jaxb:property name="tFoot"/>
+            <jaxb:property name="tableFooter"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='informaltable']/xs:complexType/xs:sequence/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:tbody']">
+            <jaxb:property name="tableBody"/>
         </jaxb:bindings>
         <jaxb:bindings
                 node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='tabstyle']">
@@ -624,6 +636,73 @@
         <jaxb:bindings
                 node="xs:element[@name='informaltable']/xs:complexType/xs:attribute[@name='rowheader']">
             <jaxb:property name="rowHeader"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:sequence/xs:element[@ref='docbook:titleabbrev']">
+            <jaxb:property name="titleAbbreviation"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:element[@ref='docbook:textobject']">
+            <jaxb:property name="textObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:element[@ref='docbook:indexterm']">
+            <jaxb:property name="indexTerm"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:mediaobject']">
+            <jaxb:property name="mediaObject"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:tgroup']">
+            <jaxb:property name="tableGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:col']">
+            <jaxb:property name="column"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:colgroup']">
+            <jaxb:property name="columnGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:element[@ref='docbook:thead']">
+            <jaxb:property name="tableHeader"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:element[@ref='docbook:tfoot']">
+            <jaxb:property name="tableFooter"/>
+        </jaxb:bindings>
+        <jaxb:bindings
+                node="xs:element[@name='table']/xs:complexType/xs:choice/xs:sequence/xs:choice/xs:element[@ref='docbook:tbody']">
+            <jaxb:property name="tableBody"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='tabstyle']">
+            <jaxb:property name="tableStyle"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='floatstyle']">
+            <jaxb:property name="floatStyle"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='colsep']">
+            <jaxb:property name="colSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='rowsep']">
+            <jaxb:property name="rowSep"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='pgwide']">
+            <jaxb:property name="pgWide"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='shortentry']">
+            <jaxb:property name="shortEntry"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='table']/xs:complexType/xs:attribute[@name='tocentry']">
+            <jaxb:property name="tocEntry"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='colgroup']">
+            <jaxb:class name="ColumnGroup"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='col']">
+            <jaxb:class name="Column"/>
         </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='areaspec']">
             <jaxb:class name="AreaSpec"/>
