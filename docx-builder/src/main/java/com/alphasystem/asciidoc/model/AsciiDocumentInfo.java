@@ -149,7 +149,7 @@ public class AsciiDocumentInfo {
     }
 
     public void setDocumentType(String documentType) {
-        this.documentType = isBlank(documentType) ? "book" : documentType;
+        this.documentType = isBlank(documentType) ? "article" : documentType;
         attributesBuilder.docType(this.documentType);
     }
 
