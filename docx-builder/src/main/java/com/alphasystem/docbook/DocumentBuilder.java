@@ -51,11 +51,13 @@ public class DocumentBuilder {
         if (isBlank(content) || documentInfo == null) {
             throw new SystemException("No content or document info");
         }
-        String docBookContent = convertToDocBook(content);
+        String docBookContent = convertToDocBook(content, documentInfo);
         UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
 
         final Path docxPath = FileUtil.getDocxFile(documentInfo.getSrcFile().toPath());
-        buildDocument(docxPath, new DocumentContext(documentInfo, getDocument(docBookContent, unmarshallerTool)));
+        final Object document = getDocument(docBookContent, unmarshallerTool);
+        final DocumentContext documentContext = new DocumentContext(documentInfo, document);
+        buildDocument(docxPath, documentContext);
         return docxPath;
     }
 
@@ -192,8 +194,9 @@ public class DocumentBuilder {
         return docBookContent;
     }
 
-    private static String convertToDocBook(String content) throws SystemException {
-        OptionsBuilder optionsBuilder = OptionsBuilder.options().backend(DOC_BOOK.getValue()).headerFooter(true);
+    private static String convertToDocBook(String content, AsciiDocumentInfo asciiDocumentInfo) throws SystemException {
+        final OptionsBuilder optionsBuilder = asciiDocumentInfo.getOptionsBuilder();
+        optionsBuilder.toFile(false).inPlace(false).backend(DOC_BOOK.getValue()).headerFooter(true);
         return asciiDoctor.convert(content, optionsBuilder);
     }
 }
