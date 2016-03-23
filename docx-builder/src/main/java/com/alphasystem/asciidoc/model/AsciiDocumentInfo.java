@@ -121,6 +121,7 @@ public class AsciiDocumentInfo {
         setCompact(src.isCompact());
         setIdSeparator(src.getIdSeparator());
         setIdPrefix(src.getIdPrefix());
+        setSectionNumbers(src.isSectionNumbers());
         setExperimental(src.isExperimental());
         setToc(src.isToc());
         setTocTitle(src.getTocTitle());
@@ -493,7 +494,6 @@ public class AsciiDocumentInfo {
     }
 
     public void populateAttributes(Map<String, Object> attributes) {
-        attributes.forEach((s1, o) -> System.out.println(s1 + ": " + o));
         String s = getFailSafeString(attributes, "doctype");
         if (s != null) {
             setDocumentType(s);
