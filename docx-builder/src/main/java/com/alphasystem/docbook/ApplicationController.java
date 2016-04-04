@@ -26,7 +26,10 @@ import static java.nio.file.Paths.get;
 public final class ApplicationController {
 
     public static final String CONF = "conf";
-    public static final String CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF).toString();
+    public static final Path  CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF);
+    public static final String CONF_PATH_VALUE = CONF_PATH.toString();
+    public static final String DEFAULT_TEMPLATE = get(CONF_PATH_VALUE, "default.dotx").toString();
+    public static final String STYLES_PATH =  get(CONF_PATH_VALUE, "styles.xml").toString();
     private static final ThreadLocal<DocumentContext> CONTEXT = new ThreadLocal<>();
     private static ApplicationController instance;
 
@@ -120,10 +123,10 @@ public final class ApplicationController {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
         Path[] paths = new Path[1];
-        paths[0] = get(CONF_PATH, "styles.js");
+        paths[0] = get(CONF_PATH_VALUE, "styles.js");
         final String customStyleName = configurationUtils.getString("custom.style.name");
         if (customStyleName != null) {
-            paths = ArrayUtils.add(paths, get(CONF_PATH, "custom", format("%s.js", customStyleName)));
+            paths = ArrayUtils.add(paths, get(CONF_PATH_VALUE, "custom", format("%s.js", customStyleName)));
         }
         for (Path path : paths) {
             try (Reader reader = newBufferedReader(path)) {

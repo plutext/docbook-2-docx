@@ -4,7 +4,6 @@ import com.alphasystem.SystemException;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.docbook.util.FileUtil;
-import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.util.nio.NIOFileUtils;
@@ -29,7 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.alphasystem.asciidoc.model.Backend.DOC_BOOK;
+import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
+import static com.alphasystem.openxml.builder.wml.WmlAdapter.addTableOfContent;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.save;
 import static java.nio.file.Files.exists;
 import static org.apache.commons.io.FilenameUtils.getExtension;
@@ -108,7 +109,7 @@ public class DocumentBuilder {
         ApplicationController.startContext(documentContext);
         WordprocessingMLPackage wordprocessingMLPackage = null;
         try {
-            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder();
+            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE).styles("META-INF/custom-styles.xml");
             wordprocessingMLPackage = wmlPackageBuilder.getPackage();
             MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
@@ -120,10 +121,8 @@ public class DocumentBuilder {
             if (documentInfo.isSectionNumbers()) {
                 wmlPackageBuilder.multiLevelHeading();
             }
-            if (documentInfo.getExampleCaption() == null) {
-                wmlPackageBuilder.styles("example-no-caption.xml");
-            } else {
-                wmlPackageBuilder.styles("example-with-caption.xml").multiLevelHeading(EXAMPLE);
+            if (documentInfo.getExampleCaption() != null) {
+                wmlPackageBuilder.multiLevelHeading(EXAMPLE);
             }
             documentContext.setMainDocumentPart(mainDocumentPart);
 
@@ -146,9 +145,7 @@ public class DocumentBuilder {
             }
 
             if (documentInfo.isToc()) {
-                final List<P> paras = WmlAdapter.addTableOfContent(documentInfo.getTocTitle(),
-                        " TOC \\o \"1-3\" \\h \\z \\u \\h ");
-                paras.forEach(mainDocumentPart::addObject);
+                addTableOfContent(mainDocumentPart, documentInfo.getTocTitle(), 5);
             }
             content.forEach(mainDocumentPart::addObject);
         } catch (Docx4JException e) {

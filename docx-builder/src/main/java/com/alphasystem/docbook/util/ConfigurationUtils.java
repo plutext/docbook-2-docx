@@ -12,7 +12,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.io.File;
 
-import static com.alphasystem.docbook.ApplicationController.CONF_PATH;
+import static com.alphasystem.docbook.ApplicationController.CONF_PATH_VALUE;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static java.lang.String.format;
 import static java.nio.file.Paths.get;
@@ -44,7 +44,7 @@ public class ConfigurationUtils {
      */
     private ConfigurationUtils() throws ConfigurationException {
         Parameters parameters = new Parameters();
-        final File file = get(CONF_PATH, "system-defaults.properties").toFile();
+        final File file = get(CONF_PATH_VALUE, "system-defaults.properties").toFile();
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<>(
                 PropertiesConfiguration.class).configure(parameters.fileBased().setFile(file));
 
@@ -53,16 +53,13 @@ public class ConfigurationUtils {
         configuration.addConfiguration(builder.getConfiguration());
     }
 
-    public String getTitleStyle(Builder builder, boolean numbered) {
+    public String getTitleStyle(Builder builder) {
         String defaultTitle = configuration.getString("default.title");
         String titleKey = format("%s", builder.getSource().getClass().getName());
         if (isInstanceOf(SectionBuilder.class, builder)) {
             SectionBuilder sectionBuilder = (SectionBuilder) builder;
             int level = sectionBuilder.getLevel();
             titleKey = format("%s.%s", titleKey, level);
-            if (numbered) {
-                titleKey = format("%s.numbered", titleKey);
-            }
         }
         titleKey = format("%s.title", titleKey);
         return configuration.getString(titleKey, defaultTitle);

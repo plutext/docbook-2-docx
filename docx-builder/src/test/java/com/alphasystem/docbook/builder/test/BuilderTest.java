@@ -30,6 +30,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
+import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.docbook.builder.test.DataFactory.*;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
@@ -90,16 +92,17 @@ public class BuilderTest {
     @BeforeClass
     public void setup() {
         try {
-            final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder();
             UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
             DocumentContext documentContext = new DocumentContext(unmarshallerTool.getDocumentInfo(), new Article());
             ApplicationController.startContext(documentContext);
+
+            final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE)
+                    .styles(STYLES_PATH).multiLevelHeading(EXAMPLE);
 
             final StyleDefinitionsPart styleDefinitionsPart = wmlPackageBuilder.getPackage().getMainDocumentPart().getStyleDefinitionsPart();
             final Styles styles = styleDefinitionsPart.getContents();
             final List<Style> list = styles.getStyle();
             list.forEach(style -> documentContext.getDocumentStyles().add(style.getStyleId()));
-            wmlPackageBuilder.styles("example-with-caption.xml").multiLevelHeading(EXAMPLE);
             wmlPackage = wmlPackageBuilder.getPackage();
             mainDocumentPart = wmlPackage.getMainDocumentPart();
             documentContext.setMainDocumentPart(mainDocumentPart);

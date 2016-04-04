@@ -1,11 +1,11 @@
 package com.alphasystem.docbook.builder.impl.block;
 
-import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.openxml.builder.wml.WmlAdapter;
 import org.docbook.model.Title;
 import org.docx4j.wml.P;
+import org.docx4j.wml.PPrBase;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ public class TitleBuilder extends BlockBuilder<Title> {
 
     @Override
     protected void preProcess() {
-        paraProperties = getPPrBuilder().withPStyle(getPStyle(getTitleStyle())).getObject();
+        paraProperties = getPPrBuilder().withPStyle(getTitleStyle()).getObject();
     }
 
     @Override
@@ -44,8 +44,7 @@ public class TitleBuilder extends BlockBuilder<Title> {
         return Collections.singletonList(p);
     }
 
-    private String getTitleStyle() {
-        final boolean numbered = ApplicationController.getContext().getDocumentInfo().isSectionNumbers();
-        return configurationUtils.getTitleStyle(parent, numbered);
+    private PPrBase.PStyle getTitleStyle() {
+        return getPStyle(configurationUtils.getTitleStyle(parent));
     }
 }

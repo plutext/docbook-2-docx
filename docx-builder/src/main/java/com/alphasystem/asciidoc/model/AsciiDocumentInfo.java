@@ -4,13 +4,17 @@ import org.asciidoctor.AttributesBuilder;
 import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.Placement;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 
-import static com.alphasystem.util.AppUtil.*;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static com.alphasystem.util.AppUtil.USER_HOME_DIR;
+import static com.alphasystem.util.AppUtil.toRelativePath;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.asciidoctor.SafeMode.SAFE;
 
 /**
@@ -19,19 +23,11 @@ import static org.asciidoctor.SafeMode.SAFE;
 public class AsciiDocumentInfo {
 
     private static String getFailSafeString(Map<String, Object> attributes, String key) {
-        return getFailSafeString(attributes.get(key));
+        return stripToNull((String) attributes.get(key));
     }
 
     private static boolean getFailSafeBoolean(Map<String, Object> attributes, String key) {
         return attributes.get(key) != null;
-    }
-
-    private static String getFailSafeString(Object value) {
-        String result = null;
-        if (isInstanceOf(String.class, value)) {
-            result = (String) value;
-        }
-        return isBlank(result) ? null : result;
     }
 
     private final AttributesBuilder attributesBuilder;
@@ -78,6 +74,15 @@ public class AsciiDocumentInfo {
     private File previewFile;
 
     public AsciiDocumentInfo() {
+        try {
+            final BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
+            final PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+                System.out.println(propertyDescriptor.getName() + " : " + propertyDescriptor.getReadMethod().getName());
+            }
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        }
         attributesBuilder = AttributesBuilder.attributes();
         optionsBuilder = OptionsBuilder.options().attributes(attributesBuilder);
         setDocumentType(null);
@@ -494,7 +499,11 @@ public class AsciiDocumentInfo {
     }
 
     public void populateAttributes(Map<String, Object> attributes) {
-        String s = getFailSafeString(attributes, "doctype");
+        attributes.entrySet().forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
+        //setValue(this, attributes, "doctype", "setDocumentType", String.class);
+
+        String s = null;
+        s = getFailSafeString(attributes, "doctype");
         if (s != null) {
             setDocumentType(s);
         }
@@ -515,8 +524,9 @@ public class AsciiDocumentInfo {
             File parent = new File(getSrcFile().getAbsoluteFile(), getStylesDir());
             setCustomStyleSheetFile(new File(parent, s));
         }
+        // setValue(this, attributes, "linkcss", "setLinkCss", Boolean.class);
         setLinkCss(getFailSafeBoolean(attributes, "linkcss"));
-        setCompact(getFailSafeBoolean(attributes, "compat-mode"));
+        setCompact(getFailSafeBoolean(attributes, "compact"));
         setExperimental(getFailSafeBoolean(attributes, "experimental"));
         setSectionNumbers(getFailSafeBoolean(attributes, "sectnums"));
         setHideUriSchema(getFailSafeBoolean(attributes, "hide-uri-scheme"));

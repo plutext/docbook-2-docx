@@ -2,21 +2,18 @@ package com.alphasystem.docbook.builder.model;
 
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.ApplicationController;
-import com.alphasystem.docbook.util.ConfigurationUtils;
-import com.alphasystem.openxml.builder.wml.AbstractListItem;
+import com.alphasystem.openxml.builder.wml.HeadingList;
 import org.docbook.model.Example;
-import org.docx4j.wml.NumberFormat;
 
+import static com.alphasystem.docbook.util.ConfigurationUtils.getInstance;
 import static java.lang.String.format;
-import static org.docx4j.wml.NumberFormat.DECIMAL;
 
 /**
  * @author sali
  */
-public abstract class DocumentCaption extends AbstractListItem<DocumentCaption> {
+public abstract class DocumentCaption extends HeadingList<DocumentCaption> {
 
-    public static final DocumentCaption EXAMPLE = new DocumentCaption(12,
-            ConfigurationUtils.getInstance().getString(format("%s.title", Example.class.getName())), DECIMAL) {
+    public static final DocumentCaption EXAMPLE = new DocumentCaption(getInstance().getString(format("%s.title", Example.class.getName()))) {
 
         @Override
         public String getValue(int i) {
@@ -26,22 +23,14 @@ public abstract class DocumentCaption extends AbstractListItem<DocumentCaption> 
 
         @Override
         public String getName() {
-            return "";
+            return "EXAMPLE";
         }
 
-        @Override
-        public DocumentCaption getNext() {
-            return null;
-        }
+
     };
 
-    DocumentCaption(int numberId, String styleName, NumberFormat numberFormat) {
-        super(numberId, styleName, numberFormat);
-    }
-
-    @Override
-    public boolean linkStyle() {
-        return true;
+    DocumentCaption(String styleName) {
+        super(styleName);
     }
 
     @Override
@@ -49,8 +38,4 @@ public abstract class DocumentCaption extends AbstractListItem<DocumentCaption> 
         return 432;
     }
 
-    @Override
-    public String getMultiLevelType() {
-        return "multilevel";
-    }
 }
