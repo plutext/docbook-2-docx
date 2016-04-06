@@ -34,7 +34,7 @@ var handleHyperlink = function (rprBuilder) {
     return rprBuilder.withRStyle(adapter.getRStyle("Hyperlink"));
 };
 
-var handleColor = function (rprBuilder, color){
+var handleColor = function (rprBuilder, color) {
     return rprBuilder.withColor(adapter.getColor(color));
 };
 
@@ -52,7 +52,8 @@ var handleExample = function () {
     var shade = factory.getCTShdBuilder().withVal(org.docx4j.wml.STShd.CLEAR).withColor("auto").withFill("FFFEF7").getObject();
     var tcPr = factory.getTcPrBuilder().withShd(shade).getObject();
 
-    return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr).endRow().getTable();
+    return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow()
+        .addColumn(0, null, tcPr, null).endRow().getTable();
 };
 
 var handleInformalExample = function () {
@@ -69,47 +70,33 @@ var handleSideBar = function () {
     var shade = factory.getCTShdBuilder().withVal(org.docx4j.wml.STShd.CLEAR).withColor("auto").withFill("F8F8F7").getObject();
     var tcPr = factory.getTcPrBuilder().withShd(shade).getObject();
 
-    return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr).endRow().getTable();
+    return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr, null).endRow().getTable();
 };
 
-var handleCaution = function(admonitionCaptionStyle, captionText){
+var handleCaution = function (admonitionCaptionStyle, captionText) {
     return handleAdmonition(15, admonitionCaptionStyle, captionText);
 };
 
-var handleImportant = function(admonitionCaptionStyle, captionText){
+var handleImportant = function (admonitionCaptionStyle, captionText) {
     return handleAdmonition(20, admonitionCaptionStyle, captionText);
 };
 
-var handleNote = function(admonitionCaptionStyle, captionText){
+var handleNote = function (admonitionCaptionStyle, captionText) {
     return handleAdmonition(15, admonitionCaptionStyle, captionText);
 };
 
-var handleTip = function(admonitionCaptionStyle, captionText){
+var handleTip = function (admonitionCaptionStyle, captionText) {
     return handleAdmonition(15, admonitionCaptionStyle, captionText);
 };
 
-var handleWarning = function(admonitionCaptionStyle, captionText){
+var handleWarning = function (admonitionCaptionStyle, captionText) {
     return handleAdmonition(15, admonitionCaptionStyle, captionText);
 };
 
 var handleAdmonition = function (widthOfCaptionColumn, admonitionCaptionStyle, captionText) {
     var widthOfContentColumn = 100.0 - widthOfCaptionColumn;
-    var nilBorder = adapter.getNilBorder();
-    var tblBorders = factory.getTblBordersBuilder().withTop(nilBorder).withLeft(nilBorder).withBottom(nilBorder)
-        .withRight(nilBorder).withInsideH(nilBorder).withInsideV(nilBorder).getObject();
-    var tblPr = factory.getTblPrBuilder().withTblBorders(tblBorders).getObject();
-    var tableAdapter = new com.alphasystem.openxml.builder.wml.TableAdapter(widthOfCaptionColumn, widthOfContentColumn)
-        .startTable(tblPr).startRow();
-
-    var border = adapter.getBorder(org.docx4j.wml.STBorder.SINGLE, 8, 0, "DDDDD8");
-    var columnBorders = factory.getTcPrInnerBuilder().getTcBordersBuilder().withRight(border).getObject();
-    var vertAlign = factory.getCTVerticalJcBuilder().withVal(org.docx4j.wml.STVerticalJc.CENTER).getObject();
-    var tcPr = factory.getTcPrBuilder().withVAlign(vertAlign).withTcBorders(columnBorders).getObject();
-    tableAdapter.addColumn(0, null, tcPr, adapter.getParagraphWithStyle(admonitionCaptionStyle, captionText));
-
-    columnBorders = factory.getTcPrInnerBuilder().getTcBordersBuilder().withLeft(border).getObject();
-    tcPr = factory.getTcPrBuilder().withTcBorders(columnBorders).getObject();
-    tableAdapter.addColumn(1, null, tcPr).endRow();
-
-    return tableAdapter.getTable();
+    return new com.alphasystem.openxml.builder.wml.TableAdapter(widthOfCaptionColumn, widthOfContentColumn)
+        .startTable("AdmonitionTable").startRow()
+        .addColumn(0, adapter.getParagraphWithStyle(admonitionCaptionStyle, captionText))
+        .addColumn(1).endRow().getTable();
 };
