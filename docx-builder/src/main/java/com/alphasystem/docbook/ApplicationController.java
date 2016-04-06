@@ -68,6 +68,7 @@ public final class ApplicationController {
         try {
             result = engine.invokeFunction(functionName, args);
         } catch (ScriptException | NoSuchMethodException e) {
+            e.printStackTrace();
             // ignore
         }
         return result;
