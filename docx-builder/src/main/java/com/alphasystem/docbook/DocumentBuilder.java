@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.alphasystem.asciidoc.model.Backend.DOC_BOOK;
 import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
+import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.addTableOfContent;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.save;
@@ -109,7 +110,7 @@ public class DocumentBuilder {
         ApplicationController.startContext(documentContext);
         WordprocessingMLPackage wordprocessingMLPackage = null;
         try {
-            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE).styles("META-INF/custom-styles.xml");
+            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE).styles(STYLES_PATH);
             wordprocessingMLPackage = wmlPackageBuilder.getPackage();
             MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();
