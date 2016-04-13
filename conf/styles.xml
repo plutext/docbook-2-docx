@@ -127,7 +127,41 @@
         </w:rPr>
     </w:style>
     <w:style w:type="character" w:customStyle="1" w:styleId="ExampleTitleChar">
-        <w:name w:val="ExampleTitle Char"/>
+        <w:name w:val="Example Title Char"/>
+        <w:basedOn w:val="DefaultParagraphFont"/>
+        <w:link w:val="ExampleTitle"/>
+        <w:rsid w:val="00BC0CAB"/>
+        <w:rPr>
+            <w:i/>
+            <w:iCs/>
+            <w:color w:val="7A2518"/>
+            <w:sz w:val="24"/>
+            <w:szCs w:val="24"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:customStyle="1" w:styleId="TableTitle">
+        <w:name w:val="Table Title"/>
+        <w:basedOn w:val="Normal"/>
+        <w:next w:val="Normal"/>
+        <w:link w:val="TableTitleChar"/>
+        <w:uiPriority w:val="9"/>
+        <w:unhideWhenUsed/>
+        <w:qFormat/>
+        <w:rsid w:val="00BC0CAB"/>
+        <w:pPr>
+            <w:keepNext/>
+            <w:keepLines/>
+        </w:pPr>
+        <w:rPr>
+            <w:i/>
+            <w:iCs/>
+            <w:color w:val="7A2518"/>
+            <w:sz w:val="24"/>
+            <w:szCs w:val="24"/>
+        </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:customStyle="1" w:styleId="TableTitleChar">
+        <w:name w:val="Table Title Char"/>
         <w:basedOn w:val="DefaultParagraphFont"/>
         <w:link w:val="ExampleTitle"/>
         <w:rsid w:val="00BC0CAB"/>
@@ -171,6 +205,30 @@
                     <w:left w:val="single" w:color="DDDDD8" w:sz="8" w:space="0"/>
                 </w:tcBorders>
             </w:tcPr>
+        </w:tblStylePr>
+    </w:style>
+    <w:style w:type="table" w:styleId="HorizontalList" w:customStyle="true">
+        <w:name w:val="Horizontal List"/>
+        <w:basedOn w:val="TableNormal"/>
+        <w:uiPriority w:val="47"/>
+        <w:rsid w:val="3E0C5B55"/>
+        <w:pPr>
+            <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+        </w:pPr>
+        <w:tblPr>
+            <w:tblBorders>
+                <w:top w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+                <w:left w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+                <w:bottom w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+                <w:right w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+                <w:insideH w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+                <w:insideV w:val="none" w:color="auto" w:sz="0" w:space="0"/>
+            </w:tblBorders>
+        </w:tblPr>
+        <w:tblStylePr w:type="firstCol">
+            <w:rPr>
+                <w:rStyle w:val="Strong"/>
+            </w:rPr>
         </w:tblStylePr>
     </w:style>
 </w:styles>
