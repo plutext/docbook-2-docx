@@ -1,13 +1,12 @@
 var adapter = Java.type("com.alphasystem.openxml.builder.wml.WmlAdapter");
 var factory = Java.type("com.alphasystem.openxml.builder.wml.WmlBuilderFactory");
-var _true = factory.BOOLEAN_DEFAULT_TRUE_TRUE;
 
 var handleBold = function (rprBuilder) {
-    return rprBuilder.withB(_true).withBCs(_true);
+    return rprBuilder.withB(true).withBCs(true);
 };
 
 var handleItalic = function (rprBuilder) {
-    return rprBuilder.withI(_true).withICs(_true);
+    return rprBuilder.withI(true).withICs(true);
 };
 
 var handleUnderline = function (rprBuilder) {
@@ -15,7 +14,7 @@ var handleUnderline = function (rprBuilder) {
 };
 
 var handleStrikeThrough = function (rprBuilder) {
-    return rprBuilder.withStrike(_true);
+    return rprBuilder.withStrike(true);
 };
 
 var handleLiteral = function (rprBuilder) {
@@ -23,11 +22,11 @@ var handleLiteral = function (rprBuilder) {
 };
 
 var handleSubscript = function (rprBuilder) {
-    return rprBuilder.withVertAlign(factory.getCTVerticalAlignRunBuilder().withVal(org.docx4j.wml.STVerticalAlignRun.SUBSCRIPT).getObject());
+    return rprBuilder.withVertAlign(org.docx4j.wml.STVerticalAlignRun.SUBSCRIPT);
 };
 
 var handleSuperscript = function (rprBuilder) {
-    return rprBuilder.withVertAlign(factory.getCTVerticalAlignRunBuilder().withVal(org.docx4j.wml.STVerticalAlignRun.SUPERSCRIPT).getObject());
+    return rprBuilder.withVertAlign(org.docx4j.wml.STVerticalAlignRun.SUPERSCRIPT);
 };
 
 var handleHyperlink = function (rprBuilder) {
