@@ -41,6 +41,10 @@ public final class DataFactory {
         return objectFactory.createListItem().withId(id).withContent(content);
     }
 
+    public static Literal createLiteral(String id, Object... content) {
+        return objectFactory.createLiteral().withId(id).withContent(content);
+    }
+
     public static Note createNote(Object... content) {
         return objectFactory.createNote().withContent(content);
     }
@@ -55,6 +59,14 @@ public final class DataFactory {
 
     public static SimplePara createSimplePara(String id, Object... content) {
         return objectFactory.createSimplePara().withId(id).withContent(content);
+    }
+
+    public static Subscript createSubscript(String id, Object... content) {
+        return objectFactory.createSubscript().withId(id).withContent(content);
+    }
+
+    public static Superscript createSuperscript(String id, Object... content) {
+        return objectFactory.createSuperscript().withId(id).withContent(content);
     }
 
     public static Term createTerm(Object... content) {

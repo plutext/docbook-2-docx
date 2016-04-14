@@ -10,6 +10,7 @@ import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.xml.UnmarshallerTool;
+import org.apache.commons.lang3.ArrayUtils;
 import org.docbook.model.*;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -28,11 +29,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
 import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
+import static com.alphasystem.docbook.builder.model.DocumentCaption.TABLE;
 import static com.alphasystem.docbook.builder.test.DataFactory.*;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
 import static java.lang.String.format;
@@ -97,7 +100,7 @@ public class BuilderTest {
             ApplicationController.startContext(documentContext);
 
             final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE)
-                    .styles(STYLES_PATH).multiLevelHeading(EXAMPLE);
+                    .styles(STYLES_PATH).multiLevelHeading(EXAMPLE).multiLevelHeading(TABLE);
 
             final StyleDefinitionsPart styleDefinitionsPart = wmlPackageBuilder.getPackage().getMainDocumentPart().getStyleDefinitionsPart();
             final Styles styles = styleDefinitionsPart.getContents();
@@ -138,13 +141,28 @@ public class BuilderTest {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Object> buildContent(Builder parent, Object o) {
-        final Builder builder = builderFactory.getBuilder(parent, o);
-        return builder.buildContent();
+    private List<Object> buildContent(Builder parent, Object... objects) {
+        List<Object> content = new ArrayList<>();
+        if (!ArrayUtils.isEmpty(objects)) {
+            for (Object o : objects) {
+                final Builder builder = builderFactory.getBuilder(parent, o);
+                content.addAll(builder.buildContent());
+            }
+        }
+
+        return content;
     }
 
-    private List<Object> buildContent(Object o) {
-        return buildContent(null, o);
+    private List<Object> buildContent(Object... objects) {
+        return buildContent(null, objects);
+    }
+
+    private R[] convertToRuns(List<Object> content) {
+        R[] runs = new R[content.size()];
+        for (int i = 0; i < content.size(); i++) {
+            runs[i] = (R) content.get(i);
+        }
+        return runs;
     }
 
     @AfterClass
@@ -186,6 +204,24 @@ public class BuilderTest {
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
         addResult("Term Test", r);
+    }
+
+    @Test(groups = "inlineGroup")
+    public void testSubscript() {
+        final Literal literal = createLiteral(null, "H", createSubscript(null, "2"), "O");
+        final Phrase phrase = createPhrase("bold", literal);
+        final List<Object> content = buildContent("Chemical formula for water is ", phrase);
+        assertEquals(content.size(), 4);
+        addResult("Subscript Test", convertToRuns(content));
+    }
+
+    @Test(groups = "inlineGroup")
+    public void testSuperscript() {
+        final Literal literal = createLiteral(null, "E = mc", createSuperscript(null, "2"));
+        final Phrase phrase = createPhrase("bold", literal);
+        final List<Object> content = buildContent("Einstein's theory of relativity is ", phrase);
+        assertEquals(content.size(), 3);
+        addResult("Superscript Test", convertToRuns(content));
     }
 
     @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
