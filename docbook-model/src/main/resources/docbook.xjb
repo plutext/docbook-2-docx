@@ -348,6 +348,21 @@
         <jaxb:bindings node="xs:element[@name='colspec']/xs:complexType/xs:attribute[@name='rowsep']">
             <jaxb:property name="rowSep"/>
         </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='entry']/xs:complexType/xs:attribute[@name='morerows']">
+            <jaxb:property name="moreRows"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='entry']/xs:complexType/xs:attribute[@name='namest']">
+            <jaxb:property name="nameStart"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='entry']/xs:complexType/xs:attribute[@name='nameend']">
+            <jaxb:property name="nameEnd"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='entry']/xs:complexType/xs:attribute[@name='spanname']">
+            <jaxb:property name="spanName"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:element[@name='entry']/xs:complexType/xs:attribute[@name='colname']">
+            <jaxb:property name="columnName"/>
+        </jaxb:bindings>
         <jaxb:bindings node="xs:element[@name='spanspec']">
             <jaxb:class name="SpanSpec"/>
         </jaxb:bindings>
