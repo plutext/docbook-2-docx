@@ -31,6 +31,7 @@ import static com.alphasystem.asciidoc.model.Backend.DOC_BOOK;
 import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
 import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
+import static com.alphasystem.docbook.builder.model.DocumentCaption.TABLE;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.addTableOfContent;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.save;
 import static java.nio.file.Files.exists;
@@ -124,6 +125,9 @@ public class DocumentBuilder {
             }
             if (documentInfo.getExampleCaption() != null) {
                 wmlPackageBuilder.multiLevelHeading(EXAMPLE);
+            }
+            if (documentInfo.getTableCaption() != null){
+                wmlPackageBuilder.multiLevelHeading(TABLE);
             }
             documentContext.setMainDocumentPart(mainDocumentPart);
 

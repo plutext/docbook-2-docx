@@ -16,6 +16,7 @@ import static com.alphasystem.docbook.ApplicationController.CONF_PATH_VALUE;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static java.lang.String.format;
 import static java.nio.file.Paths.get;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @author sali
@@ -91,6 +92,10 @@ public class ConfigurationUtils {
 
     public String getTableOfContentCaption() {
         return configuration.getString("toc.caption");
+    }
+
+    public String getTableStyle(String ts){
+        return isBlank(ts) ? null : configuration.getString(ts);
     }
 
     public String getString(String key) {
