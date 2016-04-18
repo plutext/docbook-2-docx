@@ -130,10 +130,10 @@ public class BuilderTest {
         mainDocumentPart.addObject(getHorizontalLine());
     }
 
-    private void addResult2(Builder parent, Object o, int indexInParent, int expectedSize, String title) {
-        final List<Object> content = buildContent(parent, indexInParent, o);
-        assertEquals(content.size(), expectedSize);
-        addResult(title, content.toArray());
+    private void addResult(Builder parent, int indexInParent, int expectedSize, String title, Object... content) {
+        final List<Object> childContent = buildContent(parent, indexInParent, content);
+        assertEquals(childContent.size(), expectedSize);
+        addResult(title, childContent.toArray());
     }
 
     private void addResult(String title, R... runs) {
@@ -233,20 +233,20 @@ public class BuilderTest {
     public void testDocumentTitleWithCustomStyle() {
         final Builder parent = builderFactory.getBuilder(null, new Article(), -1);
         final Title title = createTitle("Document Title ", createPhrase("arabicLabel", "س ل م"));
-        addResult2(parent, title, 0, 1, "Document Title with custom style Test");
+        addResult(parent, 0, 1, "Document Title with custom style Test", title);
     }
 
     @Test(groups = "titleGroup", dependsOnMethods = {"testDocumentTitleWithCustomStyle"}, dependsOnGroups = "inlineGroup")
     public void testExampleTitle() {
         final Builder parent = builderFactory.getBuilder(null, new Example(), -1);
-        addResult2(parent, createExample("Example Title"), 0, 3, "Example Title Test");
+        addResult(parent, 0, 3, "Example Title Test", createExample("Example Title"));
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel1Title() {
         final Builder parent = builderFactory.getBuilder(null, new Article(), -1);
         final Title title = createTitle("Section 1");
-        addResult2(parent, createSection("section-1", title), 0, 1, "Section Level 1 Test");
+        addResult(parent, 0, 1, "Section Level 1 Test", createSection("section-1", title));
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
@@ -254,7 +254,7 @@ public class BuilderTest {
         final Builder p1 = builderFactory.getBuilder(null, new Article(), -1);
         final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
         final Title title = createTitle("Section 2");
-        addResult2(p2, createSection("section-2", title), 0, 1, "Section Level 2 Test");
+        addResult(p2, 0, 1, "Section Level 2 Test", createSection("section-2", title));
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
@@ -263,7 +263,7 @@ public class BuilderTest {
         final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
         final Builder p3 = builderFactory.getBuilder(p2, new Section(), 0);
         final Title title = createTitle("Section 3");
-        addResult2(p3, createSection("section-3", title), 0, 1, "Section Level 3 Test");
+        addResult(p3, 0, 1, "Section Level 3 Test", createSection("section-3", title));
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
@@ -273,7 +273,7 @@ public class BuilderTest {
         final Builder p3 = builderFactory.getBuilder(p2, new Section(), 0);
         final Builder p4 = builderFactory.getBuilder(p3, new Section(), 0);
         final Title title = createTitle("Section 4");
-        addResult2(p4, createSection("section-4", title), 0, 1, "Section Level 4 Test");
+        addResult(p4, 0, 1, "Section Level 4 Test", createSection("section-4", title));
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
@@ -284,27 +284,27 @@ public class BuilderTest {
         final Builder p4 = builderFactory.getBuilder(p3, new Section(), 0);
         final Builder p5 = builderFactory.getBuilder(p4, new Section(), 0);
         final Title title = createTitle("Section 5");
-        addResult2(p5, createSection("section-5", title), 0, 1, "Section Level 5 Test");
+        addResult(p5, 0, 1, "Section Level 5 Test", createSection("section-5", title));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testItemizedList() {
-        addResult2(null, readXml("itemizedlist", ItemizedList.class), 0, 3, "ItemizedList Test");
+        addResult(null, 0, 3, "ItemizedList Test", readXml("itemizedlist", ItemizedList.class));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testNestedItemizedList() {
-        addResult2(null, readXml("nested-itemizedlist", ItemizedList.class), 0, 6, "ItemizedList Test");
+        addResult(null, 0, 6, "ItemizedList Test", readXml("nested-itemizedlist", ItemizedList.class));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
     public void testOrderedList() {
-        addResult2(null, readXml("orderedlist", OrderedList.class), 0, 3, "OrderedList Test");
+        addResult(null, 0, 3, "OrderedList Test", readXml("orderedlist", OrderedList.class));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
     public void testNestedOrderedList() {
-        addResult2(null, readXml("nested-orderedlist", OrderedList.class), 0, 5, "OrderedList Test");
+        addResult(null, 0, 5, "OrderedList Test", readXml("nested-orderedlist", OrderedList.class));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
@@ -312,53 +312,53 @@ public class BuilderTest {
         final Term term = createTerm("Entry title");
         final SimplePara simplePara = createSimplePara(null, "This text is under simple para and it has to be indented using \"ListParagraph\" style without any numbering.");
         final ListItem listItem = createListItem(null, simplePara);
-        addResult2(null, createVariableListEntry(listItem, term), 0, 2, "VariableListEntry Test");
+        addResult(null, 0, 2, "VariableListEntry Test", createVariableListEntry(listItem, term));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"}, dependsOnMethods = {"testVariableListEntryBuilder"})
     public void testVariableListBuilder() {
-        addResult2(null, readXml("variablelist", VariableList.class), 0, 12, "VariableList Test");
+        addResult(null, 0, 12, "VariableList Test", readXml("variablelist", VariableList.class));
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testCaution() {
         Caution caution = createCaution(createSimplePara(null, "If the title line is not offset by a blank line, it gets interpreted as a section title, which we&#8217;ll discuss later."));
-        addResult2(null, caution, 0, 3, "Caution Test");
+        addResult(null, 0, 3, "Caution Test", caution);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testImportant() {
         Important important = createImportant(createSection(null, "There should be no blank lines between the first attribute entry and the rest of the header."));
-        addResult2(null, important, 0, 3, "Important Test");
+        addResult(null, 0, 3, "Important Test", important);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testNote() {
         Note note = createNote(createSimplePara(null, "Admonitions can also encapsulate any block content, which we&#8217;ll cover later."));
-        addResult2(null, note, 0, 3, "Note Test");
+        addResult(null, 0, 3, "Note Test", note);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTip() {
         Tip tip = createTip(createSimplePara(null, "A document title is an <emphasis>optional</emphasis> feature of an AsciiDoc document."));
-        addResult2(null, tip, 0, 3, "Tip Test");
+        addResult(null, 0, 3, "Tip Test", tip);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testWarning() {
         Warning warning = createWarning(createSimplePara(null, "Wolpertingers are known to nest in server racks.\n" +
                 "        Enter at your own risk."));
-        addResult2(null, warning, 0, 3, "Warning Test");
+        addResult(null, 0, 3, "Warning Test", warning);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnMethods = {"testWarning"}, dependsOnGroups = {"listGroup"})
     public void testExample() {
-        addResult2(null, readXml("example", Example.class), 0, 3, "Example Test");
+        addResult(null, 0, 3, "Example Test", readXml("example", Example.class));
     }
 
     @Test(groups = {"blockGroup"}, dependsOnMethods = {"testExample"}, dependsOnGroups = {"listGroup"})
     public void testInformalExample() {
-        addResult2(null, readXml("informal-example", InformalExample.class), 0, 3, "Informal Example Test");
+        addResult(null, 0, 3, "Informal Example Test", readXml("informal-example", InformalExample.class));
     }
 
 }
