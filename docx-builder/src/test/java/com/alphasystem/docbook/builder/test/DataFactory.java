@@ -33,6 +33,10 @@ public final class DataFactory {
         return createEmphasis(null, content);
     }
 
+    public static ItemizedList createItemizedList(String id, Object... content) {
+        return objectFactory.createItemizedList().withId(id).withContent(content);
+    }
+
     public static ListItem createListItem(Object... content) {
         return createListItem(null, content);
     }

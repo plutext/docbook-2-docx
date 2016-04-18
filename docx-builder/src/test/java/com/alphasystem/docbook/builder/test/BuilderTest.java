@@ -9,6 +9,7 @@ import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
+import com.alphasystem.util.IdGenerator;
 import com.alphasystem.xml.UnmarshallerTool;
 import org.apache.commons.lang3.ArrayUtils;
 import org.docbook.model.*;
@@ -122,7 +123,7 @@ public class BuilderTest {
         return pBuilder.getObject();
     }
 
-    private void addResult(String title, Object... content) {
+    private void addResultToDocument(String title, Object... content) {
         mainDocumentPart.addObject(getParagraphWithStyle(DEFAULT_TITLE, title));
         for (Object o : content) {
             mainDocumentPart.addObject(o);
@@ -133,11 +134,11 @@ public class BuilderTest {
     private void addResult(Builder parent, int indexInParent, int expectedSize, String title, Object... content) {
         final List<Object> childContent = buildContent(parent, indexInParent, content);
         assertEquals(childContent.size(), expectedSize);
-        addResult(title, childContent.toArray());
+        addResultToDocument(title, childContent.toArray());
     }
 
     private void addResult(String title, R... runs) {
-        addResult(title, buildPara(runs));
+        addResultToDocument(title, buildPara(runs));
     }
 
     @SuppressWarnings("unchecked")
@@ -226,7 +227,7 @@ public class BuilderTest {
         final Title title = createTitle("Document Title");
         final List<Object> content = buildContent(parent, 0, title);
         assertEquals(content.size(), 1);
-        addResult("Document Title Test", content.toArray());
+        addResultToDocument("Document Title Test", content.toArray());
     }
 
     @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
@@ -290,6 +291,16 @@ public class BuilderTest {
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testItemizedList() {
         addResult(null, 0, 3, "ItemizedList Test", readXml("itemizedlist", ItemizedList.class));
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
+    public void testItemizedListMoreThenOnePara() {
+        final SimplePara p1 = createSimplePara(null, "First paragraph of list item, this should contain bullet mark.");
+        final SimplePara p2 = createSimplePara(null, "Second paragraph of list item, this should not contain bullet mark, but should be indented properly.");
+        final ListItem li1 = createListItem(null, p1, p2);
+        final ListItem li2 = createListItem(null, createSimplePara(null, "Second bullet point."));
+        final ItemizedList itemizedList = createItemizedList(IdGenerator.nextId(), li1, li2);
+        addResult(null, 0, 3, "Itemized list with a list item having multiple para", itemizedList);
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
