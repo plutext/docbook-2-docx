@@ -20,16 +20,9 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
 
     protected PPr paraProperties;
     protected PPr listParaProperties;
-    protected final boolean combineInlineElements;
 
     protected BlockBuilder(Builder parent, T source) {
-        this(parent, source, true);
-    }
-
-    protected BlockBuilder(Builder parent, T source, boolean combineInlineElements) {
         super(parent, source);
-        this.combineInlineElements = combineInlineElements;
-
     }
 
     public PPr getParaProperties() {
@@ -126,7 +119,7 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
 
             // take all consecutive inline items and create a para, if builder wants to have builder wants to combine
             // inline elements
-            if (isInstanceOf(InlineBuilder.class, builder) && combineInlineElements) {
+            if (isInstanceOf(InlineBuilder.class, builder)) {
                 if (pBuilder == null) {
                     pBuilder = WmlBuilderFactory.getPBuilder();
                 }
