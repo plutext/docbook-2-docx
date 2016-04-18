@@ -7,8 +7,6 @@ import org.docbook.model.ListItem;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.NumPr;
 
-import java.util.List;
-
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getNumPr;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getPPrBuilder;
 
@@ -47,11 +45,12 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
     }
 
     @Override
-    protected List<Object> buildChildContent(Builder builder, int iteration) {
-        if (iteration == 1) {
+    protected Builder getChildBuilder(Object o, int index) {
+        final Builder builder = super.getChildBuilder(o, index);
+        if (index == 1) {
             paraProperties.setNumPr(null);
         }
-        return super.buildChildContent(builder, iteration);
+        return builder;
     }
 
     public long getNumber() {

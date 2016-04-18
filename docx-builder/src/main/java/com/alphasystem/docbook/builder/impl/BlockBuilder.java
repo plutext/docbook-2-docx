@@ -103,6 +103,7 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
      * @param content the child content of the source object.
      * @param target  list of all processed child content
      */
+    @SuppressWarnings({"unchecked"})
     protected void parseContent(List<Object> content, List<Object> target) {
         if (isNull(content) || content.isEmpty()) {
             return;
@@ -110,12 +111,12 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         PBuilder pBuilder = null;
         for (int i = 0; i < content.size(); i++) {
             final Object o = content.get(i);
-            final Builder builder = factory.getBuilder(this, o, i);
+            final Builder builder = getChildBuilder(o, i);
             if (builder == null) {
                 logUnhandledContentWarning(o);
                 continue;
             }
-            final List<Object> childContent = buildChildContent(builder, i);
+            final List<Object> childContent = builder.buildContent();
 
             // take all consecutive inline items and create a para, if builder wants to have builder wants to combine
             // inline elements
@@ -143,10 +144,8 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         }
     }
 
-    @SuppressWarnings({"unchecked"})
-    protected List<Object> buildChildContent(Builder builder, int iteration) {
-        // TODO: need to revisit later
-        return builder.buildContent();
+    protected Builder getChildBuilder(Object o, int index) {
+        return factory.getBuilder(this, o, index);
     }
 
     private void addPara(P p, List<Object> target) {

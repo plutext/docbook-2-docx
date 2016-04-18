@@ -3,8 +3,6 @@ package com.alphasystem.docbook.builder.impl.block;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 
-import java.util.List;
-
 import static com.alphasystem.docbook.ApplicationController.getContext;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
 
@@ -36,15 +34,15 @@ public abstract class ListBuilder<T> extends BlockBuilder<T> {
         }
     }
 
-
     @Override
-    protected List<Object> buildChildContent(Builder builder, int iteration) {
+    protected Builder getChildBuilder(Object o, int index) {
+        final Builder builder = super.getChildBuilder(o, index);
         if (isInstanceOf(ListItemBuilder.class, builder)) {
             ListItemBuilder listItemBuilder = (ListItemBuilder) builder;
             listItemBuilder.setNumber(number);
             listItemBuilder.setLevel(level);
         }
-        return super.buildChildContent(builder, iteration);
+        return builder;
     }
 
 }
