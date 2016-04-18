@@ -37,10 +37,6 @@ public final class DataFactory {
         return objectFactory.createItemizedList().withId(id).withContent(content);
     }
 
-    public static ListItem createListItem(Object... content) {
-        return createListItem(null, content);
-    }
-
     public static ListItem createListItem(String id, Object... content) {
         return objectFactory.createListItem().withId(id).withContent(content);
     }
@@ -51,6 +47,10 @@ public final class DataFactory {
 
     public static Note createNote(Object... content) {
         return objectFactory.createNote().withContent(content);
+    }
+
+    public static OrderedList createOrderedList(String id, Object... content) {
+        return objectFactory.createOrderedList().withId(id).withContent(content);
     }
 
     public static Phrase createPhrase(String role, Object... content) {

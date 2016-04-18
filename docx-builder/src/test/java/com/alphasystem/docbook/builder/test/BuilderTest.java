@@ -9,7 +9,6 @@ import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.openxml.builder.wml.PBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
-import com.alphasystem.util.IdGenerator;
 import com.alphasystem.xml.UnmarshallerTool;
 import org.apache.commons.lang3.ArrayUtils;
 import org.docbook.model.*;
@@ -39,6 +38,7 @@ import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.TABLE;
 import static com.alphasystem.docbook.builder.test.DataFactory.*;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.*;
+import static com.alphasystem.util.IdGenerator.nextId;
 import static java.lang.String.format;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
@@ -289,23 +289,33 @@ public class BuilderTest {
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
-    public void testItemizedList() {
-        addResult(null, 0, 3, "ItemizedList Test", readXml("itemizedlist", ItemizedList.class));
-    }
-
-    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testItemizedListMoreThenOnePara() {
         final SimplePara p1 = createSimplePara(null, "First paragraph of list item, this should contain bullet mark.");
         final SimplePara p2 = createSimplePara(null, "Second paragraph of list item, this should not contain bullet mark, but should be indented properly.");
         final ListItem li1 = createListItem(null, p1, p2);
         final ListItem li2 = createListItem(null, createSimplePara(null, "Second bullet point."));
-        final ItemizedList itemizedList = createItemizedList(IdGenerator.nextId(), li1, li2);
+        final ItemizedList itemizedList = createItemizedList(nextId(), li1, li2);
         addResult(null, 0, 3, "Itemized list with a list item having multiple para", itemizedList);
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
+    public void testItemizedList() {
+        addResult(null, 0, 3, "ItemizedList Test", readXml("itemizedlist", ItemizedList.class));
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testNestedItemizedList() {
         addResult(null, 0, 6, "ItemizedList Test", readXml("nested-itemizedlist", ItemizedList.class));
+    }
+
+    @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
+    public void testOrderedListMoreThenOnePara() {
+        final SimplePara p1 = createSimplePara(nextId(), "First paragraph of list item, this should contain numeration.");
+        final SimplePara p2 = createSimplePara(nextId(), "Second paragraph of list item, this should not contain numeration, but should be indented properly.");
+        final ListItem li1 = createListItem(nextId(), p1, p2);
+        final ListItem li2 = createListItem(nextId(), createSimplePara(null, "Second bullet point."));
+        final OrderedList orderedList = createOrderedList(nextId(), li1, li2);
+        addResult(null, 0, 3, "Ordered list with a list item having multiple para", orderedList);
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
