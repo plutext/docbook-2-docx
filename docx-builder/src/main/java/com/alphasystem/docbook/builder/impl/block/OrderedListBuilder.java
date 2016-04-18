@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class OrderedListBuilder extends ListBuilder<OrderedList> {
 
-    public OrderedListBuilder(Builder parent, OrderedList orderedlist) {
-        super(parent, orderedlist);
+    public OrderedListBuilder(Builder parent, OrderedList orderedlist, int indexInParent) {
+        super(parent, orderedlist, indexInParent);
     }
 
     @Override

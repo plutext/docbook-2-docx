@@ -130,8 +130,8 @@ public class BuilderTest {
         mainDocumentPart.addObject(getHorizontalLine());
     }
 
-    private void addResult(Builder parent, Object o, int expectedSize, String title) {
-        final List<Object> content = buildContent(parent, o);
+    private void addResult2(Builder parent, Object o, int indexInParent, int expectedSize, String title) {
+        final List<Object> content = buildContent(parent, indexInParent, o);
         assertEquals(content.size(), expectedSize);
         addResult(title, content.toArray());
     }
@@ -141,20 +141,16 @@ public class BuilderTest {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Object> buildContent(Builder parent, Object... objects) {
+    private List<Object> buildContent(Builder parent, int indexInParent, Object... objects) {
         List<Object> content = new ArrayList<>();
         if (!ArrayUtils.isEmpty(objects)) {
             for (Object o : objects) {
-                final Builder builder = builderFactory.getBuilder(parent, o);
+                final Builder builder = builderFactory.getBuilder(parent, o, indexInParent);
                 content.addAll(builder.buildContent());
             }
         }
 
         return content;
-    }
-
-    private List<Object> buildContent(Object... objects) {
-        return buildContent(null, objects);
     }
 
     private R[] convertToRuns(List<Object> content) {
@@ -181,7 +177,7 @@ public class BuilderTest {
 
     @Test(groups = "inlineGroup")
     public void testBold() {
-        final List<Object> content = buildContent(createBold("Bold Text"));
+        final List<Object> content = buildContent(null, -1, createBold("Bold Text"));
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
@@ -190,7 +186,7 @@ public class BuilderTest {
 
     @Test(groups = "inlineGroup")
     public void testItalic() {
-        final List<Object> content = buildContent(createItalic("Italic Text"));
+        final List<Object> content = buildContent(null, -1, createItalic("Italic Text"));
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
@@ -199,7 +195,7 @@ public class BuilderTest {
 
     @Test(groups = "inlineGroup")
     public void testTermBuilder() {
-        final List<Object> content = buildContent(createTerm("Term Title"));
+        final List<Object> content = buildContent(null, -1, createTerm("Term Title"));
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
         assertEquals(r.getClass().getName(), R.class.getName());
@@ -210,7 +206,7 @@ public class BuilderTest {
     public void testSubscript() {
         final Literal literal = createLiteral(null, "H", createSubscript(null, "2"), "O");
         final Phrase phrase = createPhrase("bold", literal);
-        final List<Object> content = buildContent("Chemical formula for water is ", phrase);
+        final List<Object> content = buildContent(null, -1, "Chemical formula for water is ", phrase);
         assertEquals(content.size(), 4);
         addResult("Subscript Test", convertToRuns(content));
     }
@@ -219,96 +215,96 @@ public class BuilderTest {
     public void testSuperscript() {
         final Literal literal = createLiteral(null, "E = mc", createSuperscript(null, "2"));
         final Phrase phrase = createPhrase("bold", literal);
-        final List<Object> content = buildContent("Einstein's theory of relativity is ", phrase);
+        final List<Object> content = buildContent(null, -1, "Einstein's theory of relativity is ", phrase);
         assertEquals(content.size(), 3);
         addResult("Superscript Test", convertToRuns(content));
     }
 
     @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
     public void testDocumentTitle() {
-        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Builder parent = builderFactory.getBuilder(null, new Article(), -1);
         final Title title = createTitle("Document Title");
-        final List<Object> content = buildContent(parent, title);
+        final List<Object> content = buildContent(parent, 0, title);
         assertEquals(content.size(), 1);
         addResult("Document Title Test", content.toArray());
     }
 
     @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
     public void testDocumentTitleWithCustomStyle() {
-        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Builder parent = builderFactory.getBuilder(null, new Article(), -1);
         final Title title = createTitle("Document Title ", createPhrase("arabicLabel", "س ل م"));
-        addResult(parent, title, 1, "Document Title with custom style Test");
+        addResult2(parent, title, 0, 1, "Document Title with custom style Test");
     }
 
     @Test(groups = "titleGroup", dependsOnMethods = {"testDocumentTitleWithCustomStyle"}, dependsOnGroups = "inlineGroup")
     public void testExampleTitle() {
-        final Builder parent = builderFactory.getBuilder(null, new Example());
-        addResult(parent, createExample("Example Title"), 3, "Example Title Test");
+        final Builder parent = builderFactory.getBuilder(null, new Example(), -1);
+        addResult2(parent, createExample("Example Title"), 0, 3, "Example Title Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel1Title() {
-        final Builder parent = builderFactory.getBuilder(null, new Article());
+        final Builder parent = builderFactory.getBuilder(null, new Article(), -1);
         final Title title = createTitle("Section 1");
-        addResult(parent, createSection("section-1", title), 1, "Section Level 1 Test");
+        addResult2(parent, createSection("section-1", title), 0, 1, "Section Level 1 Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel2Title() {
-        final Builder p1 = builderFactory.getBuilder(null, new Article());
-        final Builder p2 = builderFactory.getBuilder(p1, new Section());
+        final Builder p1 = builderFactory.getBuilder(null, new Article(), -1);
+        final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
         final Title title = createTitle("Section 2");
-        addResult(p2, createSection("section-2", title), 1, "Section Level 2 Test");
+        addResult2(p2, createSection("section-2", title), 0, 1, "Section Level 2 Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel3Title() {
-        final Builder p1 = builderFactory.getBuilder(null, new Article());
-        final Builder p2 = builderFactory.getBuilder(p1, new Section());
-        final Builder p3 = builderFactory.getBuilder(p2, new Section());
+        final Builder p1 = builderFactory.getBuilder(null, new Article(), -1);
+        final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
+        final Builder p3 = builderFactory.getBuilder(p2, new Section(), 0);
         final Title title = createTitle("Section 3");
-        addResult(p3, createSection("section-3", title), 1, "Section Level 3 Test");
+        addResult2(p3, createSection("section-3", title), 0, 1, "Section Level 3 Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel4Title() {
-        final Builder p1 = builderFactory.getBuilder(null, new Article());
-        final Builder p2 = builderFactory.getBuilder(p1, new Section());
-        final Builder p3 = builderFactory.getBuilder(p2, new Section());
-        final Builder p4 = builderFactory.getBuilder(p3, new Section());
+        final Builder p1 = builderFactory.getBuilder(null, new Article(), -1);
+        final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
+        final Builder p3 = builderFactory.getBuilder(p2, new Section(), 0);
+        final Builder p4 = builderFactory.getBuilder(p3, new Section(), 0);
         final Title title = createTitle("Section 4");
-        addResult(p4, createSection("section-4", title), 1, "Section Level 4 Test");
+        addResult2(p4, createSection("section-4", title), 0, 1, "Section Level 4 Test");
     }
 
     @Test(groups = {"titleGroup"}, dependsOnGroups = {"inlineGroup"})
     public void testSectionLevel5Title() {
-        final Builder p1 = builderFactory.getBuilder(null, new Article());
-        final Builder p2 = builderFactory.getBuilder(p1, new Section());
-        final Builder p3 = builderFactory.getBuilder(p2, new Section());
-        final Builder p4 = builderFactory.getBuilder(p3, new Section());
-        final Builder p5 = builderFactory.getBuilder(p4, new Section());
+        final Builder p1 = builderFactory.getBuilder(null, new Article(), -1);
+        final Builder p2 = builderFactory.getBuilder(p1, new Section(), 0);
+        final Builder p3 = builderFactory.getBuilder(p2, new Section(), 0);
+        final Builder p4 = builderFactory.getBuilder(p3, new Section(), 0);
+        final Builder p5 = builderFactory.getBuilder(p4, new Section(), 0);
         final Title title = createTitle("Section 5");
-        addResult(p5, createSection("section-5", title), 1, "Section Level 5 Test");
+        addResult2(p5, createSection("section-5", title), 0, 1, "Section Level 5 Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testItemizedList() {
-        addResult(null, readXml("itemizedlist", ItemizedList.class), 3, "ItemizedList Test");
+        addResult2(null, readXml("itemizedlist", ItemizedList.class), 0, 3, "ItemizedList Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = "titleGroup")
     public void testNestedItemizedList() {
-        addResult(null, readXml("nested-itemizedlist", ItemizedList.class), 6, "ItemizedList Test");
+        addResult2(null, readXml("nested-itemizedlist", ItemizedList.class), 0, 6, "ItemizedList Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
     public void testOrderedList() {
-        addResult(null, readXml("orderedlist", OrderedList.class), 3, "OrderedList Test");
+        addResult2(null, readXml("orderedlist", OrderedList.class), 0, 3, "OrderedList Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
     public void testNestedOrderedList() {
-        addResult(null, readXml("nested-orderedlist", OrderedList.class), 5, "OrderedList Test");
+        addResult2(null, readXml("nested-orderedlist", OrderedList.class), 0, 5, "OrderedList Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"})
@@ -316,53 +312,53 @@ public class BuilderTest {
         final Term term = createTerm("Entry title");
         final SimplePara simplePara = createSimplePara(null, "This text is under simple para and it has to be indented using \"ListParagraph\" style without any numbering.");
         final ListItem listItem = createListItem(null, simplePara);
-        addResult(null, createVariableListEntry(listItem, term), 2, "VariableListEntry Test");
+        addResult2(null, createVariableListEntry(listItem, term), 0, 2, "VariableListEntry Test");
     }
 
     @Test(groups = {"listGroup"}, dependsOnGroups = {"titleGroup"}, dependsOnMethods = {"testVariableListEntryBuilder"})
     public void testVariableListBuilder() {
-        addResult(null, readXml("variablelist", VariableList.class), 12, "VariableList Test");
+        addResult2(null, readXml("variablelist", VariableList.class), 0, 12, "VariableList Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testCaution() {
         Caution caution = createCaution(createSimplePara(null, "If the title line is not offset by a blank line, it gets interpreted as a section title, which we&#8217;ll discuss later."));
-        addResult(null, caution, 3, "Caution Test");
+        addResult2(null, caution, 0, 3, "Caution Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testImportant() {
         Important important = createImportant(createSection(null, "There should be no blank lines between the first attribute entry and the rest of the header."));
-        addResult(null, important, 3, "Important Test");
+        addResult2(null, important, 0, 3, "Important Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testNote() {
         Note note = createNote(createSimplePara(null, "Admonitions can also encapsulate any block content, which we&#8217;ll cover later."));
-        addResult(null, note, 3, "Note Test");
+        addResult2(null, note, 0, 3, "Note Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTip() {
         Tip tip = createTip(createSimplePara(null, "A document title is an <emphasis>optional</emphasis> feature of an AsciiDoc document."));
-        addResult(null, tip, 3, "Tip Test");
+        addResult2(null, tip, 0, 3, "Tip Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testWarning() {
         Warning warning = createWarning(createSimplePara(null, "Wolpertingers are known to nest in server racks.\n" +
                 "        Enter at your own risk."));
-        addResult(null, warning, 3, "Warning Test");
+        addResult2(null, warning, 0, 3, "Warning Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnMethods = {"testWarning"}, dependsOnGroups = {"listGroup"})
     public void testExample() {
-        addResult(null, readXml("example", Example.class), 3, "Example Test");
+        addResult2(null, readXml("example", Example.class), 0, 3, "Example Test");
     }
 
     @Test(groups = {"blockGroup"}, dependsOnMethods = {"testExample"}, dependsOnGroups = {"listGroup"})
     public void testInformalExample() {
-        addResult(null, readXml("informal-example", InformalExample.class), 3, "Informal Example Test");
+        addResult2(null, readXml("informal-example", InformalExample.class), 0, 3, "Informal Example Test");
     }
 
 }

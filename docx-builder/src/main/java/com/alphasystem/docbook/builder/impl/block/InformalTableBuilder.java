@@ -13,8 +13,8 @@ import static java.util.Collections.emptyList;
  */
 public class InformalTableBuilder extends AbstractTableBuilder<InformalTable> {
 
-    public InformalTableBuilder(Builder parent, InformalTable source) {
-        super(parent, source);
+    public InformalTableBuilder(Builder parent, InformalTable informalTable, int indexInParent) {
+        super(parent, informalTable, indexInParent);
     }
 
     @Override

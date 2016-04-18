@@ -21,8 +21,8 @@ import static java.util.Collections.singletonList;
  */
 public class EntryBuilder extends BlockBuilder<Entry> {
 
-    public EntryBuilder(Builder parent, Entry source) {
-        super(parent, source);
+    public EntryBuilder(Builder parent, Entry entry, int indexInParent) {
+        super(parent, entry, indexInParent);
     }
 
     @Override

@@ -12,8 +12,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class EmphasisBuilder extends InlineBuilder<Emphasis> {
 
-    public EmphasisBuilder(Builder parent, Emphasis emphasis) {
-        super(parent, emphasis);
+    public EmphasisBuilder(Builder parent, Emphasis emphasis, int indexInParent) {
+        super(parent, emphasis, indexInParent);
     }
 
     @Override

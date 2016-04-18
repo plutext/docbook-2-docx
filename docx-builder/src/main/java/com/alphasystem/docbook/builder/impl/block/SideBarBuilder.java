@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class SideBarBuilder extends TableBasedBlockBuilder<SideBar> {
 
-    public SideBarBuilder(Builder parent, SideBar obj) {
-        super(parent, obj);
+    public SideBarBuilder(Builder parent, SideBar obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override

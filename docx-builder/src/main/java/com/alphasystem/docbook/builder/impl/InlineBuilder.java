@@ -24,8 +24,8 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
 
     protected String style;
 
-    protected InlineBuilder(Builder parent, T obj) {
-        super(parent, obj);
+    protected InlineBuilder(Builder parent, T obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     /**
@@ -65,8 +65,8 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
         return rPrBuilder.getObject();
     }
 
-    protected List<R> processChildContent(Object childContent, RPr runProperties) {
-        final Builder builder = factory.getBuilder(this, childContent);
+    protected List<R> processChildContent(Object childContent, RPr runProperties, int indexInParent) {
+        final Builder builder = factory.getBuilder(this, childContent, indexInParent);
         if (builder == null) {
             logUnhandledContentWarning(childContent);
             return Collections.emptyList();
@@ -91,8 +91,9 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
         }
         RPr rPr = handleStyle(style);
         List<R> resultRuns = new ArrayList<>();
-        for (Object o : content) {
-            resultRuns.addAll(processChildContent(o, rPr));
+        for (int i = 0; i < content.size(); i++) {
+            final Object o = content.get(i);
+            resultRuns.addAll(processChildContent(o, rPr, i));
         }
         return resultRuns;
     }

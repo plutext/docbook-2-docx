@@ -9,8 +9,8 @@ import org.docbook.model.Tip;
  */
 public class TipBuilder extends AdmonitionBuilder<Tip> {
 
-    public TipBuilder(Builder parent, Tip tip) {
-        super(parent, tip, Admonition.TIP);
+    public TipBuilder(Builder parent, Tip tip, int indexInParent) {
+        super(parent, tip, indexInParent, Admonition.TIP);
     }
 
     @Override

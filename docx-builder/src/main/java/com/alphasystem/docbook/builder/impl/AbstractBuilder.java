@@ -90,14 +90,24 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
     protected T source;
     protected List<Object> titleContent;
     protected List<Object> content;
+    protected int indexInParent;
 
-    protected AbstractBuilder(Builder parent, T source) {
+    protected AbstractBuilder(Builder parent, T source, int indexInParent) {
         if (source == null) {
             throw new NullPointerException(String.format("Source object is null in \"%s\"", getClass().getName()));
         }
         this.parent = parent;
         this.source = source;
+        this.indexInParent = indexInParent;
         initContent();
+    }
+
+    public int getIndexInParent() {
+        return indexInParent;
+    }
+
+    public void setIndexInParent(int indexInParent) {
+        this.indexInParent = indexInParent;
     }
 
     protected abstract void initContent();

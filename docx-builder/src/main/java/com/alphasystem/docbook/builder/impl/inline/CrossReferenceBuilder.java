@@ -10,8 +10,8 @@ import java.util.Collections;
  */
 public class CrossReferenceBuilder extends LinkSupportBuilder<CrossReference> {
 
-    public CrossReferenceBuilder(Builder parent, CrossReference xref) {
-        super(parent, xref);
+    public CrossReferenceBuilder(Builder parent, CrossReference xref, int indexInParent) {
+        super(parent, xref, indexInParent);
     }
 
     @Override

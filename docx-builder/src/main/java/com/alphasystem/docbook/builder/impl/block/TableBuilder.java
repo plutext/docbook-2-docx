@@ -14,8 +14,8 @@ import static java.util.Collections.singletonList;
  */
 public class TableBuilder extends AbstractTableBuilder<Table> {
 
-    public TableBuilder(Builder parent, Table source) {
-        super(parent, source);
+    public TableBuilder(Builder parent, Table source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     @Override

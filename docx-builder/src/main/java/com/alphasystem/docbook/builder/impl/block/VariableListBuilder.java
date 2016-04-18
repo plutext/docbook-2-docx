@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class VariableListBuilder extends BlockBuilder<VariableList> {
 
-    public VariableListBuilder(Builder parent, VariableList source) {
-        super(parent, source);
+    public VariableListBuilder(Builder parent, VariableList source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class ItemizedListBuilder extends ListBuilder<ItemizedList> {
 
-    public ItemizedListBuilder(Builder parent, ItemizedList obj) {
-        super(parent, obj);
+    public ItemizedListBuilder(Builder parent, ItemizedList obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override

@@ -15,8 +15,8 @@ import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getRBuilder;
  */
 public class TextBuilder extends InlineBuilder<String> {
 
-    public TextBuilder(Builder parent, String text) {
-        super(parent, text);
+    public TextBuilder(Builder parent, String text, int indexInParent) {
+        super(parent, text, indexInParent);
     }
 
     @Override

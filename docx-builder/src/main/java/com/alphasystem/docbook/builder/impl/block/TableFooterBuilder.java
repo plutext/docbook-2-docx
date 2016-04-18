@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class TableFooterBuilder extends BlockBuilder<TableFooter> {
 
-    public TableFooterBuilder(Builder parent, TableFooter source) {
-        super(parent, source);
+    public TableFooterBuilder(Builder parent, TableFooter source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     @Override

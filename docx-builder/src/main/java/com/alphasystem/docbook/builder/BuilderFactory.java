@@ -40,7 +40,7 @@ public class BuilderFactory {
     private BuilderFactory() {
     }
 
-    public Builder getBuilder(Builder parent, Object o) {
+    public Builder getBuilder(Builder parent, Object o, int indexInParent) {
         if (o == null) {
             return null;
         }
@@ -58,8 +58,8 @@ public class BuilderFactory {
         AbstractBuilder builder = null;
         try {
             Class<?> builderClass = Class.forName(builderFqn);
-            final Constructor<?> constructor = builderClass.getConstructor(Builder.class, o.getClass());
-            builder = (AbstractBuilder) constructor.newInstance(parent, o);
+            final Constructor<?> constructor = builderClass.getConstructor(Builder.class, o.getClass(), int.class);
+            builder = (AbstractBuilder) constructor.newInstance(parent, o, indexInParent);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException |
                 InstantiationException | InvocationTargetException e) {
             // ignore
@@ -83,7 +83,7 @@ public class BuilderFactory {
             return paras;
         }
 
-        paras.addAll(getBuilder(null, article).buildContent());
+        paras.addAll(getBuilder(null, article, -1).buildContent());
         return paras;
     }
 

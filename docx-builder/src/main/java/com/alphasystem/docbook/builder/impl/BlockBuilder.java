@@ -21,8 +21,8 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
     protected PPr paraProperties;
     protected PPr listParaProperties;
 
-    protected BlockBuilder(Builder parent, T source) {
-        super(parent, source);
+    protected BlockBuilder(Builder parent, T source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     public PPr getParaProperties() {
@@ -110,7 +110,7 @@ public abstract class BlockBuilder<T> extends AbstractBuilder<T> {
         PBuilder pBuilder = null;
         for (int i = 0; i < content.size(); i++) {
             final Object o = content.get(i);
-            final Builder builder = factory.getBuilder(this, o);
+            final Builder builder = factory.getBuilder(this, o, i);
             if (builder == null) {
                 logUnhandledContentWarning(o);
                 continue;

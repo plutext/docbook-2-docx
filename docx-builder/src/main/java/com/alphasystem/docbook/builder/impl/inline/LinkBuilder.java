@@ -13,8 +13,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  */
 public class LinkBuilder extends LinkSupportBuilder<Link> {
 
-    public LinkBuilder(Builder parent, Link link) {
-        super(parent, link);
+    public LinkBuilder(Builder parent, Link link, int indexInParent) {
+        super(parent, link, indexInParent);
     }
 
     @Override

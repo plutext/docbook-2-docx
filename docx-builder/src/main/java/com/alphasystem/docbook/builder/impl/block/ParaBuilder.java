@@ -8,8 +8,8 @@ import org.docbook.model.Para;
  */
 public class ParaBuilder extends AbstractParaBuilder<Para> {
 
-    public ParaBuilder(Builder parent, Para obj) {
-        super(parent, obj);
+    public ParaBuilder(Builder parent, Para obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override

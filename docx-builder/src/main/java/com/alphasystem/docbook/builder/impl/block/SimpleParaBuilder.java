@@ -8,8 +8,8 @@ import org.docbook.model.SimplePara;
  */
 public class SimpleParaBuilder extends AbstractParaBuilder<SimplePara> {
 
-    public SimpleParaBuilder(Builder parent, SimplePara simplePara) {
-        super(parent, simplePara);
+    public SimpleParaBuilder(Builder parent, SimplePara simplePara, int indexInParent) {
+        super(parent, simplePara, indexInParent);
     }
 
     @Override

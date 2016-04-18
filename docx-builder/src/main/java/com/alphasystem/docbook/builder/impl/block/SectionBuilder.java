@@ -13,8 +13,8 @@ public class SectionBuilder extends BlockBuilder<Section> {
 
     private int level;
 
-    public SectionBuilder(Builder parent, Section section) {
-        super(parent, section);
+    public SectionBuilder(Builder parent, Section section, int indexInParent) {
+        super(parent, section, indexInParent);
         initLevel();
     }
 

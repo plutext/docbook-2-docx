@@ -9,8 +9,8 @@ import org.docbook.model.Row;
  */
 public class RowBuilder extends BlockBuilder<Row> {
 
-    public RowBuilder(Builder parent, Row source) {
-        super(parent, source);
+    public RowBuilder(Builder parent, Row source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     @Override

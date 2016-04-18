@@ -16,8 +16,8 @@ public abstract class ListBuilder<T> extends BlockBuilder<T> {
     protected long number;
     protected long level;
 
-    protected ListBuilder(Builder parent, T obj) {
-        super(parent, obj);
+    protected ListBuilder(Builder parent, T obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     protected abstract com.alphasystem.openxml.builder.wml.ListItem getItemByName(String styleName);

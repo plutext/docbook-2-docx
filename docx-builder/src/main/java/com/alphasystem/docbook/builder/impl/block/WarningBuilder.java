@@ -9,8 +9,8 @@ import org.docbook.model.Warning;
  */
 public class WarningBuilder extends AdmonitionBuilder<Warning> {
 
-    public WarningBuilder(Builder parent, Warning warning) {
-        super(parent, warning, Admonition.WARNING);
+    public WarningBuilder(Builder parent, Warning warning, int indexInParent) {
+        super(parent, warning, indexInParent, Admonition.WARNING);
     }
 
     @Override

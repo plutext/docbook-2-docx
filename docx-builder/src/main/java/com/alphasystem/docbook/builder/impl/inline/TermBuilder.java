@@ -9,8 +9,8 @@ import org.docbook.model.Term;
  */
 public class TermBuilder extends InlineBuilder<Term> {
 
-    public TermBuilder(Builder parent, Term term) {
-        super(parent, term);
+    public TermBuilder(Builder parent, Term term, int indexInParent) {
+        super(parent, term, indexInParent);
     }
 
     @Override

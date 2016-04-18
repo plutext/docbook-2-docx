@@ -26,8 +26,8 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
     protected TableAdapter tableAdapter;
     protected Tbl table;
 
-    protected AbstractTableBuilder(Builder parent, T source) {
-        super(parent, source);
+    protected AbstractTableBuilder(Builder parent, T source, int indexInParent) {
+        super(parent, source, indexInParent);
     }
 
     protected String getTableStyle(String styleName) {

@@ -20,8 +20,8 @@ public class ListItemBuilder extends BlockBuilder<ListItem> {
     private long number = -1;
     private long level = -1;
 
-    public ListItemBuilder(Builder parent, ListItem listitem) {
-        super(parent, listitem);
+    public ListItemBuilder(Builder parent, ListItem listitem, int indexInParent) {
+        super(parent, listitem, indexInParent);
     }
 
     @Override

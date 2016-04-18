@@ -21,8 +21,8 @@ public abstract class AdmonitionBuilder<T> extends TableBasedBlockBuilder<T> {
 
     private final Admonition admonition;
 
-    protected AdmonitionBuilder(Builder parent, T obj, Admonition admonition) {
-        super(parent, obj);
+    protected AdmonitionBuilder(Builder parent, T obj, int indexInParent, Admonition admonition) {
+        super(parent, obj, indexInParent);
         this.admonition = admonition;
     }
 

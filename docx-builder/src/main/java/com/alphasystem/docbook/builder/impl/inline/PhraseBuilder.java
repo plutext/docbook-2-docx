@@ -9,8 +9,8 @@ import org.docbook.model.Phrase;
  */
 public class PhraseBuilder extends InlineBuilder<Phrase> {
 
-    public PhraseBuilder(Builder parent, Phrase phrase) {
-        super(parent, phrase);
+    public PhraseBuilder(Builder parent, Phrase phrase, int indexInParent) {
+        super(parent, phrase, indexInParent);
     }
 
     @Override

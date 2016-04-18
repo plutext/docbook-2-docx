@@ -13,8 +13,8 @@ import static com.alphasystem.util.AppUtil.isInstanceOf;
  */
 public abstract class AbstractParaBuilder<T> extends BlockBuilder<T> {
 
-    protected AbstractParaBuilder(Builder parent, T obj) {
-        super(parent, obj);
+    protected AbstractParaBuilder(Builder parent, T obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override

@@ -23,8 +23,8 @@ public abstract class TableBasedBlockBuilder<T> extends BlockBuilder<T> {
     protected Tbl tbl;
     protected Tc tc;
 
-    protected TableBasedBlockBuilder(Builder parent, T obj) {
-        super(parent, obj);
+    protected TableBasedBlockBuilder(Builder parent, T obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override

@@ -10,8 +10,8 @@ import org.docx4j.wml.Tr;
  */
 public class InformalExampleBuilder extends TableBasedBlockBuilder<InformalExample> {
 
-    public InformalExampleBuilder(Builder parent, InformalExample informalExample) {
-        super(parent, informalExample);
+    public InformalExampleBuilder(Builder parent, InformalExample informalExample, int indexInParent) {
+        super(parent, informalExample, indexInParent);
     }
 
     @Override

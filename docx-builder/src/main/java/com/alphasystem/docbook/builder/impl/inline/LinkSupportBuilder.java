@@ -21,8 +21,8 @@ public class LinkSupportBuilder<T> extends InlineBuilder<T> {
     protected Object linkEnd;
     protected boolean external;
 
-    protected LinkSupportBuilder(Builder parent, T obj) {
-        super(parent, obj);
+    protected LinkSupportBuilder(Builder parent, T obj, int indexInParent) {
+        super(parent, obj, indexInParent);
     }
 
     @Override
