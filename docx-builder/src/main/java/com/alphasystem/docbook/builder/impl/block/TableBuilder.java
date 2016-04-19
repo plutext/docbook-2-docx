@@ -3,6 +3,7 @@ package com.alphasystem.docbook.builder.impl.block;
 import com.alphasystem.docbook.builder.Builder;
 import org.docbook.model.Table;
 import org.docbook.model.TableGroup;
+import org.docbook.model.Title;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class TableBuilder extends AbstractTableBuilder<Table> {
             initializeTableAdapter(tableGroup, source.getFrame(), source.getTableStyle());
             initializeContent(tableGroup);
         }
-        titleContent = singletonList(source.getTitle());
+        final Title title = source.getTitle();
+        if (title != null) {
+            titleContent = singletonList(title);
+        }
     }
 }
