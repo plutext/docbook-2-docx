@@ -357,12 +357,12 @@ public class BuilderTest {
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testHorizontalList() {
-        final Row row1 = createRow(createEntry(null, createSimplePara(null, "CPU")),
-                createEntry(null, createSimplePara(null, "The brain of the computer.")));
-        final Row row2 = createRow(createEntry(null, createSimplePara(null, "Hard drive")),
-                createEntry(null, createSimplePara(null, "Permanent storage for operating system and/or user files.")));
-        final Row row3 = createRow(createEntry(null, createSimplePara(null, "RAM")),
-                createEntry(null, createSimplePara(null, "Temporarily stores information the CPU uses during operation.")));
+        final Row row1 = createRow(createEntry(null, null, createSimplePara(null, "CPU")),
+                createEntry(null, null, createSimplePara(null, "The brain of the computer.")));
+        final Row row2 = createRow(createEntry(null, null, createSimplePara(null, "Hard drive")),
+                createEntry(null, null, createSimplePara(null, "Permanent storage for operating system and/or user files.")));
+        final Row row3 = createRow(createEntry(null, null, createSimplePara(null, "RAM")),
+                createEntry(null, null, createSimplePara(null, "Temporarily stores information the CPU uses during operation.")));
         final TableBody tableBody = createTableBody(null, VerticalAlign.TOP, row1, row2, row3);
         final TableGroup tableGroup = createTableGroup(null, tableBody, null, 15, 85);
         final InformalTable informalTable = createInformalTable("horizontal", Frame.NONE, Choice.ZERO, Choice.ZERO, tableGroup);
@@ -385,6 +385,61 @@ public class BuilderTest {
     public void testTip() {
         Tip tip = createTip(createSimplePara(null, "A document title is an <emphasis>optional</emphasis> feature of an AsciiDoc document."));
         addResult(null, 0, 3, "Tip Test", tip);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testSimpleTable(){
+        Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
+        Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
+        final Row row1 = createRow(entry1, entry2);
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 2"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 2"));
+        final Row row2 = createRow(entry1, entry2);
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 3"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 3"));
+        final Row row3 = createRow(entry1, entry2);
+
+        final TableBody tableBody = createTableBody(null, null, row1, row2, row3);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 192, 192);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, createTitle("Result: Rendered simple table"), tableGroup);
+
+        addResult(null, 0, 2, "Simple Table Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableVAlignMiddle(){
+        Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 1, row 1"));
+        Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 2, row 1"));
+        final Row row1 = createRow(entry1, entry2);
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 1, row 2"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 2, row 2"));
+        final Row row2 = createRow(entry1, entry2);
+
+        final TableBody tableBody = createTableBody(null, null, row1, row2);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 192, 192);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+
+        addResult(null, 0, 1, "Table Test With Vertical Align Middle", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableVAlignBottom(){
+        Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 1, row 1"));
+        Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 2, row 1"));
+        final Row row1 = createRow(entry1, entry2);
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 1, row 2"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 2, row 2"));
+        final Row row2 = createRow(entry1, entry2);
+
+        final TableBody tableBody = createTableBody(null, null, row1, row2);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 192, 192);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+
+        addResult(null, 0, 1, "Table Test With Vertical Align Bottom", table);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})

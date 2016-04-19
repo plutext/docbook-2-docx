@@ -22,8 +22,8 @@ public final class DataFactory {
         return objectFactory.createCaution().withContent(content);
     }
 
-    public static Entry createEntry(Align align, Object... content) {
-        return objectFactory.createEntry().withAlign(align).withContent(content);
+    public static Entry createEntry(Align align, BasicVerticalAlign vAlign, Object... content) {
+        return objectFactory.createEntry().withAlign(align).withValign(vAlign).withContent(content);
     }
 
     public static Emphasis createEmphasis(String role, Object... content) {
@@ -39,7 +39,7 @@ public final class DataFactory {
     }
 
     public static InformalTable createInformalTable(String style, Frame frame, Choice colSep, Choice rowSep,
-                                                    TableGroup tableGroup){
+                                                    TableGroup tableGroup) {
         return objectFactory.createInformalTable().withTableStyle(style).withFrame(frame).withColSep(colSep)
                 .withRowSep(rowSep).withTableGroup(tableGroup);
     }
@@ -90,6 +90,11 @@ public final class DataFactory {
 
     public static Superscript createSuperscript(String id, Object... content) {
         return objectFactory.createSuperscript().withId(id).withContent(content);
+    }
+
+    public static Table createTable(String style, Frame frame, Choice colSep, Choice rowSep, Title title, TableGroup tableGroup) {
+        return objectFactory.createTable().withStyle(style).withFrame(frame).withColSep(colSep).withRowSep(rowSep)
+                .withTitle(title).withTableGroup(tableGroup);
     }
 
     public static TableBody createTableBody(Align align, VerticalAlign verticalAlign, Row... rows) {
