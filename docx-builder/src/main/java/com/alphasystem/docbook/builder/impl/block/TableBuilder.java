@@ -6,7 +6,6 @@ import org.docbook.model.TableGroup;
 
 import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
@@ -20,12 +19,12 @@ public class TableBuilder extends AbstractTableBuilder<Table> {
 
     @Override
     protected void initContent() {
-        final List<TableGroup> tableGroup = source.getTableGroup();
-        if (tableGroup != null && !tableGroup.isEmpty()) {
-            initializeTableAdapter(tableGroup.get(0), source.getFrame(), source.getTableStyle());
+        final List<TableGroup> tableGroups = source.getTableGroup();
+        final TableGroup tableGroup = ((tableGroups != null) && !tableGroups.isEmpty()) ? tableGroups.get(0) : null;
+        if (tableGroup != null) {
+            initializeTableAdapter(tableGroup, source.getFrame(), source.getTableStyle());
+            initializeContent(tableGroup);
         }
         titleContent = singletonList(source.getTitle());
-        // TODO:
-        content = emptyList();
     }
 }

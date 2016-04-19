@@ -2,15 +2,15 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
+import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.docbook.util.TableAdapter;
 import com.alphasystem.openxml.builder.wml.TblPrBuilder;
-import org.docbook.model.ColumnSpec;
-import org.docbook.model.Frame;
-import org.docbook.model.TableGroup;
+import org.docbook.model.*;
 import org.docx4j.wml.CTBorder;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.TblBorders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getDefaultBorder;
@@ -23,7 +23,7 @@ import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblPrBuil
  */
 public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
 
-    protected TableAdapter tableAdapter;
+    protected ColumnSpecAdapter columnSpecAdapter;
     protected Tbl table;
 
     protected AbstractTableBuilder(Builder parent, T source, int indexInParent) {
@@ -47,9 +47,25 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         if (numOfColumns <= 0) {
             throw new RuntimeException("Neither numOfColumns nor colSpec defined.");
         }
-        tableAdapter = new TableAdapter(colSpec);
+        columnSpecAdapter = new ColumnSpecAdapter(colSpec);
         TblPrBuilder tblPrBuilder = getTblPrBuilder().withTblBorders(createFrame(frame));
-        table = tableAdapter.getTable(getTableStyle(styleName), tblPrBuilder.getObject());
+        table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(styleName), tblPrBuilder.getObject());
+    }
+
+    protected void initializeContent(TableGroup tableGroup) {
+        content = new ArrayList<>();
+        final TableHeader tableHeader = tableGroup.getTableHeader();
+        if (tableHeader != null) {
+            content.add(tableHeader);
+        }
+        final TableBody tableBody = tableGroup.getTableBody();
+        if (tableBody != null) {
+            content.add(tableBody);
+        }
+        final TableFooter tableFooter = tableGroup.getTableFooter();
+        if (tableFooter != null) {
+            content.add(tableFooter);
+        }
     }
 
     private TblBorders createFrame(Frame frame) {
