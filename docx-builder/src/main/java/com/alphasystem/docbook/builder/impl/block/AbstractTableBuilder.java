@@ -17,6 +17,7 @@ import static com.alphasystem.openxml.builder.wml.WmlAdapter.getDefaultBorder;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getNilBorder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblBordersBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblPrBuilder;
+import static com.alphasystem.util.AppUtil.isInstanceOf;
 
 /**
  * @author sali
@@ -128,4 +129,12 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
                 .withRight(right).withInsideH(insideH).withInsideV(insideV).getObject();
     }
 
+    @Override
+    protected Builder getChildBuilder(Object o, int index) {
+        final Builder childBuilder = super.getChildBuilder(o, index);
+        if (isInstanceOf(TableContentBuilder.class, childBuilder)) {
+            ((TableContentBuilder) childBuilder).setColumnSpecAdapter(columnSpecAdapter);
+        }
+        return childBuilder;
+    }
 }
