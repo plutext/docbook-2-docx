@@ -40,8 +40,7 @@ public class EntryBuilder extends BlockBuilder<Entry> {
 
     private STVerticalJc getVerticalAlign() {
         final Builder parent = getParent().getParent();
-        if (!isInstanceOf(TableBodyBuilder.class, parent) || !isInstanceOf(TableHeaderBuilder.class, parent) ||
-                !isInstanceOf(TableFooterBuilder.class, parent)) {
+        if (!isInstanceOf(TableContentBuilder.class, parent)) {
             // EntryBuilder immediate parent should be RowBuilder and RowBuilder parent must be either of TableBodyBuilder,
             // TableHeaderBuilder, or TableFooterBuilder, if not raise exception
             throw new RuntimeException(String.format("Found different parent \"%s\".", parent.getClass().getName()));
