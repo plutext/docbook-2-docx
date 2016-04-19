@@ -42,13 +42,14 @@ public class UnmarshallerTool {
 
     public UnmarshallerTool() {
         documentInfo = new AsciiDocumentInfo();
+        documentInfo.setTocTitle(configurationUtils.getTableOfContentCaption());
         documentInfo.setCautionCaption(configurationUtils.getAdmonitionCaption(Admonition.CAUTION));
         documentInfo.setImportantCaption(configurationUtils.getAdmonitionCaption(Admonition.IMPORTANT));
         documentInfo.setNoteCaption(configurationUtils.getAdmonitionCaption(Admonition.NOTE));
         documentInfo.setTipCaption(configurationUtils.getAdmonitionCaption(Admonition.TIP));
         documentInfo.setWarningCaption(configurationUtils.getAdmonitionCaption(Admonition.WARNING));
         documentInfo.setExampleCaption(configurationUtils.getExampleCaption());
-        documentInfo.setTableCaption(configurationUtils.getTableOfContentCaption());
+        documentInfo.setTableCaption(configurationUtils.getTableCaption());
     }
 
     public <T> T unmarshal(String source, Class<T> declaredType) throws SystemException {

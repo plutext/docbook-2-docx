@@ -90,6 +90,10 @@ public class ConfigurationUtils {
         return configuration.getString("example.caption");
     }
 
+    public String getTableCaption() {
+        return configuration.getString("table.caption");
+    }
+
     public String getTableOfContentCaption() {
         return configuration.getString("toc.caption");
     }
