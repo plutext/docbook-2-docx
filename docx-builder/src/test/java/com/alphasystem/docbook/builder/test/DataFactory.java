@@ -2,6 +2,11 @@ package com.alphasystem.docbook.builder.test;
 
 import org.docbook.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.String.format;
+
 /**
  * @author sali
  */
@@ -9,12 +14,16 @@ public final class DataFactory {
 
     private static ObjectFactory objectFactory = new ObjectFactory();
 
+    public static Emphasis createBold(Object... content) {
+        return createEmphasis("strong", content);
+    }
+
     public static Caution createCaution(Object... content) {
         return objectFactory.createCaution().withContent(content);
     }
 
-    public static Emphasis createBold(Object... content) {
-        return createEmphasis("strong", content);
+    public static Entry createEntry(Align align, Object... content) {
+        return objectFactory.createEntry().withAlign(align).withContent(content);
     }
 
     public static Emphasis createEmphasis(String role, Object... content) {
@@ -27,6 +36,12 @@ public final class DataFactory {
 
     public static Important createImportant(Object... content) {
         return objectFactory.createImportant().withContent(content);
+    }
+
+    public static InformalTable createInformalTable(String style, Frame frame, Choice colSep, Choice rowSep,
+                                                    TableGroup tableGroup){
+        return objectFactory.createInformalTable().withTableStyle(style).withFrame(frame).withColSep(colSep)
+                .withRowSep(rowSep).withTableGroup(tableGroup);
     }
 
     public static Emphasis createItalic(Object... content) {
@@ -57,6 +72,10 @@ public final class DataFactory {
         return objectFactory.createPhrase().withRole(role).withContent(content);
     }
 
+    public static Row createRow(Object... content) {
+        return objectFactory.createRow().withContent(content);
+    }
+
     public static Section createSection(String id, Object... content) {
         return objectFactory.createSection().withId(id).withContent(content);
     }
@@ -71,6 +90,22 @@ public final class DataFactory {
 
     public static Superscript createSuperscript(String id, Object... content) {
         return objectFactory.createSuperscript().withId(id).withContent(content);
+    }
+
+    public static TableBody createTableBody(Align align, VerticalAlign verticalAlign, Row... rows) {
+        return objectFactory.createTableBody().withAlign(align).withVAlign(verticalAlign).withRow(rows);
+    }
+
+    public static TableGroup createTableGroup(TableHeader tableHeader, TableBody tableBody, TableFooter tableFooter,
+                                              int... columnWidths) {
+        List<ColumnSpec> columnSpecs = new ArrayList<>();
+        for (int i = 0; i < columnWidths.length; i++) {
+            ColumnSpec columnSpec = objectFactory.createColumnSpec().withColumnWidth(format("%s*", columnWidths[i]))
+                    .withColumnName(format("col_%s", (i + 1)));
+            columnSpecs.add(columnSpec);
+        }
+        return objectFactory.createTableGroup().withCols(String.valueOf(columnWidths.length)).withTableHeader(tableHeader)
+                .withTableBody(tableBody).withTableFooter(tableFooter).withColSpec(columnSpecs);
     }
 
     public static Term createTerm(Object... content) {

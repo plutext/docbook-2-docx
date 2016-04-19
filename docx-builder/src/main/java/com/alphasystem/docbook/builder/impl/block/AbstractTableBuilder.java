@@ -53,6 +53,15 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(styleName), tblPrBuilder.getObject());
     }
 
+    @Override
+    protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
+        List<Object> result = new ArrayList<>();
+        processedTitleContent.forEach(o -> result.add(o));
+        processedChildContent.forEach(o -> table.getContent().add(o));
+        result.add(table);
+        return result;
+    }
+
     protected void initializeContent(TableGroup tableGroup) {
         content = new ArrayList<>();
         final TableHeader tableHeader = tableGroup.getTableHeader();

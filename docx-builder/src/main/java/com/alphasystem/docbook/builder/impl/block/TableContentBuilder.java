@@ -4,6 +4,8 @@ import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
 
+import static com.alphasystem.util.AppUtil.isInstanceOf;
+
 /**
  * @author sali
  */
@@ -15,11 +17,16 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
         super(parent, source, indexInParent);
     }
 
-    public ColumnSpecAdapter getColumnSpecAdapter() {
-        return columnSpecAdapter;
-    }
-
     public void setColumnSpecAdapter(ColumnSpecAdapter columnSpecAdapter) {
         this.columnSpecAdapter = columnSpecAdapter;
+    }
+
+    @Override
+    protected Builder getChildBuilder(Object o, int index) {
+        final Builder childBuilder = super.getChildBuilder(o, index);
+        if(isInstanceOf(RowBuilder.class, childBuilder)) {
+            ((RowBuilder) childBuilder).setColumnSpecAdapter(columnSpecAdapter);
+        }
+        return childBuilder;
     }
 }

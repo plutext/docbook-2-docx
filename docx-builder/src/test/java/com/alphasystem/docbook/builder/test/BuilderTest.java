@@ -12,6 +12,8 @@ import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.xml.UnmarshallerTool;
 import org.apache.commons.lang3.ArrayUtils;
 import org.docbook.model.*;
+import org.docbook.model.Choice;
+import org.docbook.model.Frame;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -44,6 +46,7 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
+import static org.testng.Reporter.log;
 
 /**
  * @author sali
@@ -145,10 +148,15 @@ public class BuilderTest {
     private List<Object> buildContent(Builder parent, int indexInParent, Object... objects) {
         List<Object> content = new ArrayList<>();
         if (!ArrayUtils.isEmpty(objects)) {
+            log("**************************************************************************", true);
             for (Object o : objects) {
                 final Builder builder = builderFactory.getBuilder(parent, o, indexInParent);
-                content.addAll(builder.buildContent());
+                final List c = builder.buildContent();
+                log(format("Getting builder \"%s\" for \"%s\", number of child content are \"%s\".", builder.getClass().getName(),
+                        o.getClass().getName(), c.size()));
+                content.addAll(c);
             }
+            log("**************************************************************************", true);
         }
 
         return content;
@@ -345,6 +353,20 @@ public class BuilderTest {
     public void testCaution() {
         Caution caution = createCaution(createSimplePara(null, "If the title line is not offset by a blank line, it gets interpreted as a section title, which we&#8217;ll discuss later."));
         addResult(null, 0, 3, "Caution Test", caution);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testHorizontalList() {
+        final Row row1 = createRow(createEntry(null, createSimplePara(null, "CPU")),
+                createEntry(null, createSimplePara(null, "The brain of the computer.")));
+        final Row row2 = createRow(createEntry(null, createSimplePara(null, "Hard drive")),
+                createEntry(null, createSimplePara(null, "Permanent storage for operating system and/or user files.")));
+        final Row row3 = createRow(createEntry(null, createSimplePara(null, "RAM")),
+                createEntry(null, createSimplePara(null, "Temporarily stores information the CPU uses during operation.")));
+        final TableBody tableBody = createTableBody(null, VerticalAlign.TOP, row1, row2, row3);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 15, 85);
+        final InformalTable informalTable = createInformalTable("horizontal", Frame.NONE, Choice.ZERO, Choice.ZERO, tableGroup);
+        addResult(null, 0, 1, "Table With Custom Style", informalTable);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})

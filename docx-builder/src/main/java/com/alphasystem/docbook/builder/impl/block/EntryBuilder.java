@@ -2,6 +2,7 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
+import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
 import org.docbook.model.BasicVerticalAlign;
 import org.docbook.model.Entry;
@@ -11,6 +12,7 @@ import org.docx4j.wml.TcPr;
 
 import java.util.List;
 
+import static com.alphasystem.docbook.util.TableAdapter.getColumnProperties;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcPrBuilder;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
@@ -20,6 +22,8 @@ import static java.util.Collections.singletonList;
  * @author sali
  */
 public class EntryBuilder extends BlockBuilder<Entry> {
+
+    protected ColumnSpecAdapter columnSpecAdapter;
 
     public EntryBuilder(Builder parent, Entry entry, int indexInParent) {
         super(parent, entry, indexInParent);
@@ -33,6 +37,8 @@ public class EntryBuilder extends BlockBuilder<Entry> {
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         TcPr tcPr = getTcPrBuilder().withVAlign(getVerticalAlign()).getObject();
+        // TODO: column span
+        tcPr = getColumnProperties(columnSpecAdapter, indexInParent, 1, tcPr);
         TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
         processedChildContent.forEach(o -> tcBuilder.addContent(o));
         return singletonList(tcBuilder.getObject());
@@ -71,5 +77,9 @@ public class EntryBuilder extends BlockBuilder<Entry> {
             }
         }
         return val;
+    }
+
+    public void setColumnSpecAdapter(ColumnSpecAdapter columnSpecAdapter) {
+        this.columnSpecAdapter = columnSpecAdapter;
     }
 }
