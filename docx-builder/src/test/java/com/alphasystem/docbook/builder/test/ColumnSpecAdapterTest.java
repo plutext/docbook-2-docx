@@ -1,7 +1,7 @@
 package com.alphasystem.docbook.builder.test;
 
 import com.alphasystem.docbook.model.ColumnInfo;
-import com.alphasystem.docbook.util.TableAdapter;
+import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import org.docbook.model.ColumnSpec;
 import org.docbook.model.ObjectFactory;
 import org.testng.annotations.Test;
@@ -19,7 +19,7 @@ import static org.testng.Reporter.log;
 /**
  * @author sali
  */
-public class TableAdapterTest {
+public class ColumnSpecAdapterTest {
 
     private static final BigDecimal TOTAL_GRID_COL_WIDTH = new BigDecimal(9576);
     private static final BigDecimal TOTAL_TABLE_WIDTH = new BigDecimal(5000);
@@ -37,7 +37,7 @@ public class TableAdapterTest {
 
     private static void printColumnInfos(List<ColumnInfo> columnInfos) {
         log("#####################################################", true);
-        columnInfos.forEach(TableAdapterTest::printColumnInfo);
+        columnInfos.forEach(ColumnSpecAdapterTest::printColumnInfo);
         log("#####################################################", true);
     }
 
@@ -72,8 +72,8 @@ public class TableAdapterTest {
         columnSpecs.add(createColumnSpec("15*"));
         columnSpecs.add(createColumnSpec("85*"));
 
-        TableAdapter tableAdapter = new TableAdapter(columnSpecs);
-        final List<ColumnInfo> columnInfos = tableAdapter.getColumnInfos();
+        ColumnSpecAdapter columnSpecAdapter = new ColumnSpecAdapter(columnSpecs);
+        final List<ColumnInfo> columnInfos = columnSpecAdapter.getColumnInfos();
         printColumnInfos(columnInfos);
         verifyWidth(columnInfos.get(0), 15);
         verifyWidth(columnInfos.get(1), 85);
@@ -86,8 +86,8 @@ public class TableAdapterTest {
         columnSpecs.add(createColumnSpec("col_1", "192*"));
         columnSpecs.add(createColumnSpec("col_2", "192*"));
 
-        TableAdapter tableAdapter = new TableAdapter(columnSpecs);
-        final List<ColumnInfo> columnInfos = tableAdapter.getColumnInfos();
+        ColumnSpecAdapter columnSpecAdapter = new ColumnSpecAdapter(columnSpecs);
+        final List<ColumnInfo> columnInfos = columnSpecAdapter.getColumnInfos();
         printColumnInfos(columnInfos);
         verifyWidth(columnInfos.get(0), 50);
         verifyWidth(columnInfos.get(1), 50);
@@ -101,8 +101,8 @@ public class TableAdapterTest {
         columnSpecs.add(createColumnSpec("col_2", "126*"));
         columnSpecs.add(createColumnSpec("col_3", "126*"));
 
-        TableAdapter tableAdapter = new TableAdapter(columnSpecs);
-        final List<ColumnInfo> columnInfos = tableAdapter.getColumnInfos();
+        ColumnSpecAdapter columnSpecAdapter = new ColumnSpecAdapter(columnSpecs);
+        final List<ColumnInfo> columnInfos = columnSpecAdapter.getColumnInfos();
         printColumnInfos(columnInfos);
         verifyWidth(columnInfos.get(0), 33);
         verifyWidth(columnInfos.get(1), 33);
@@ -118,8 +118,8 @@ public class TableAdapterTest {
         columnSpecs.add(createColumnSpec("col_3", "11*"));
         columnSpecs.add(createColumnSpec("col_4", "55*"));
 
-        TableAdapter tableAdapter = new TableAdapter(columnSpecs);
-        final List<ColumnInfo> columnInfos = tableAdapter.getColumnInfos();
+        ColumnSpecAdapter columnSpecAdapter = new ColumnSpecAdapter(columnSpecs);
+        final List<ColumnInfo> columnInfos = columnSpecAdapter.getColumnInfos();
         printColumnInfos(columnInfos);
         verifyWidth(columnInfos.get(0), 22);
         verifyWidth(columnInfos.get(1), 11);
