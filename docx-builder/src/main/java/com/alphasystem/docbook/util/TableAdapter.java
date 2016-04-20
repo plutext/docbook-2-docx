@@ -37,7 +37,7 @@ public final class TableAdapter {
 
         TblWidth tblWidth = getTblWidthBuilder().withType(TYPE_PCT).withW(columnSpecAdapter.getTotalTableWidth().toString()).getObject();
 
-        CTTblLook cTTblLook = getCTTblLookBuilder().withFirstRow(ONE).withLastRow(ZERO).withFirstColumn(ONE)
+        CTTblLook cTTblLook = getCTTblLookBuilder().withFirstRow(ONE).withLastRow(ONE).withFirstColumn(ONE)
                 .withLastColumn(ZERO).withNoVBand(ONE).withNoHBand(ZERO).getObject();
 
         tableStyle = isBlank(tableStyle) ? "TableGrid" : tableStyle;

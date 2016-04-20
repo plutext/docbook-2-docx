@@ -18,11 +18,15 @@ import static com.alphasystem.openxml.builder.wml.WmlAdapter.getNilBorder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblBordersBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblPrBuilder;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
+import static java.lang.String.format;
 
 /**
  * @author sali
  */
 public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
+
+    private static final int HEADER = 1;
+    private static final int FOOTER = 2;
 
     protected ColumnSpecAdapter columnSpecAdapter;
     protected Tbl table;
@@ -31,11 +35,19 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         super(parent, source, indexInParent);
     }
 
-    protected String getTableStyle(String styleName) {
-        final String tableStyle = configurationUtils.getTableStyle(styleName);
+    protected String getTableStyle(TableGroup tableGroup, String styleName) {
+        String tableStyle = configurationUtils.getTableStyle(styleName);
         if ((styleName != null) && (tableStyle == null)) {
-            // styleName is not null but there is no corresponding style in DOCX
+            // styleName is not null but there is no corresponding style in Word document
             logger.warn("No style defined for table with name \"{}\"", styleName);
+        }
+        if (tableStyle == null) {
+            int header = (tableGroup.getTableHeader() == null) ? 0 : HEADER;
+            int footer = (tableGroup.getTableFooter() == null) ? 0 : FOOTER;
+            int value = header | footer;
+            if (value != 0) {
+                tableStyle = format("TableGrid%s", value);
+            }
         }
         return tableStyle;
     }
@@ -50,13 +62,13 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         }
         columnSpecAdapter = new ColumnSpecAdapter(colSpec);
         TblPrBuilder tblPrBuilder = getTblPrBuilder().withTblBorders(createFrame(frame));
-        table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(styleName), tblPrBuilder.getObject());
+        table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(tableGroup, styleName), tblPrBuilder.getObject());
     }
 
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         List<Object> result = new ArrayList<>();
-        processedTitleContent.forEach(o -> result.add(o));
+        processedTitleContent.forEach(result::add);
         processedChildContent.forEach(o -> table.getContent().add(o));
         result.add(table);
         return result;

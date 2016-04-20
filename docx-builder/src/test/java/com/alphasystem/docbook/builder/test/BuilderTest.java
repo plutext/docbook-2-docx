@@ -388,7 +388,7 @@ public class BuilderTest {
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
-    public void testSimpleTable(){
+    public void testSimpleTable() {
         Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
         Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
         final Row row1 = createRow(entry1, entry2);
@@ -409,7 +409,7 @@ public class BuilderTest {
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
-    public void testTableVAlignMiddle(){
+    public void testTableVAlignMiddle() {
         Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 1, row 1"));
         Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.MIDDLE, createSimplePara(null, "Cell in column 2, row 1"));
         final Row row1 = createRow(entry1, entry2);
@@ -426,7 +426,7 @@ public class BuilderTest {
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
-    public void testTableVAlignBottom(){
+    public void testTableVAlignBottom() {
         Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 1, row 1"));
         Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.BOTTOM, createSimplePara(null, "Cell in column 2, row 1"));
         final Row row1 = createRow(entry1, entry2);
@@ -438,8 +438,75 @@ public class BuilderTest {
         final TableBody tableBody = createTableBody(null, null, row1, row2);
         final TableGroup tableGroup = createTableGroup(null, tableBody, null, 192, 192);
         final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
-
         addResult(null, 0, 1, "Table Test With Vertical Align Bottom", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableWithHeader() {
+        Entry entry1 = createEntry(null, null, createSimplePara(null, "Header 1"));
+        Entry entry2 = createEntry(Align.LEFT, null, createSimplePara(null, "Header 2"));
+        Entry entry3 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Header 3"));
+        Entry entry4 = createEntry(null, BasicVerticalAlign.TOP, createSimplePara(null, "Header 4"));
+        final TableHeader tableHeader = createTableHeader(null, null, createRow(entry1, entry2, entry3, entry4));
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
+        entry3 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 3, row 1"));
+        entry4 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 4, row 1"));
+        final Row row1 = createRow(entry1, entry2, entry3, entry4);
+
+        final TableBody tableBody = createTableBody(null, null, row1);
+        final TableGroup tableGroup = createTableGroup(tableHeader, tableBody, null, 15, 15, 15, 55);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Header Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableWithFooter() {
+        Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
+        Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
+        Entry entry3 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 3, row 1"));
+        Entry entry4 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 4, row 1"));
+        final Row row1 = createRow(entry1, entry2, entry3, entry4);
+
+        final TableBody tableBody = createTableBody(null, null, row1);
+
+        entry1 = createEntry(null, null, createSimplePara(null, "Footer 1"));
+        entry2 = createEntry(null, null, createSimplePara(null, "Footer 2"));
+        entry3 = createEntry(null, null, createSimplePara(null, "Footer 3"));
+        entry4 = createEntry(null, null, createSimplePara(null, "Footer 4"));
+        final TableFooter tableFooter = createTableFooter(null, null, createRow(entry1, entry2, entry3, entry4));
+
+        final TableGroup tableGroup = createTableGroup(null, tableBody, tableFooter, 15, 15, 15, 55);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Footer Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableWithHeaderAndFooter() {
+        Entry entry1 = createEntry(null, null, createSimplePara(null, "Header 1"));
+        Entry entry2 = createEntry(Align.LEFT, null, createSimplePara(null, "Header 2"));
+        Entry entry3 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Header 3"));
+        Entry entry4 = createEntry(null, BasicVerticalAlign.TOP, createSimplePara(null, "Header 4"));
+        final TableHeader tableHeader = createTableHeader(null, null, createRow(entry1, entry2, entry3, entry4));
+
+        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
+        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
+        entry3 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 3, row 1"));
+        entry4 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 4, row 1"));
+        final Row row1 = createRow(entry1, entry2, entry3, entry4);
+
+        final TableBody tableBody = createTableBody(null, null, row1);
+
+        entry1 = createEntry(null, null, createSimplePara(null, "Footer 1"));
+        entry2 = createEntry(null, null, createSimplePara(null, "Footer 2"));
+        entry3 = createEntry(null, null, createSimplePara(null, "Footer 3"));
+        entry4 = createEntry(null, null, createSimplePara(null, "Footer 4"));
+        final TableFooter tableFooter = createTableFooter(null, null, createRow(entry1, entry2, entry3, entry4));
+
+        final TableGroup tableGroup = createTableGroup(tableHeader, tableBody, tableFooter, 15, 15, 15, 55);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Header And Footer Test", table);
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})

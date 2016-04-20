@@ -3,10 +3,15 @@ package com.alphasystem.docbook.builder.impl.block;
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
+import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
+import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
+import org.docbook.model.Align;
 import org.docbook.model.BasicVerticalAlign;
 import org.docbook.model.Entry;
 import org.docbook.model.VerticalAlign;
+import org.docx4j.wml.JcEnumeration;
+import org.docx4j.wml.P;
 import org.docx4j.wml.STVerticalJc;
 import org.docx4j.wml.TcPr;
 
@@ -40,7 +45,18 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         // TODO: column span
         tcPr = getColumnProperties(columnSpecAdapter, indexInParent, 1, tcPr);
         TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
-        processedChildContent.forEach(o -> tcBuilder.addContent(o));
+        JcEnumeration align = getAlign();
+        processedChildContent.forEach(o -> {
+            if (isInstanceOf(P.class, o)) {
+                P p = (P) o;
+                if (align != null) {
+                    PPrBuilder pPrBuilder = WmlBuilderFactory.getPPrBuilder().withJc(align);
+                    pPrBuilder = new PPrBuilder(p.getPPr(), pPrBuilder.getObject());
+                    p.setPPr(pPrBuilder.getObject());
+                }
+            }
+            tcBuilder.addContent(o);
+        });
         return singletonList(tcBuilder.getObject());
     }
 
@@ -77,6 +93,28 @@ public class EntryBuilder extends BlockBuilder<Entry> {
             }
         }
         return val;
+    }
+
+    private JcEnumeration getAlign() {
+        JcEnumeration jcEnumeration = null;
+        Align align = source.getAlign();
+        if (align != null) {
+            switch (align) {
+                case LEFT:
+                    jcEnumeration = JcEnumeration.LEFT;
+                    break;
+                case CENTER:
+                    jcEnumeration = JcEnumeration.CENTER;
+                    break;
+                case RIGHT:
+                    jcEnumeration = JcEnumeration.RIGHT;
+                    break;
+                case JUSTIFY:
+                    jcEnumeration = JcEnumeration.BOTH;
+                    break;
+            }
+        }
+        return jcEnumeration;
     }
 
     public void setColumnSpecAdapter(ColumnSpecAdapter columnSpecAdapter) {

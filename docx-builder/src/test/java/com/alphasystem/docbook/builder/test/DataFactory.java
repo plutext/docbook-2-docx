@@ -113,6 +113,14 @@ public final class DataFactory {
                 .withTableBody(tableBody).withTableFooter(tableFooter).withColSpec(columnSpecs);
     }
 
+    public static TableFooter createTableFooter(Align align, VerticalAlign verticalAlign, Row... rows) {
+        return objectFactory.createTableFooter().withAlign(align).withVAlign(verticalAlign).withRow(rows);
+    }
+
+    public static TableHeader createTableHeader(Align align, VerticalAlign verticalAlign, Row... rows) {
+        return objectFactory.createTableHeader().withAlign(align).withVAlign(verticalAlign).withRow(rows);
+    }
+
     public static Term createTerm(Object... content) {
         return objectFactory.createTerm().withContent(content);
     }
