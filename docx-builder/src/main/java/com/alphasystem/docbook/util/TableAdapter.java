@@ -14,7 +14,6 @@ import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.*;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.docx4j.sharedtypes.STOnOff.ONE;
-import static org.docx4j.sharedtypes.STOnOff.ZERO;
 
 /**
  * @author sali
@@ -38,7 +37,7 @@ public final class TableAdapter {
         TblWidth tblWidth = getTblWidthBuilder().withType(TYPE_PCT).withW(columnSpecAdapter.getTotalTableWidth().toString()).getObject();
 
         CTTblLook cTTblLook = getCTTblLookBuilder().withFirstRow(ONE).withLastRow(ONE).withFirstColumn(ONE)
-                .withLastColumn(ZERO).withNoVBand(ONE).withNoHBand(ZERO).getObject();
+                .withLastColumn(ONE).withNoVBand(ONE).withNoHBand(ONE).getObject();
 
         tableStyle = isBlank(tableStyle) ? "TableGrid" : tableStyle;
         TblPr tblPr = getTblPrBuilder().withTblStyle(tableStyle).withTblW(tblWidth).withTblLook(cTTblLook).getObject();

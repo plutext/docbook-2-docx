@@ -72,30 +72,30 @@ var handleSideBar = function () {
     return new com.alphasystem.openxml.builder.wml.TableAdapter(1).startTable(tblPr).startRow().addColumn(0, null, tcPr, null).endRow().getTable();
 };
 
-var handleCaution = function (admonitionCaptionStyle, captionText) {
-    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+var handleCaution = function (captionText) {
+    return handleAdmonition(15, captionText);
 };
 
-var handleImportant = function (admonitionCaptionStyle, captionText) {
-    return handleAdmonition(20, admonitionCaptionStyle, captionText);
+var handleImportant = function (captionText) {
+    return handleAdmonition(20, captionText);
 };
 
-var handleNote = function (admonitionCaptionStyle, captionText) {
-    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+var handleNote = function (captionText) {
+    return handleAdmonition(15, captionText);
 };
 
-var handleTip = function (admonitionCaptionStyle, captionText) {
-    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+var handleTip = function (captionText) {
+    return handleAdmonition(15, captionText);
 };
 
-var handleWarning = function (admonitionCaptionStyle, captionText) {
-    return handleAdmonition(15, admonitionCaptionStyle, captionText);
+var handleWarning = function (captionText) {
+    return handleAdmonition(15, captionText);
 };
 
-var handleAdmonition = function (widthOfCaptionColumn, admonitionCaptionStyle, captionText) {
+var handleAdmonition = function (widthOfCaptionColumn, captionText) {
     var widthOfContentColumn = 100.0 - widthOfCaptionColumn;
     return new com.alphasystem.openxml.builder.wml.TableAdapter(widthOfCaptionColumn, widthOfContentColumn)
         .startTable("AdmonitionTable").startRow()
-        .addColumn(0, adapter.getParagraphWithStyle(admonitionCaptionStyle, captionText))
+        .addColumn(0, adapter.getParagraph(captionText))
         .addColumn(1).endRow().getTable();
 };

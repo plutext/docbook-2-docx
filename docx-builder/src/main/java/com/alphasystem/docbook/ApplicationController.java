@@ -89,9 +89,8 @@ public final class ApplicationController {
     public Tbl getAdmonitionTable(Admonition admonition) {
         final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
         final String handler = configurationUtils.getString(format("%s.handler", admonition.name()));
-        final String admonitionCaptionStyle = configurationUtils.getAdmonitionCaptionStyle(admonition);
         final String captionText = getAdmonitionCaption(admonition, documentInfo);
-        return getTable(handler, admonitionCaptionStyle, captionText);
+        return getTable(handler, captionText);
     }
 
     public String getAdmonitionCaption(Admonition admonition, AsciiDocumentInfo documentInfo) {
