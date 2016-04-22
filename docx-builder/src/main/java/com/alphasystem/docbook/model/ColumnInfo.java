@@ -21,6 +21,10 @@ public final class ColumnInfo implements Serializable, Comparable<ColumnInfo> {
         this(0);
     }
 
+    public ColumnInfo(String name){
+        this(0, name);
+    }
+
     public ColumnInfo(int columnNumber) {
         this(columnNumber, null);
     }

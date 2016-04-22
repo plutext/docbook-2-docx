@@ -62,4 +62,9 @@ public final class ColumnSpecAdapter {
     public BigDecimal getTotalTableWidth() {
         return totalTableWidth;
     }
+
+    public ColumnInfo getColumnInfo(String name) {
+        final int i = columnInfos.indexOf(new ColumnInfo(name));
+        return columnInfos.get(i);
+    }
 }

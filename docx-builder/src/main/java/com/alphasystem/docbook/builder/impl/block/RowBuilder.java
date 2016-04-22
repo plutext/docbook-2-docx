@@ -18,6 +18,7 @@ import static java.util.Collections.singletonList;
 public class RowBuilder extends BlockBuilder<Row> {
 
     protected ColumnSpecAdapter columnSpecAdapter;
+    protected int nextColumnIndex = 0;
 
     public RowBuilder(Builder parent, Row source, int indexInParent) {
         super(parent, source, indexInParent);
@@ -30,9 +31,10 @@ public class RowBuilder extends BlockBuilder<Row> {
 
     @Override
     protected Builder getChildBuilder(Object o, int index) {
-        final Builder childBuilder = super.getChildBuilder(o, index);
-        if(isInstanceOf(EntryBuilder.class, childBuilder)) {
-            ((EntryBuilder) childBuilder).setColumnSpecAdapter(columnSpecAdapter);
+        final Builder childBuilder = super.getChildBuilder(o, nextColumnIndex);
+        if (isInstanceOf(EntryBuilder.class, childBuilder)) {
+            final EntryBuilder entryBuilder = (EntryBuilder) childBuilder;
+            entryBuilder.setColumnSpecAdapter(columnSpecAdapter);
         }
         return childBuilder;
     }
@@ -46,5 +48,9 @@ public class RowBuilder extends BlockBuilder<Row> {
 
     public void setColumnSpecAdapter(ColumnSpecAdapter columnSpecAdapter) {
         this.columnSpecAdapter = columnSpecAdapter;
+    }
+
+    void updateNextColumnIndex(int gridSpan) {
+        nextColumnIndex += gridSpan;
     }
 }

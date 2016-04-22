@@ -2,6 +2,7 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
+import com.alphasystem.docbook.model.ColumnInfo;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
@@ -21,6 +22,7 @@ import static com.alphasystem.docbook.util.TableAdapter.getColumnProperties;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcPrBuilder;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
+import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 
 /**
@@ -42,8 +44,30 @@ public class EntryBuilder extends BlockBuilder<Entry> {
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
         TcPr tcPr = getTcPrBuilder().withVAlign(getVerticalAlign()).getObject();
-        // TODO: column span
-        tcPr = getColumnProperties(columnSpecAdapter, indexInParent, 1, tcPr);
+        // TODO: row span
+        int gridSpan = 1;
+        int columnIndex = indexInParent;
+        final String nameStart = source.getNameStart();
+        final String nameEnd = source.getNameEnd();
+        if (nameStart != null && nameEnd != null) {
+            final ColumnInfo startColumn = columnSpecAdapter.getColumnInfo(nameStart);
+            if (startColumn == null) {
+                throw new RuntimeException(format("No column info found with name \"%s\".", nameStart));
+            }
+            final ColumnInfo endColumn = columnSpecAdapter.getColumnInfo(nameEnd);
+            if (endColumn == null) {
+                throw new RuntimeException(format("No column info found with name \"%s\".", nameEnd));
+            }
+            final int startColumnColumnNumber = startColumn.getColumnNumber();
+            final int endColumnColumnNumber = endColumn.getColumnNumber();
+            gridSpan = endColumnColumnNumber - startColumnColumnNumber + 1;
+            if (gridSpan < 1) {
+                throw new RuntimeException(format("Invalid start (%s) and end (%s) column indices for columns \"%s\" and \"%s\" respectively.",
+                        startColumnColumnNumber, endColumnColumnNumber, nameStart, nameEnd));
+            }
+        }
+        ((RowBuilder)getParent()).updateNextColumnIndex(gridSpan);
+        tcPr = getColumnProperties(columnSpecAdapter, columnIndex, gridSpan, tcPr);
         TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
         JcEnumeration align = getAlign();
         processedChildContent.forEach(o -> {
@@ -65,7 +89,7 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         if (!isInstanceOf(TableContentBuilder.class, parent)) {
             // EntryBuilder immediate parent should be RowBuilder and RowBuilder parent must be either of TableBodyBuilder,
             // TableHeaderBuilder, or TableFooterBuilder, if not raise exception
-            throw new RuntimeException(String.format("Found different parent \"%s\".", parent.getClass().getName()));
+            throw new RuntimeException(format("Found different parent \"%s\".", parent.getClass().getName()));
         }
         final Object parentSource = parent.getSource();
         final VerticalAlign parentAlign = (VerticalAlign) invokeMethod(parentSource, "getVAlign");

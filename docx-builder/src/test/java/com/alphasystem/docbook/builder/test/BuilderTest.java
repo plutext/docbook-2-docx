@@ -43,6 +43,8 @@ import static com.alphasystem.util.IdGenerator.nextId;
 import static java.lang.String.format;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
+import static org.docbook.model.Align.LEFT;
+import static org.docbook.model.BasicVerticalAlign.TOP;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 import static org.testng.Reporter.log;
@@ -118,13 +120,13 @@ public class BuilderTest {
     }
 
     @BeforeMethod
-    public void startTest(Method method){
+    public void startTest(Method method) {
         log("-----------------------------------------------------------------------------------------", true);
         log(format("Stating test \"%s\".", method.getName()), true);
     }
 
     @AfterMethod
-    public void endTest(Method method){
+    public void endTest(Method method) {
         log(format("Test \"%s\" end.", method.getName()), true);
         log("-----------------------------------------------------------------------------------------", true);
     }
@@ -400,16 +402,16 @@ public class BuilderTest {
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testSimpleTable() {
-        Entry entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 1"));
-        Entry entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 1"));
+        Entry entry1 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 1, row 1"));
+        Entry entry2 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 2, row 1"));
         final Row row1 = createRow(entry1, entry2);
 
-        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 2"));
-        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 2"));
+        entry1 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 1, row 2"));
+        entry2 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 2, row 2"));
         final Row row2 = createRow(entry1, entry2);
 
-        entry1 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 1, row 3"));
-        entry2 = createEntry(Align.LEFT, BasicVerticalAlign.TOP, createSimplePara(null, "Cell in column 2, row 3"));
+        entry1 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 1, row 3"));
+        entry2 = createEntry(LEFT, TOP, createSimplePara(null, "Cell in column 2, row 3"));
         final Row row3 = createRow(entry1, entry2);
 
         final TableBody tableBody = createTableBody(null, null, row1, row2, row3);
@@ -470,11 +472,55 @@ public class BuilderTest {
         addResult(null, 0, 1, "Table With Header And Footer Test", table);
     }
 
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableColumnSpan() {
+        Entry entry1 = _createEntry(LEFT, TOP, "col_1", "col_4", null, "Row 1, Column Span 1 - 4");
+        final Row row1 = createRow(entry1);
+
+        entry1 = _createEntry(LEFT, TOP, "col_1", "col_2", null, "Row 2, Column Span 1 - 2");
+        Entry entry2 = _createEntry(LEFT, TOP, "col_3", "col_4", null, "Row 2, Column Span 3 - 4");
+        final Row row2 = createRow(entry1, entry2);
+
+        entry1 = _createEntry(LEFT, TOP, "Row 3, Column 1");
+        entry2 = _createEntry(LEFT, TOP, "col_2", "col_4", null, "Row 3, Column Span 2 - 4");
+        final Row row3 = createRow(entry1, entry2);
+
+        entry1 = _createEntry(LEFT, TOP, "col_1", "col_2", null, "Row 4, Column Span 1 - 2");
+        entry2 = _createEntry(LEFT, TOP, "Row 4, Column 3");
+        Entry entry3 = _createEntry(LEFT, TOP, "Row 4, Column 4");
+        final Row row4 = createRow(entry1, entry2, entry3);
+
+        entry1 = _createEntry(LEFT, TOP, "Row 5, Column 1");
+        entry2 = _createEntry(LEFT, TOP, "col_2", "col_3", null, "Row 5, Column Span 2 - 3");
+        entry3 = _createEntry(LEFT, TOP, "Row 5, Column 4");
+        final Row row5 = createRow(entry1, entry2, entry3);
+
+        entry1 = _createEntry(LEFT, TOP, "Row 6, Column 1");
+        entry2 = _createEntry(LEFT, TOP, "Row 6, Column 2");
+        entry3 = _createEntry(LEFT, TOP, "col_3", "col_4", null, "Row 6, Column Span 3 - 4");
+        final Row row6 = createRow(entry1, entry2, entry3);
+
+        final Row row7 = _createRow(4, 7);
+
+        final TableBody tableBody = createTableBody(null, null, row1, row2, row3, row4, row5, row6, row7);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 25, 20, 35, 20);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Column Span Test", table);
+    }
+
+    private Entry _createEntry(Align align, BasicVerticalAlign vAlign, String text) {
+        return _createEntry(align, vAlign, null, null, null, text);
+    }
+
+    private Entry _createEntry(Align align, BasicVerticalAlign vAlign, String nameStart, String nameEnd, String moreRows,
+                               String text) {
+        return createEntry(align, vAlign, nameStart, nameEnd, moreRows, createSimplePara(nextId(), text));
+    }
+
     private TableHeader _createHeader(int numOfColumns) {
         Entry[] entries = new Entry[numOfColumns];
         for (int i = 0; i < numOfColumns; i++) {
-            final SimplePara simplePara = createSimplePara(nextId(), format("Header %s", (i + 1)));
-            entries[i] = createEntry(Align.LEFT, BasicVerticalAlign.TOP, simplePara);
+            entries[i] = _createEntry(LEFT, TOP, format("Header %s", (i + 1)));
         }
         return createTableHeader(null, null, createRow(entries));
     }
@@ -482,8 +528,7 @@ public class BuilderTest {
     private TableFooter _createFooter(int numOfColumns) {
         Entry[] entries = new Entry[numOfColumns];
         for (int i = 0; i < numOfColumns; i++) {
-            final SimplePara simplePara = createSimplePara(nextId(), format("Footer %s", (i + 1)));
-            entries[i] = createEntry(Align.LEFT, BasicVerticalAlign.TOP, simplePara);
+            entries[i] = _createEntry(LEFT, TOP, format("Footer %s", (i + 1)));
         }
         return createTableFooter(null, null, createRow(entries));
     }
@@ -493,11 +538,10 @@ public class BuilderTest {
     }
 
     private Row _createRow(int numOfColumns, int row, BasicVerticalAlign verticalAlign) {
-        verticalAlign = (verticalAlign == null) ? BasicVerticalAlign.TOP : verticalAlign;
+        verticalAlign = (verticalAlign == null) ? TOP : verticalAlign;
         Entry[] entries = new Entry[numOfColumns];
         for (int i = 0; i < numOfColumns; i++) {
-            final SimplePara simplePara = createSimplePara(nextId(), format("Cell in column %s, row %s", (i + 1), row));
-            entries[i] = createEntry(Align.LEFT, verticalAlign, simplePara);
+            entries[i] = _createEntry(LEFT, verticalAlign, format("Row %s, Column %s", row, (i + 1)));
         }
         return createRow(entries);
     }

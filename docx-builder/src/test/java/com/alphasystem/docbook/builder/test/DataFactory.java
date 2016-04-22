@@ -23,7 +23,13 @@ public final class DataFactory {
     }
 
     public static Entry createEntry(Align align, BasicVerticalAlign vAlign, Object... content) {
-        return objectFactory.createEntry().withAlign(align).withValign(vAlign).withContent(content);
+        return createEntry(align, vAlign, null, null, null, content);
+    }
+
+    public static Entry createEntry(Align align, BasicVerticalAlign vAlign, String nameStart, String nameEnd,
+                                    String moreRows, Object... content){
+        return objectFactory.createEntry().withAlign(align).withValign(vAlign).withNameStart(nameStart).withNameEnd(nameEnd)
+                .withMoreRows(moreRows).withContent(content);
     }
 
     public static Emphasis createEmphasis(String role, Object... content) {
