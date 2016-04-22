@@ -4,16 +4,14 @@ import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.model.ColumnInfo;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
-import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
-import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import org.docbook.model.Align;
 import org.docbook.model.BasicVerticalAlign;
 import org.docbook.model.Entry;
 import org.docbook.model.VerticalAlign;
 import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.P;
 import org.docx4j.wml.STVerticalJc;
+import org.docx4j.wml.Tc;
 import org.docx4j.wml.TcPr;
 
 import java.util.List;
@@ -30,7 +28,7 @@ import static java.util.Collections.singletonList;
  */
 public class EntryBuilder extends BlockBuilder<Entry> {
 
-    protected ColumnSpecAdapter columnSpecAdapter;
+    protected Tc column;
 
     public EntryBuilder(Builder parent, Entry entry, int indexInParent) {
         super(parent, entry, indexInParent);
@@ -38,15 +36,34 @@ public class EntryBuilder extends BlockBuilder<Entry> {
 
     @Override
     protected void initContent() {
+        initializeColumn();
         content = source.getContent();
+    }
+
+    private void initializeColumn() {
+        final AbstractTableBuilder tableBuilder = getParent(AbstractTableBuilder.class);
+        final ColumnSpecAdapter columnSpecAdapter = tableBuilder.getColumnSpecAdapter();
+        TcPr tcPr = getTcPrBuilder().withVAlign(getVerticalAlign()).getObject();
+        // TODO: row span
+        int columnIndex = indexInParent;
+        int gridSpan = getGridSpan(columnSpecAdapter);
+        ((RowBuilder) getParent()).updateNextColumnIndex(gridSpan);
+        tcPr = getColumnProperties(columnSpecAdapter, columnIndex, gridSpan, tcPr);
+        TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
+        // TODO: use align to make column content align
+        @SuppressWarnings("unused")
+        JcEnumeration align = getAlign();
+        column = tcBuilder.getObject();
     }
 
     @Override
     protected List<Object> postProcess(List<Object> processedTitleContent, List<Object> processedChildContent) {
-        TcPr tcPr = getTcPrBuilder().withVAlign(getVerticalAlign()).getObject();
-        // TODO: row span
+        processedChildContent.forEach(o -> column.getContent().add(o));
+        return singletonList(column);
+    }
+
+    private int getGridSpan(ColumnSpecAdapter columnSpecAdapter) {
         int gridSpan = 1;
-        int columnIndex = indexInParent;
         final String nameStart = source.getNameStart();
         final String nameEnd = source.getNameEnd();
         if (nameStart != null && nameEnd != null) {
@@ -66,22 +83,7 @@ public class EntryBuilder extends BlockBuilder<Entry> {
                         startColumnColumnNumber, endColumnColumnNumber, nameStart, nameEnd));
             }
         }
-        ((RowBuilder)getParent()).updateNextColumnIndex(gridSpan);
-        tcPr = getColumnProperties(columnSpecAdapter, columnIndex, gridSpan, tcPr);
-        TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
-        JcEnumeration align = getAlign();
-        processedChildContent.forEach(o -> {
-            if (isInstanceOf(P.class, o)) {
-                P p = (P) o;
-                if (align != null) {
-                    PPrBuilder pPrBuilder = WmlBuilderFactory.getPPrBuilder().withJc(align);
-                    pPrBuilder = new PPrBuilder(p.getPPr(), pPrBuilder.getObject());
-                    p.setPPr(pPrBuilder.getObject());
-                }
-            }
-            tcBuilder.addContent(o);
-        });
-        return singletonList(tcBuilder.getObject());
+        return gridSpan;
     }
 
     private STVerticalJc getVerticalAlign() {
@@ -141,7 +143,4 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         return jcEnumeration;
     }
 
-    public void setColumnSpecAdapter(ColumnSpecAdapter columnSpecAdapter) {
-        this.columnSpecAdapter = columnSpecAdapter;
-    }
 }
