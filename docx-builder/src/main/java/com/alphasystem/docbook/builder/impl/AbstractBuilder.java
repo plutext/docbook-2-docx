@@ -136,12 +136,12 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
     }
 
     @SuppressWarnings({"unchecked"})
-    protected <T extends BlockBuilder> T getParent(Class<T> builderClass) {
-        T result = null;
+    protected <B extends BlockBuilder> B getParent(Class<B> builderClass) {
+        B result = null;
         Builder currentParent = parent;
         while (currentParent != null) {
             if (isInstanceOf(builderClass, currentParent)) {
-                result = (T) currentParent;
+                result = (B) currentParent;
                 break;
             }
             currentParent = currentParent.getParent();
