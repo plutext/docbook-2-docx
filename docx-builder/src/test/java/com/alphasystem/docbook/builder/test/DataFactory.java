@@ -27,7 +27,7 @@ public final class DataFactory {
     }
 
     public static Entry createEntry(Align align, BasicVerticalAlign vAlign, String nameStart, String nameEnd,
-                                    String moreRows, Object... content){
+                                    String moreRows, Object... content) {
         return objectFactory.createEntry().withAlign(align).withValign(vAlign).withNameStart(nameStart).withNameEnd(nameEnd)
                 .withMoreRows(moreRows).withContent(content);
     }

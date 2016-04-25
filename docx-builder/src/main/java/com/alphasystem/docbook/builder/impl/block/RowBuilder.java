@@ -28,6 +28,7 @@ public class RowBuilder extends BlockBuilder<Row> {
 
     @Override
     protected Builder getChildBuilder(Object o, int index) {
+        // In case where column is span more then one column "nextColumnIndex" will be different then "index"
         return super.getChildBuilder(o, nextColumnIndex);
     }
 

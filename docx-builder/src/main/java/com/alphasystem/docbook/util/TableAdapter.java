@@ -47,7 +47,7 @@ public final class TableAdapter {
     }
 
     public static TcPr getColumnProperties(ColumnSpecAdapter columnSpecAdapter, Integer columnIndex, Integer gridSpanValue,
-                                           TcPr columnProperties) throws ArrayIndexOutOfBoundsException {
+                                           VerticalMergeType verticalMergeType, TcPr columnProperties) throws ArrayIndexOutOfBoundsException {
         List<ColumnInfo> columnInfos = columnSpecAdapter.getColumnInfos();
         checkColumnIndex(columnInfos, columnIndex);
         final ColumnInfo columnInfo = columnInfos.get(columnIndex);
@@ -64,8 +64,15 @@ public final class TableAdapter {
             gs = gridSpanValue;
         }
 
+        TcPrBuilder tcPrBuilder = getTcPrBuilder();
+        TcPrInner.VMerge vMerge = null;
+        if (verticalMergeType != null) {
+            vMerge = tcPrBuilder.getVMergeBuilder().withVal(verticalMergeType.getValue()).getObject();
+        }
+
         TblWidth tblWidth = getTblWidthBuilder().withType(TYPE_PCT).withW(columnWidth.longValue()).getObject();
-        TcPrBuilder tcPrBuilder = getTcPrBuilder().withGridSpan(gs).withTcW(tblWidth);
+        tcPrBuilder.withGridSpan(gs).withTcW(tblWidth).withVMerge(vMerge);
+
         return new TcPrBuilder(tcPrBuilder.getObject(), columnProperties).getObject();
     }
 
@@ -85,6 +92,21 @@ public final class TableAdapter {
             throw new ArrayIndexOutOfBoundsException(
                     format("Invalid columnIndex {%s}, expected values are between %s and %s",
                             columnIndex, 0, (numOfColumns - 1)));
+        }
+    }
+
+    public enum VerticalMergeType {
+
+        RESTART("restart"), CONTINUE(null);
+
+        private final String value;
+
+        VerticalMergeType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 }
