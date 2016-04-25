@@ -508,7 +508,7 @@ public class BuilderTest {
         addResult(null, 0, 1, "Table With Column Span Test", table);
     }
 
-    @Test (groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTableRowSpan() {
         final Row row1 = _createRow(4, 1);
 
@@ -527,6 +527,18 @@ public class BuilderTest {
         final TableGroup tableGroup = createTableGroup(null, tableBody, null, 25, 25, 25, 25);
         final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
         addResult(null, 0, 1, "Table With Row Span Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableRowAndColumnSpan() {
+        Entry entry1 = _createEntry(LEFT, TOP, "col_1", "col_2", "2", "Row 1, Column 1 & 2");
+        Entry entry2 = _createEntry(LEFT, TOP, "col_2", "col_3", "2", "Row 1, Column 3 & 4");
+        final Row row2 = createRow(entry1, entry2);
+
+        final TableBody tableBody = createTableBody(null, null, row2);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 25, 25, 25, 25);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Row & Column Span Test", table);
     }
 
     private Entry _createEntry(Align align, BasicVerticalAlign vAlign, String text) {
