@@ -57,7 +57,7 @@ public final class TableAdapter {
             // sanity check, make sure we are not going out of bound
             checkColumnIndex(columnInfos, columnIndex + gridSpanValue - 1);
             // iterate through width and get the total width for the grid span
-            for (int i = columnIndex + 1; i < gridSpanValue; i++) {
+            for (int i = columnIndex + 1; i < columnIndex + gridSpanValue; i++) {
                 final ColumnInfo columnInfo1 = columnInfos.get(i);
                 columnWidth = columnWidth.add(new BigDecimal(columnInfo1.getColumnWidth()));
             }
