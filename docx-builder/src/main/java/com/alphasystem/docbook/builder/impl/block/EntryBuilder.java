@@ -5,15 +5,13 @@ import com.alphasystem.docbook.builder.impl.BlockBuilder;
 import com.alphasystem.docbook.model.ColumnInfo;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.docbook.util.TableAdapter;
+import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
 import org.docbook.model.Align;
 import org.docbook.model.BasicVerticalAlign;
 import org.docbook.model.Entry;
 import org.docbook.model.VerticalAlign;
-import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.STVerticalJc;
-import org.docx4j.wml.Tc;
-import org.docx4j.wml.TcPr;
+import org.docx4j.wml.*;
 
 import java.util.List;
 
@@ -21,8 +19,7 @@ import static com.alphasystem.docbook.util.TableAdapter.VerticalMergeType.CONTIN
 import static com.alphasystem.docbook.util.TableAdapter.VerticalMergeType.RESTART;
 import static com.alphasystem.docbook.util.TableAdapter.getColumnProperties;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.getEmptyPara;
-import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcBuilder;
-import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTcPrBuilder;
+import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.*;
 import static com.alphasystem.util.AppUtil.isInstanceOf;
 import static java.lang.String.format;
 import static java.util.Collections.singletonList;
@@ -60,9 +57,6 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         }
         tcPr = getColumnProperties(columnSpecAdapter, columnIndex, gridSpan, vMergeType, tcPr);
         TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
-        // TODO: use align to make column content align
-        @SuppressWarnings("unused")
-        JcEnumeration align = getAlign();
         column = tcBuilder.getObject();
     }
 
@@ -71,7 +65,16 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         if (processedChildContent.isEmpty()) {
             column.getContent().add(getEmptyPara());
         } else {
-            processedChildContent.forEach(o -> column.getContent().add(o));
+            JcEnumeration align = getAlign();
+            processedChildContent.forEach(o -> {
+                if (isInstanceOf(P.class, o)) {
+                    PPrBuilder pPrBuilder = getPPrBuilder().withJc(align);
+                    final P p = (P) o;
+                    pPrBuilder = new PPrBuilder(pPrBuilder.getObject(), p.getPPr());
+                    p.setPPr(pPrBuilder.getObject());
+                }
+                column.getContent().add(o);
+            });
         }
         return singletonList(column);
     }

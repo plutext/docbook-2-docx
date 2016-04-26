@@ -43,7 +43,9 @@ import static com.alphasystem.util.IdGenerator.nextId;
 import static java.lang.String.format;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
+import static org.docbook.model.Align.CENTER;
 import static org.docbook.model.Align.LEFT;
+import static org.docbook.model.BasicVerticalAlign.MIDDLE;
 import static org.docbook.model.BasicVerticalAlign.TOP;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
@@ -424,7 +426,7 @@ public class BuilderTest {
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTableVAlignMiddle() {
         final int numOfColumns = 2;
-        final BasicVerticalAlign verticalAlign = BasicVerticalAlign.MIDDLE;
+        final BasicVerticalAlign verticalAlign = MIDDLE;
         final TableBody tableBody = createTableBody(null, null, _createRow(numOfColumns, 1, verticalAlign),
                 _createRow(numOfColumns, 2, verticalAlign));
         final TableGroup tableGroup = createTableGroup(null, tableBody, null, 192, 192);
@@ -531,8 +533,8 @@ public class BuilderTest {
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTableRowAndColumnSpan() {
-        Entry entry1 = _createEntry(LEFT, TOP, "col_1", "col_2", "2", "Row 1, Column 1 & 2");
-        Entry entry2 = _createEntry(LEFT, TOP, "col_2", "col_3", "2", "Row 1, Column 3 & 4");
+        Entry entry1 = _createEntry(CENTER, MIDDLE, "col_1", "col_2", "2", "Row 1, Column 1 & 2");
+        Entry entry2 = _createEntry(CENTER, MIDDLE, "col_2", "col_3", "2", "Row 1, Column 3 & 4");
         final Row row2 = createRow(entry1, entry2);
 
         final TableBody tableBody = createTableBody(null, null, row2);
