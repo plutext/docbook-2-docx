@@ -193,6 +193,7 @@
             </w:pPr>
             <w:rPr>
                 <w:rStyle w:val="Strong"/>
+                <w:color w:val="099BDD" w:themeColor="text2"/>
             </w:rPr>
             <w:tcPr>
                 <w:vAlign w:val="center"/>
@@ -223,6 +224,7 @@
             </w:pPr>
             <w:rPr>
                 <w:rStyle w:val="Strong"/>
+                <w:color w:val="099BDD" w:themeColor="text2"/>
             </w:rPr>
             <w:tcPr>
                 <w:vAlign w:val="center"/>
@@ -253,6 +255,7 @@
             </w:pPr>
             <w:rPr>
                 <w:rStyle w:val="Strong"/>
+                <w:color w:val="099BDD" w:themeColor="text2"/>
             </w:rPr>
             <w:tcPr>
                 <w:vAlign w:val="center"/>
@@ -264,6 +267,7 @@
             </w:pPr>
             <w:rPr>
                 <w:rStyle w:val="Strong"/>
+                <w:color w:val="099BDD" w:themeColor="text2"/>
             </w:rPr>
             <w:tcPr>
                 <w:vAlign w:val="center"/>
