@@ -499,10 +499,7 @@ public class AsciiDocumentInfo {
     }
 
     public void populateAttributes(Map<String, Object> attributes) {
-        attributes.entrySet().forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
-        //setValue(this, attributes, "doctype", "setDocumentType", String.class);
-
-        String s = null;
+        String s;
         s = getFailSafeString(attributes, "doctype");
         if (s != null) {
             setDocumentType(s);

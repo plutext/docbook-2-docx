@@ -62,17 +62,14 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
     }
 
     private static String getNextMoreRows(String moreRows) {
-        // System.out.print(format("More Rows before \"%s\", ", moreRows));
         if (moreRows.endsWith("*")) {
             moreRows = moreRows.substring(0, moreRows.length() - 1);
         }
         final int i = Integer.parseInt(moreRows) - 1;
         if (i < 0) {
-            // System.out.println("None");
             return null;
         }
         moreRows = format("%s*", i);
-        // System.out.println(format("More rows after \"%s\"", moreRows));
         return moreRows;
     }
 
