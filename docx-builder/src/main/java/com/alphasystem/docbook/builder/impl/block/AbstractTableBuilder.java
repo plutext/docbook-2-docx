@@ -18,6 +18,7 @@ import static com.alphasystem.openxml.builder.wml.WmlAdapter.getNilBorder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblBordersBuilder;
 import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.getTblPrBuilder;
 import static java.lang.String.format;
+import static org.docbook.model.Choice.ONE;
 
 /**
  * @author sali
@@ -51,7 +52,7 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         return tableStyle;
     }
 
-    protected void initializeTableAdapter(TableGroup tableGroup, Frame frame, String styleName) {
+    protected void initializeTableAdapter(TableGroup tableGroup, Frame frame, Choice rowSep, Choice colSep, String styleName) {
         int numOfColumns = Integer.parseInt(tableGroup.getCols());
         final List<ColumnSpec> colSpec = tableGroup.getColSpec();
         final boolean noColSpec = (colSpec == null) || colSpec.isEmpty();
@@ -60,7 +61,7 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
             throw new RuntimeException("Neither numOfColumns nor colSpec defined.");
         }
         columnSpecAdapter = new ColumnSpecAdapter(colSpec);
-        TblPrBuilder tblPrBuilder = getTblPrBuilder().withTblBorders(createFrame(frame));
+        TblPrBuilder tblPrBuilder = getTblPrBuilder().withTblBorders(createFrame(frame, rowSep, colSep));
         table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(tableGroup, styleName), tblPrBuilder.getObject());
     }
 
@@ -89,7 +90,7 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         }
     }
 
-    private TblBorders createFrame(Frame frame) {
+    private TblBorders createFrame(Frame frame, Choice rowSep, Choice colSep) {
         frame = (frame == null) ? Frame.NONE : frame;
         CTBorder top = getNilBorder();
         CTBorder left = getNilBorder();
@@ -139,11 +140,15 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
                 left = getDefaultBorder();
                 bottom = getDefaultBorder();
                 right = getDefaultBorder();
-                insideH = getDefaultBorder();
-                insideV = getDefaultBorder();
                 break;
             case NONE:
                 break;
+        }
+        if(ONE.equals(rowSep)){
+            insideH = getDefaultBorder();
+        }
+        if(ONE.equals(colSep)){
+            insideV = getDefaultBorder();
         }
         return getTblBordersBuilder().withTop(top).withLeft(left).withBottom(bottom)
                 .withRight(right).withInsideH(insideH).withInsideV(insideV).getObject();

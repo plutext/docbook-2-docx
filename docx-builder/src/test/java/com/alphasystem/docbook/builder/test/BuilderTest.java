@@ -543,6 +543,31 @@ public class BuilderTest {
         addResult(null, 0, 1, "Table With Row & Column Span Test", table);
     }
 
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testTableWithFrameAll() {
+        final Table table = tableBorderTest(Frame.ALL, Choice.ZERO, Choice.ZERO);
+        addResult(null, 0, 1, "Table With Frame ALL Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"}, dependsOnMethods = {"testTableWithFrameAll"})
+    public void testTableWithNoBorder() {
+        final Table table = tableBorderTest(Frame.NONE, Choice.ZERO, Choice.ZERO);
+        addResult(null, 0, 1, "Table With No Border Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"}, dependsOnMethods = {"testTableWithNoBorder"})
+    public void testTableWithNoFrame() {
+        final Table table = tableBorderTest(Frame.NONE, Choice.ONE, Choice.ONE);
+        addResult(null, 0, 1, "Table With No Frame Test", table);
+    }
+
+    private Table tableBorderTest(Frame frame, Choice colSep, Choice rowSep) {
+        final int numOfColumns = 4;
+        final TableBody tableBody = createTableBody(null, null, _createRows(numOfColumns, 3));
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 25, 25, 25, 25);
+        return createTable(null, frame, colSep, rowSep, null, tableGroup);
+    }
+
     private Entry _createEntry(Align align, BasicVerticalAlign vAlign, String text) {
         return _createEntry(align, vAlign, null, null, null, text);
     }
@@ -566,6 +591,14 @@ public class BuilderTest {
             entries[i] = _createEntry(LEFT, TOP, format("Footer %s", (i + 1)));
         }
         return createTableFooter(null, null, createRow(entries));
+    }
+
+    private Row[] _createRows(int numOfColumns, int numOfRows) {
+        Row[] rows = new Row[numOfRows];
+        for (int i = 0; i < numOfRows; i++) {
+            rows[i] = _createRow(numOfColumns, (i + 1));
+        }
+        return rows;
     }
 
     private Row _createRow(int numOfColumns, int row) {

@@ -23,7 +23,7 @@ public class TableBuilder extends AbstractTableBuilder<Table> {
         final List<TableGroup> tableGroups = source.getTableGroup();
         final TableGroup tableGroup = ((tableGroups != null) && !tableGroups.isEmpty()) ? tableGroups.get(0) : null;
         if (tableGroup != null) {
-            initializeTableAdapter(tableGroup, source.getFrame(), source.getTableStyle());
+            initializeTableAdapter(tableGroup, source.getFrame(), source.getRowSep(), source.getColSep(), source.getTableStyle());
             initializeContent(tableGroup);
         }
         final Title title = source.getTitle();
