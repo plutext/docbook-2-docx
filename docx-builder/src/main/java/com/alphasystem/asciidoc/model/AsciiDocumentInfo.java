@@ -4,10 +4,6 @@ import org.asciidoctor.AttributesBuilder;
 import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.Placement;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
@@ -74,15 +70,6 @@ public class AsciiDocumentInfo {
     private File previewFile;
 
     public AsciiDocumentInfo() {
-        try {
-            final BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
-            final PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                System.out.println(propertyDescriptor.getName() + " : " + propertyDescriptor.getReadMethod().getName());
-            }
-        } catch (IntrospectionException e) {
-            e.printStackTrace();
-        }
         attributesBuilder = AttributesBuilder.attributes();
         optionsBuilder = OptionsBuilder.options().attributes(attributesBuilder);
         setDocumentType(null);
