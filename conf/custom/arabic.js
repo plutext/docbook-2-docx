@@ -19,6 +19,11 @@ var arabicHeading1 = function (rprBuilder) {
     return arabicLabelWithSize(rprBuilder, 52);
 };
 
+var arabicTableCaption = function (rprBuilder) {
+    var color = factory.getColorBuilder().withVal("099BDD").withThemeColor(org.docx4j.wml.STThemeColor.TEXT_2).getObject();
+    return arabicLabelWithSize(rprBuilder, 40).withColor(color);
+};
+
 var arabicNormal = function (rprBuilder) {
     return arabicLabelWithSize(rprBuilder, 36);
 };
