@@ -2,8 +2,6 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
-import com.alphasystem.docbook.model.ColumnInfo;
-import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.docbook.util.TableAdapter;
 import com.alphasystem.openxml.builder.wml.PPrBuilder;
 import com.alphasystem.openxml.builder.wml.TcBuilder;
@@ -43,11 +41,10 @@ public class EntryBuilder extends BlockBuilder<Entry> {
 
     private void initializeColumn() {
         final AbstractTableBuilder tableBuilder = getParent(AbstractTableBuilder.class);
-        final ColumnSpecAdapter columnSpecAdapter = tableBuilder.getColumnSpecAdapter();
         TcPr tcPr = getTcPrBuilder().withVAlign(getVerticalAlign()).getObject();
 
         int columnIndex = indexInParent;
-        int gridSpan = getGridSpan(columnSpecAdapter);
+        int gridSpan = tableBuilder.getGridSpan(source.getNameStart(), source.getNameEnd());
         ((RowBuilder) getParent()).updateNextColumnIndex(gridSpan);
 
         final String moreRows = source.getMoreRows();
@@ -55,7 +52,7 @@ public class EntryBuilder extends BlockBuilder<Entry> {
         if (moreRows != null) {
             vMergeType = moreRows.endsWith("*") ? CONTINUE : RESTART;
         }
-        tcPr = getColumnProperties(columnSpecAdapter, columnIndex, gridSpan, vMergeType, tcPr);
+        tcPr = getColumnProperties(tableBuilder.getColumnSpecAdapter(), columnIndex, gridSpan, vMergeType, tcPr);
         TcBuilder tcBuilder = getTcBuilder().withTcPr(tcPr);
         column = tcBuilder.getObject();
     }
@@ -77,30 +74,6 @@ public class EntryBuilder extends BlockBuilder<Entry> {
             });
         }
         return singletonList(column);
-    }
-
-    private int getGridSpan(ColumnSpecAdapter columnSpecAdapter) {
-        int gridSpan = 1;
-        final String nameStart = source.getNameStart();
-        final String nameEnd = source.getNameEnd();
-        if (nameStart != null && nameEnd != null) {
-            final ColumnInfo startColumn = columnSpecAdapter.getColumnInfo(nameStart);
-            if (startColumn == null) {
-                throw new RuntimeException(format("No column info found with name \"%s\".", nameStart));
-            }
-            final ColumnInfo endColumn = columnSpecAdapter.getColumnInfo(nameEnd);
-            if (endColumn == null) {
-                throw new RuntimeException(format("No column info found with name \"%s\".", nameEnd));
-            }
-            final int startColumnColumnNumber = startColumn.getColumnNumber();
-            final int endColumnColumnNumber = endColumn.getColumnNumber();
-            gridSpan = endColumnColumnNumber - startColumnColumnNumber + 1;
-            if (gridSpan < 1) {
-                throw new RuntimeException(format("Invalid start (%s) and end (%s) column indices for columns \"%s\" and \"%s\" respectively.",
-                        startColumnColumnNumber, endColumnColumnNumber, nameStart, nameEnd));
-            }
-        }
-        return gridSpan;
     }
 
     private STVerticalJc getVerticalAlign() {

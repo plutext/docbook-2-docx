@@ -18,6 +18,21 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
 
     private static final ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
+    private static String getNextMoreRows(String moreRows) {
+        if (moreRows == null) {
+            return null;
+        }
+        if (moreRows.endsWith("*")) {
+            moreRows = moreRows.substring(0, moreRows.length() - 1);
+        }
+        final int i = Integer.parseInt(moreRows) - 1;
+        if (i < 0) {
+            return null;
+        }
+        moreRows = format("%s*", i);
+        return moreRows;
+    }
+
     protected TableContentBuilder(Builder parent, T source, int indexInParent) {
         super(parent, source, indexInParent);
     }
@@ -25,6 +40,7 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
     @Override
     protected void preProcess() {
         super.preProcess();
+        final AbstractTableBuilder tableBuilder = getParent(AbstractTableBuilder.class);
         Row nextRow = null;
         boolean hasNextRow = false;
         boolean hasMoreRows = false;
@@ -38,21 +54,21 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
             } else {
                 nextRow = OBJECT_FACTORY.createRow();
             }
+            int nextColumnIndex = 0;
             final List<Object> rowContent = currentRow.getContent();
-            for (int j = 0; j < rowContent.size(); j++) {
-                final Object o = rowContent.get(j);
+            for (final Object o : rowContent) {
                 if (isInstanceOf(Entry.class, o)) {
                     final Entry entry = (Entry) o;
-                    final String moreRows = entry.getMoreRows();
-                    hasMoreRows = moreRows != null;
+                    final String moreRows = getNextMoreRows(entry.getMoreRows());
+                    hasMoreRows = (moreRows != null);
+                    final String startColumnName = entry.getNameStart();
+                    final String endColumnName = entry.getNameEnd();
                     if (hasMoreRows) {
-                        final String nextMoreRows = getNextMoreRows(moreRows);
-                        if (nextMoreRows != null) {
-                            Entry nextEntry = OBJECT_FACTORY.createEntry().withMoreRows(nextMoreRows)
-                                    .withNameStart(entry.getNameStart()).withNameEnd(entry.getNameEnd());
-                            nextRow.getContent().add(j, nextEntry);
-                        }
+                        Entry nextEntry = OBJECT_FACTORY.createEntry().withMoreRows(moreRows)
+                                .withNameStart(startColumnName).withNameEnd(endColumnName);
+                        updateNextRow(nextRow, nextEntry, nextColumnIndex, tableBuilder);
                     } // end of if "hasMoreRows"
+                    nextColumnIndex += tableBuilder.getGridSpan(startColumnName, endColumnName);
                 } // end of Entry check
             } // end of inner for loop
         } // end of outer for loop
@@ -61,16 +77,27 @@ public abstract class TableContentBuilder<T> extends BlockBuilder<T> {
         }
     }
 
-    private static String getNextMoreRows(String moreRows) {
-        if (moreRows.endsWith("*")) {
-            moreRows = moreRows.substring(0, moreRows.length() - 1);
+    private void updateNextRow(Row row, Entry entry, int columnIndex, AbstractTableBuilder tableBuilder) {
+        final List<Object> content = row.getContent();
+        int index = 0;
+        final int size = content.size();
+        for (int i = 0; i < size; i++) {
+            if (index == columnIndex) {
+                index = i;
+                break;
+            }
+            final Object o = content.get(i);
+            if (isInstanceOf(Entry.class, o)) {
+                Entry currentEntry = (Entry) o;
+                index += tableBuilder.getGridSpan(currentEntry.getNameStart(), currentEntry.getNameEnd());
+            }
         }
-        final int i = Integer.parseInt(moreRows) - 1;
-        if (i < 0) {
-            return null;
+        if (index > size) {
+            content.add(entry);
+        } else {
+            content.add(index, entry);
         }
-        moreRows = format("%s*", i);
-        return moreRows;
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.alphasystem.docbook.builder.impl.block;
 
 import com.alphasystem.docbook.builder.Builder;
 import com.alphasystem.docbook.builder.impl.BlockBuilder;
+import com.alphasystem.docbook.model.ColumnInfo;
 import com.alphasystem.docbook.util.ColumnSpecAdapter;
 import com.alphasystem.docbook.util.TableAdapter;
 import com.alphasystem.openxml.builder.wml.TblPrBuilder;
@@ -144,10 +145,10 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
             case NONE:
                 break;
         }
-        if(ONE.equals(rowSep)){
+        if (ONE.equals(rowSep)) {
             insideH = getDefaultBorder();
         }
-        if(ONE.equals(colSep)){
+        if (ONE.equals(colSep)) {
             insideV = getDefaultBorder();
         }
         return getTblBordersBuilder().withTop(top).withLeft(left).withBottom(bottom)
@@ -156,5 +157,27 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
 
     ColumnSpecAdapter getColumnSpecAdapter() {
         return columnSpecAdapter;
+    }
+
+    int getGridSpan(String startColumnName, String endColumnName) {
+        int gridSpan = 1;
+        if (startColumnName != null && endColumnName != null) {
+            final ColumnInfo startColumn = columnSpecAdapter.getColumnInfo(startColumnName);
+            if (startColumn == null) {
+                throw new RuntimeException(format("No column info found with name \"%s\".", startColumnName));
+            }
+            final ColumnInfo endColumn = columnSpecAdapter.getColumnInfo(endColumnName);
+            if (endColumn == null) {
+                throw new RuntimeException(format("No column info found with name \"%s\".", endColumnName));
+            }
+            final int startColumnColumnNumber = startColumn.getColumnNumber();
+            final int endColumnColumnNumber = endColumn.getColumnNumber();
+            gridSpan = endColumnColumnNumber - startColumnColumnNumber + 1;
+            if (gridSpan < 1) {
+                throw new RuntimeException(format("Invalid start (%s) and end (%s) column indices for columns \"%s\" and \"%s\" respectively.",
+                        startColumnColumnNumber, endColumnColumnNumber, startColumnName, endColumnName));
+            }
+        }
+        return gridSpan;
     }
 }

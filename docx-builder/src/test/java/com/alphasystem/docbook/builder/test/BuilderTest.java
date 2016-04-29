@@ -544,6 +544,44 @@ public class BuilderTest {
     }
 
     @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
+    public void testComplexMultiRowColumnSpan() {
+        Entry entry1 = _createEntry(CENTER, MIDDLE, "col_1", "col_3", null, "");
+        Entry middleEntry = _createEntry(CENTER, MIDDLE, null, null, "4", "");
+        Entry entry2 = _createEntry(CENTER, MIDDLE, "col_3", "col_5", null, "");
+        Entry entry3 = _createEntry(CENTER, MIDDLE, null, null, "1", "");
+        final Row row1 = createRow(entry1, middleEntry, entry2, entry3);
+
+        Entry[] entries = new Entry[6];
+        for (int i = 0; i < entries.length; i++) {
+            entries[i] = _createEntry(CENTER, MIDDLE, null, null, null, "");
+        }
+        final Row row2 = createRow(entries);
+
+        entries = new Entry[7];
+        for (int i = 0; i < entries.length; i++) {
+            entries[i] = _createEntry(CENTER, MIDDLE, null, null, null, "");
+        }
+        final Row row3 = createRow(entries);
+
+        entries = new Entry[7];
+        for (int i = 0; i < entries.length; i++) {
+            entries[i] = _createEntry(CENTER, MIDDLE, null, null, null, "");
+        }
+        final Row row4 = createRow(entries);
+
+        entries = new Entry[7];
+        for (int i = 0; i < entries.length; i++) {
+            entries[i] = _createEntry(CENTER, MIDDLE, null, null, null, "");
+        }
+        final Row row5 = createRow(entries);
+
+        TableBody tableBody = createTableBody(null, null, row1, row2, row3, row4, row5);
+        final TableGroup tableGroup = createTableGroup(null, tableBody, null, 14, 14, 14, 1, 14, 14, 14, 15);
+        final Table table = createTable(null, Frame.ALL, Choice.ONE, Choice.ONE, null, tableGroup);
+        addResult(null, 0, 1, "Table With Row & Column Span Test", table);
+    }
+
+    @Test(groups = {"blockGroup"}, dependsOnGroups = {"listGroup"})
     public void testTableWithFrameAll() {
         final Table table = tableBorderTest(Frame.ALL, Choice.ZERO, Choice.ZERO);
         addResult(null, 0, 1, "Table With Frame ALL Test", table);
