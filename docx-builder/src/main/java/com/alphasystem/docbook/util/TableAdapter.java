@@ -14,6 +14,7 @@ import static com.alphasystem.openxml.builder.wml.WmlBuilderFactory.*;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.docx4j.sharedtypes.STOnOff.ONE;
+import static org.docx4j.wml.TblWidth.TYPE_DXA;
 
 /**
  * @author sali
@@ -21,11 +22,12 @@ import static org.docx4j.sharedtypes.STOnOff.ONE;
 public final class TableAdapter {
 
     private static final String TYPE_PCT = "pct";
+    private static final int DEFAULT_INDENT_VALUE = 720;
 
     private TableAdapter() {
     }
 
-    public static Tbl getTable(ColumnSpecAdapter columnSpecAdapter, String tableStyle, TblPr tableProperties) {
+    public static Tbl getTable(ColumnSpecAdapter columnSpecAdapter, String tableStyle, int indentLevel, TblPr tableProperties) {
         TblBuilder tblBuilder = getTblBuilder();
 
         TblGridBuilder tblGridBuilder = getTblGridBuilder();
@@ -40,7 +42,12 @@ public final class TableAdapter {
                 .withLastColumn(ONE).withNoVBand(ONE).withNoHBand(ONE).getObject();
 
         tableStyle = isBlank(tableStyle) ? "TableGrid" : tableStyle;
-        TblPr tblPr = getTblPrBuilder().withTblStyle(tableStyle).withTblW(tblWidth).withTblLook(cTTblLook).getObject();
+        TblWidth tblIndent = null;
+        if (indentLevel >= 0) {
+            long indentValue = DEFAULT_INDENT_VALUE + (indentLevel * DEFAULT_INDENT_VALUE);
+            tblIndent = getTblWidthBuilder().withType(TYPE_DXA).withW(indentValue).getObject();
+        }
+        TblPr tblPr = getTblPrBuilder().withTblStyle(tableStyle).withTblW(tblWidth).withTblInd(tblIndent).withTblLook(cTTblLook).getObject();
         TblPrBuilder tblPrBuilder = new TblPrBuilder(tblPr, tableProperties);
 
         return tblBuilder.withTblGrid(tblGridBuilder.getObject()).withTblPr(tblPrBuilder.getObject()).getObject();

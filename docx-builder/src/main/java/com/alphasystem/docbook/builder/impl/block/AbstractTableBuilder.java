@@ -63,7 +63,12 @@ public abstract class AbstractTableBuilder<T> extends BlockBuilder<T> {
         }
         columnSpecAdapter = new ColumnSpecAdapter(colSpec);
         TblPrBuilder tblPrBuilder = getTblPrBuilder().withTblBorders(createFrame(frame, rowSep, colSep));
-        table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(tableGroup, styleName), tblPrBuilder.getObject());
+        final ListItemBuilder listItemBuilder = getParent(ListItemBuilder.class);
+        int level = -1;
+        if (listItemBuilder != null) {
+            level = (int) listItemBuilder.getLevel();
+        }
+        table = TableAdapter.getTable(columnSpecAdapter, getTableStyle(tableGroup, styleName), level, tblPrBuilder.getObject());
     }
 
     @Override
