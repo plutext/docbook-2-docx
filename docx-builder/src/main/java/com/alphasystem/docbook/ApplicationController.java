@@ -5,6 +5,8 @@ import com.alphasystem.docbook.builder.model.Admonition;
 import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.docx4j.wml.Tbl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -26,11 +28,12 @@ import static java.nio.file.Paths.get;
 public final class ApplicationController {
 
     public static final String CONF = "conf";
-    public static final Path  CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF);
+    public static final Path CONF_PATH = get(System.getProperty("conf.path", USER_DIR), CONF);
     public static final String CONF_PATH_VALUE = CONF_PATH.toString();
     public static final String DEFAULT_TEMPLATE = get(CONF_PATH_VALUE, "default.dotx").toString();
-    public static final String STYLES_PATH =  get(CONF_PATH_VALUE, "styles.xml").toString();
+    public static final String STYLES_PATH = get(CONF_PATH_VALUE, "styles.xml").toString();
     private static final ThreadLocal<DocumentContext> CONTEXT = new ThreadLocal<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
     private static ApplicationController instance;
 
     public static void startContext(DocumentContext documentContext) {
@@ -68,6 +71,7 @@ public final class ApplicationController {
         try {
             result = engine.invokeFunction(functionName, args);
         } catch (ScriptException | NoSuchMethodException e) {
+            LOGGER.error("Error running script \"{}\".", functionName);
             e.printStackTrace();
             // ignore
         }
