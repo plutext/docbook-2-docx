@@ -27,7 +27,7 @@ public class LinkSupportBuilder<T> extends InlineBuilder<T> {
 
     @Override
     protected void initContent() {
-        style = HYPER_LINK;
+        styles = new String[]{HYPER_LINK};
     }
 
     @Override

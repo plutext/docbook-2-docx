@@ -17,7 +17,7 @@ public class SubscriptBuilder extends InlineBuilder<Subscript> {
 
     @Override
     protected void initContent() {
-        style = SUBSCRIPT;
+        styles = new String[]{SUBSCRIPT};
         content = source.getContent();
     }
 

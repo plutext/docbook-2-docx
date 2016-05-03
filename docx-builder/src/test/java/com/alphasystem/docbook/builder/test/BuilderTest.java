@@ -244,6 +244,16 @@ public class BuilderTest {
         addResult("Superscript Test", convertToRuns(content));
     }
 
+    @Test(groups = "inlineGroup")
+    public void testMultipleRoles(){
+        final Phrase phrase = createPhrase("literal line-through", "Text with multiple roles");
+        final List<Object> content = buildContent(null, -1, phrase);
+        assertEquals(content.size(), 1);
+        final R r = (R) content.get(0);
+        assertEquals(r.getClass().getName(), R.class.getName());
+        addResult("Multiple Roles Test", r);
+    }
+
     @Test(groups = "titleGroup", dependsOnGroups = "inlineGroup")
     public void testDocumentTitle() {
         final Builder parent = builderFactory.getBuilder(null, new Article(), -1);

@@ -15,7 +15,7 @@ public class TermBuilder extends InlineBuilder<Term> {
 
     @Override
     protected void initContent() {
-        style = "strong";
+        styles = new String[]{"strong"};
         content = source.getContent();
     }
 }

@@ -17,7 +17,7 @@ public class SuperscriptBuilder extends InlineBuilder<Superscript> {
 
     @Override
     protected void initContent() {
-        style = SUPERSCRIPT;
+        styles = new String[]{SUPERSCRIPT};
         content = source.getContent();
     }
 }

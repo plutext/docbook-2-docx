@@ -17,7 +17,7 @@ public class LiteralBuilder extends InlineBuilder<Literal> {
 
     @Override
     protected void initContent() {
-        style = LITERAL;
+        styles = new String[]{LITERAL};
         content = source.getContent();
     }
 

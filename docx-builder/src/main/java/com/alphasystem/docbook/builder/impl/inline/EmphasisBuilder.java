@@ -19,7 +19,7 @@ public class EmphasisBuilder extends InlineBuilder<Emphasis> {
     @Override
     protected void initContent() {
         String role = source.getRole();
-        style = isBlank(role) ? ITALIC : role;
+        styles = isBlank(role) ? new String[]{ITALIC} : role.split(" ");
         content = source.getContent();
     }
 
