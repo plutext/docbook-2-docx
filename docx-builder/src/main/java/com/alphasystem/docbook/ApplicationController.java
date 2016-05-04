@@ -66,16 +66,8 @@ public final class ApplicationController {
         engine = (Invocable) initScriptEngine();
     }
 
-    public Object handleScript(String functionName, Object... args) {
-        Object result = null;
-        try {
-            result = engine.invokeFunction(functionName, args);
-        } catch (ScriptException | NoSuchMethodException e) {
-            LOGGER.error("Error running script \"{}\".", functionName);
-            e.printStackTrace();
-            // ignore
-        }
-        return result;
+    public Object handleScript(String functionName, Object... args) throws ScriptException, NoSuchMethodException {
+        return engine.invokeFunction(functionName, args);
     }
 
     public Tbl getExampleTable() {
@@ -120,7 +112,12 @@ public final class ApplicationController {
     }
 
     private Tbl getTable(String functionName, Object... args) {
-        return (Tbl) handleScript(functionName, args);
+        try {
+            return (Tbl) handleScript(functionName, args);
+        } catch (Exception e) {
+            LOGGER.warn("Unable to get table for \"{}\"", functionName);
+        }
+        return null;
     }
 
     private ScriptEngine initScriptEngine() {

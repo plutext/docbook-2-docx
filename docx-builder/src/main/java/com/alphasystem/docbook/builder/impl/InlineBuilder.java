@@ -62,28 +62,43 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
         String styleHandler = configurationUtils.getString(style);
         styleHandler = (styleHandler == null) ? style : styleHandler;
 
-        // assume we have a function
-        Object o = applicationController.handleScript(styleHandler, rPrBuilder);
-        if (o != null) {
-            return ((RPrBuilder) o).getObject();
-        }
+        Object o;
 
         // find whether we have color style with the given name
         final ColorCode colorCode = ColorCode.getByName(style);
         if (colorCode != null) {
-            o = applicationController.handleScript("handleColor", rPrBuilder, colorCode.getCode());
-            if (o != null) {
-                return ((RPrBuilder) o).getObject();
+            try {
+                o = applicationController.handleScript("handleColor", rPrBuilder, colorCode.getCode());
+                if (o != null) {
+                    return ((RPrBuilder) o).getObject();
+                }
+            } catch (Exception e) {
+                // ignore
             }
         }
 
         // may be we have style defined
         if (ApplicationController.getContext().getDocumentStyles().contains(style)) {
-            o = applicationController.handleScript("handleStyle", rPrBuilder, style);
+            try {
+                o = applicationController.handleScript("handleStyle", rPrBuilder, style);
+                if (o != null) {
+                    return ((RPrBuilder) o).getObject();
+                }
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+
+        // last resort we may have a function
+        try {
+            o = applicationController.handleScript(styleHandler, rPrBuilder);
             if (o != null) {
                 return ((RPrBuilder) o).getObject();
             }
+        } catch (Exception e) {
+            // ignore
         }
+
         logger.warn("Not sure how to handle style \"{}\" in builder \"{}\".", style, getClass().getSimpleName());
         return rPrBuilder.getObject();
     }
