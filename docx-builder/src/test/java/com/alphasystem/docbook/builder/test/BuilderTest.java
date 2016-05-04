@@ -246,7 +246,7 @@ public class BuilderTest {
 
     @Test(groups = "inlineGroup")
     public void testMultipleRoles(){
-        final Phrase phrase = createPhrase("literal line-through", "Text with multiple roles");
+        final Phrase phrase = createPhrase("literal line-through green", "Text with multiple roles");
         final List<Object> content = buildContent(null, -1, phrase);
         assertEquals(content.size(), 1);
         final R r = (R) content.get(0);
