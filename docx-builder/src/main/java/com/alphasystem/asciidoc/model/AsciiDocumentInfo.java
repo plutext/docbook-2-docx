@@ -486,6 +486,7 @@ public class AsciiDocumentInfo {
     }
 
     public void populateAttributes(Map<String, Object> attributes) {
+        // attributes.entrySet().forEach(entry -> System.out.println(entry.getKey() + " : " + entry.getValue()));
         String s;
         s = getFailSafeString(attributes, "doctype");
         if (s != null) {
@@ -507,6 +508,10 @@ public class AsciiDocumentInfo {
         if (s != null) {
             File parent = new File(getSrcFile().getAbsoluteFile(), getStylesDir());
             setCustomStyleSheetFile(new File(parent, s));
+        }
+        s = getFailSafeString(attributes, "includedir");
+        if (s != null) {
+            setIncludeDir(s);
         }
         // setValue(this, attributes, "linkcss", "setLinkCss", Boolean.class);
         setLinkCss(getFailSafeBoolean(attributes, "linkcss"));
