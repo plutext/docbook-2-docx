@@ -4,7 +4,6 @@ import com.alphasystem.SystemException;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.BuilderFactory;
 import com.alphasystem.docbook.util.FileUtil;
-import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.util.nio.NIOFileUtils;
 import com.alphasystem.xml.UnmarshallerTool;
@@ -13,13 +12,12 @@ import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.ast.StructuredDocument;
 import org.docbook.model.Article;
 import org.docbook.model.Book;
-import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
-import org.docx4j.wml.*;
+import org.docx4j.wml.Style;
+import org.docx4j.wml.Styles;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -126,7 +124,7 @@ public class DocumentBuilder {
             if (documentInfo.getExampleCaption() != null) {
                 wmlPackageBuilder.multiLevelHeading(EXAMPLE);
             }
-            if (documentInfo.getTableCaption() != null){
+            if (documentInfo.getTableCaption() != null) {
                 wmlPackageBuilder.multiLevelHeading(TABLE);
             }
             documentContext.setMainDocumentPart(mainDocumentPart);
@@ -136,23 +134,12 @@ public class DocumentBuilder {
                 ApplicationController.endContext();
                 return wordprocessingMLPackage;
             }
-            //Adding Print View and Setting Update Field to true
-            DocumentSettingsPart dsp = mainDocumentPart.getDocumentSettingsPart();
-            if (dsp == null) {
-                CTSettings ct = new CTSettings();
-                dsp = new DocumentSettingsPart();
-                CTView ctView = Context.getWmlObjectFactory().createCTView();
-                ctView.setVal(STView.PRINT);
-                ct.setView(ctView);
-                ct.setUpdateFields(WmlBuilderFactory.BOOLEAN_DEFAULT_TRUE_TRUE);
-                dsp.setJaxbElement(ct);
-                mainDocumentPart.addTargetPart(dsp);
-            }
+
+            content.forEach(mainDocumentPart::addObject);
 
             if (documentInfo.isToc()) {
                 addTableOfContent(mainDocumentPart, documentInfo.getTocTitle(), 5);
             }
-            content.forEach(mainDocumentPart::addObject);
         } catch (Docx4JException e) {
             throw new SystemException(e.getMessage(), e);
         } finally {
