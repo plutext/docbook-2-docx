@@ -1,8 +1,9 @@
 package com.alphasystem.docbook.builder.impl;
 
-import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.builder.Builder;
-import com.alphasystem.docbook.model.ColorCode;
+import com.alphasystem.docbook.handler.HandlerFactory;
+import com.alphasystem.docbook.handler.InlineStyleHandler;
+import com.alphasystem.docbook.handler.impl.NullHandler;
 import com.alphasystem.openxml.builder.wml.RBuilder;
 import com.alphasystem.openxml.builder.wml.RPrBuilder;
 import com.alphasystem.openxml.builder.wml.WmlBuilderFactory;
@@ -25,6 +26,7 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
 
     protected String styles[];
+    protected HandlerFactory handlerFactory = HandlerFactory.getInstance();
 
     protected InlineBuilder(Builder parent, T obj, int indexInParent) {
         super(parent, obj, indexInParent);
@@ -58,49 +60,13 @@ public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
         if (style == null) {
             return null;
         }
+        InlineStyleHandler handler = handlerFactory.getHandler(style);
+        if (handler == null) {
+            logger.warn("Not sure how to handle style \"{}\" in builder \"{}\".", style, getClass().getSimpleName());
+            handler = new NullHandler();
+        }
         RPrBuilder rPrBuilder = WmlBuilderFactory.getRPrBuilder();
-        String styleHandler = configurationUtils.getString(style);
-        styleHandler = (styleHandler == null) ? style : styleHandler;
-
-        Object o;
-
-        // find whether we have color style with the given name
-        final ColorCode colorCode = ColorCode.getByName(style);
-        if (colorCode != null) {
-            try {
-                o = applicationController.handleScript("handleColor", rPrBuilder, colorCode.getCode());
-                if (o != null) {
-                    return ((RPrBuilder) o).getObject();
-                }
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-
-        // may be we have style defined
-        if (ApplicationController.getContext().getDocumentStyles().contains(style)) {
-            try {
-                o = applicationController.handleScript("handleStyle", rPrBuilder, style);
-                if (o != null) {
-                    return ((RPrBuilder) o).getObject();
-                }
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-
-        // last resort we may have a function
-        try {
-            o = applicationController.handleScript(styleHandler, rPrBuilder);
-            if (o != null) {
-                return ((RPrBuilder) o).getObject();
-            }
-        } catch (Exception e) {
-            // ignore
-        }
-
-        logger.warn("Not sure how to handle style \"{}\" in builder \"{}\".", style, getClass().getSimpleName());
-        return rPrBuilder.getObject();
+        return handler.applyStyle(rPrBuilder).getObject();
     }
 
     @SuppressWarnings({"unchecked"})

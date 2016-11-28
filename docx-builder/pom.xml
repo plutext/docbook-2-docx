@@ -18,7 +18,6 @@
                 <configuration>
                     <systemProperties>
                         <conf.path>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx</conf.path>
-                        <custom.style.name>arabic</custom.style.name>
                         <target.path>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx\docx-builder\build\docs
                         </target.path>
                         <data.path>${project.basedir}/src/test/resources/data</data.path>
@@ -51,7 +50,7 @@
         <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj</artifactId>
-            <version>1.6.0-alpha.1</version>
+            <version>1.6.0-alpha.3</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
