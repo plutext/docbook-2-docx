@@ -1,46 +1,6 @@
 var adapter = Java.type("com.alphasystem.openxml.builder.wml.WmlAdapter");
 var factory = Java.type("com.alphasystem.openxml.builder.wml.WmlBuilderFactory");
 
-var handleBold = function (rprBuilder) {
-    return rprBuilder.withB(true).withBCs(true);
-};
-
-var handleItalic = function (rprBuilder) {
-    return rprBuilder.withI(true).withICs(true);
-};
-
-var handleUnderline = function (rprBuilder) {
-    return rprBuilder.withU(factory.getUBuilder().withVal(org.docx4j.wml.UnderlineEnumeration.SINGLE).getObject());
-};
-
-var handleStrikeThrough = function (rprBuilder) {
-    return rprBuilder.withStrike(true);
-};
-
-var handleLiteral = function (rprBuilder) {
-    return rprBuilder.withRFonts(factory.getRFontsBuilder().withAscii("Courier New").withHAnsi("Courier New").withCs("Courier New").getObject());
-};
-
-var handleSubscript = function (rprBuilder) {
-    return rprBuilder.withVertAlign(org.docx4j.wml.STVerticalAlignRun.SUBSCRIPT);
-};
-
-var handleSuperscript = function (rprBuilder) {
-    return rprBuilder.withVertAlign(org.docx4j.wml.STVerticalAlignRun.SUPERSCRIPT);
-};
-
-var handleHyperlink = function (rprBuilder) {
-    return rprBuilder.withRStyle(adapter.getRStyle("Hyperlink"));
-};
-
-var handleColor = function (rprBuilder, color) {
-    return rprBuilder.withColor(adapter.getColor(color));
-};
-
-var handleStyle = function (rprBuilder, styleName) {
-    return rprBuilder.withRStyle(adapter.getRStyle(styleName));
-};
-
 var handleExample = function () {
     var border = adapter.getBorder(org.docx4j.wml.STBorder.SINGLE, 4, 0, "E0E0DC");
     var tblBorders = factory.getTblBordersBuilder().withTop(border).withLeft(border)
