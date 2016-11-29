@@ -2,6 +2,7 @@ package com.alphasystem.docbook.builder.test;
 
 import com.alphasystem.docbook.ApplicationController;
 import com.alphasystem.docbook.DocumentContext;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.xml.UnmarshallerTool;
 import org.docbook.model.Article;
@@ -12,8 +13,6 @@ import org.testng.annotations.BeforeSuite;
 
 import java.util.List;
 
-import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
-import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.TABLE;
 import static org.testng.Assert.fail;
@@ -29,9 +28,9 @@ public class Setup extends AbstractTest {
             UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
             DocumentContext documentContext = new DocumentContext(unmarshallerTool.getDocumentInfo(), new Article());
             ApplicationController.startContext(documentContext);
-
-            final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE)
-                    .styles(STYLES_PATH).multiLevelHeading(EXAMPLE).multiLevelHeading(TABLE);
+            ConfigurationUtils configurationUtils = ConfigurationUtils.getInstance();
+            final WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(configurationUtils.getTemplate())
+                    .styles(configurationUtils.getStyles()).multiLevelHeading(EXAMPLE).multiLevelHeading(TABLE);
 
             final StyleDefinitionsPart styleDefinitionsPart = wmlPackageBuilder.getPackage().getMainDocumentPart().getStyleDefinitionsPart();
             final Styles styles = styleDefinitionsPart.getContents();

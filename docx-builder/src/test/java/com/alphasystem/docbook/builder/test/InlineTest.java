@@ -65,12 +65,21 @@ public class InlineTest extends AbstractTest {
     }
 
     @Test(dependsOnMethods = "testSuperscript")
-    public void testMixedArabicEnglishText(){
+    public void testMixedArabicEnglishText() {
         final SimplePara simplePara = createSimplePara(nextId(), "This text has mixed English and Arabic (",
                 createPhrase("arabicNormal", "س ل م"), ") text.");
         final Builder parent = builderFactory.getBuilder(null, new Article(), 0);
         final List<Object> content = buildContent(parent, -1, simplePara);
         assertEquals(content.size(), 1);
         addResultToDocument("Mixed Text", content.toArray());
+    }
+
+    @Test(dependsOnMethods = "testMixedArabicEnglishText")
+    public void testArabicPara() {
+        final SimplePara simplePara = createSimplePara(nextId(), "س ل م").withRole("Style1");
+        final Builder parent = builderFactory.getBuilder(null, new Article(), 0);
+        final List<Object> content = buildContent(parent, -1, simplePara);
+        assertEquals(content.size(), 1);
+        addResultToDocument("Arabic Para", content.toArray());
     }
 }
