@@ -25,7 +25,7 @@ public class BlockHandlerFactory extends HandlerFactory<BlockHandler> {
     }
 
     @Override
-    public BlockHandler getHandler(String kety) {
-        return handlers.get(kety);
+    public BlockHandler getHandler(String key) {
+        return handlers.get(key);
     }
 }
