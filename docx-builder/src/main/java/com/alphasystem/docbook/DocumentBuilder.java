@@ -3,6 +3,7 @@ package com.alphasystem.docbook;
 import com.alphasystem.SystemException;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.BuilderFactory;
+import com.alphasystem.docbook.util.ConfigurationUtils;
 import com.alphasystem.docbook.util.FileUtil;
 import com.alphasystem.openxml.builder.wml.WmlPackageBuilder;
 import com.alphasystem.util.nio.NIOFileUtils;
@@ -26,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.alphasystem.asciidoc.model.Backend.DOC_BOOK;
-import static com.alphasystem.docbook.ApplicationController.DEFAULT_TEMPLATE;
-import static com.alphasystem.docbook.ApplicationController.STYLES_PATH;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.EXAMPLE;
 import static com.alphasystem.docbook.builder.model.DocumentCaption.TABLE;
 import static com.alphasystem.openxml.builder.wml.WmlAdapter.addTableOfContent;
@@ -42,6 +41,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class DocumentBuilder {
 
     private final static Asciidoctor asciiDoctor = Asciidoctor.Factory.create();
+    private final static ConfigurationUtils configurationUtils = ConfigurationUtils.getInstance();
 
     static {
         // initialize Application controller
@@ -109,7 +109,8 @@ public class DocumentBuilder {
         ApplicationController.startContext(documentContext);
         WordprocessingMLPackage wordprocessingMLPackage = null;
         try {
-            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(DEFAULT_TEMPLATE).styles(STYLES_PATH);
+            WmlPackageBuilder wmlPackageBuilder = new WmlPackageBuilder(configurationUtils.getTemplate())
+                    .styles(configurationUtils.getStyles());
             wordprocessingMLPackage = wmlPackageBuilder.getPackage();
             MainDocumentPart mainDocumentPart = wordprocessingMLPackage.getMainDocumentPart();
             final StyleDefinitionsPart styleDefinitionsPart = mainDocumentPart.getStyleDefinitionsPart();

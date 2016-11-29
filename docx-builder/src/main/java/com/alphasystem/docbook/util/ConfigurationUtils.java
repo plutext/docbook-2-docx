@@ -9,6 +9,7 @@ import org.apache.commons.configuration2.SystemConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -66,7 +67,7 @@ public class ConfigurationUtils {
         return configuration.getString(titleKey, defaultTitle);
     }
 
-    public String getDefaultListStyle(){
+    public String getDefaultListStyle() {
         return getString("default.list.style");
     }
 
@@ -78,11 +79,11 @@ public class ConfigurationUtils {
         return getString(format("%s.caption.style", admonition.name()));
     }
 
-    public String getAdmonitionListStyle(Admonition admonition){
+    public String getAdmonitionListStyle(Admonition admonition) {
         return getString(format("%s.list.style", admonition.name()));
     }
 
-    public String getAdmonitionCaption(Admonition admonition){
+    public String getAdmonitionCaption(Admonition admonition) {
         return getString(format("%s.caption", admonition.name()));
     }
 
@@ -98,8 +99,17 @@ public class ConfigurationUtils {
         return configuration.getString("toc.caption");
     }
 
-    public String getTableStyle(String ts){
+    public String getTableStyle(String ts) {
         return isBlank(ts) ? null : configuration.getString(ts);
+    }
+
+    public String getTemplate(){
+        return configuration.getString("template");
+    }
+
+    public String[] getStyles() {
+        final String _styles = configuration.getString("styles");
+        return StringUtils.isBlank(_styles) ? null : _styles.split(",");
     }
 
     public String getString(String key) {

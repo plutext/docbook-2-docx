@@ -3,7 +3,6 @@ package com.alphasystem.docbook;
 import com.alphasystem.asciidoc.model.AsciiDocumentInfo;
 import com.alphasystem.docbook.builder.model.Admonition;
 import com.alphasystem.docbook.util.ConfigurationUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.docx4j.wml.Tbl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +27,9 @@ import static java.nio.file.Paths.get;
 public final class ApplicationController {
 
     private static final String CONF = "conf";
-    private static final String CUSTOM_CONF = "custom";
     private static final String CONF_DIR = System.getProperty("conf.path", USER_DIR);
     private static final Path CONF_PATH = get(CONF_DIR, CONF);
-    private static final Path DEFAULT_CUSTOM_CONF_PATH = get(CONF_DIR, CUSTOM_CONF);
-    private static final Path CUSTOM_CONF_PATH = get(System.getProperty("custom.conf.path", DEFAULT_CUSTOM_CONF_PATH.toString()));
-    public static final String CUSTOM_CONF_PATH_VALUE = CUSTOM_CONF_PATH.toString();
     public static final String CONF_PATH_VALUE = CONF_PATH.toString();
-    public static final String DEFAULT_TEMPLATE = get(CONF_PATH_VALUE, "default.dotx").toString();
-    public static final String STYLES_PATH = get(CONF_PATH_VALUE, "styles.xml").toString();
     private static final ThreadLocal<DocumentContext> CONTEXT = new ThreadLocal<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
     private static ApplicationController instance;
@@ -130,10 +123,6 @@ public final class ApplicationController {
 
         Path[] paths = new Path[1];
         paths[0] = get(CONF_PATH_VALUE, "styles.js");
-        final String customStyleName = configurationUtils.getString("custom.style.name");
-        if (customStyleName != null) {
-            paths = ArrayUtils.add(paths, get(CUSTOM_CONF_PATH_VALUE, format("%s.js", customStyleName)));
-        }
         for (Path path : paths) {
             try (Reader reader = newBufferedReader(path)) {
                 engine.eval(reader);

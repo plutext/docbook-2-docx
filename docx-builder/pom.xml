@@ -17,6 +17,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemProperties>
+                        <template>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx\conf\default.dotx</template>
+                        <styles>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx\conf\styles.xml,META-INF/custom-styles.xml</styles>
                         <conf.path>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx</conf.path>
                         <target.path>C:\Users\sali\git-hub\AlphaSystemSolution\docbook-2-docx\docx-builder\build\docs
                         </target.path>
