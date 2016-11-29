@@ -36,9 +36,7 @@ public final class InlineHandlerFactory {
      */
     private InlineHandlerFactory() {
         ServiceLoader<InlineHandlerService> loader = ServiceLoader.load(InlineHandlerService.class);
-        for (InlineHandlerService service : loader) {
-            service.initializeHandlers();
-        }
+        loader.forEach(InlineHandlerService::initializeHandlers);
     }
 
     public static synchronized InlineHandlerFactory getInstance() {
