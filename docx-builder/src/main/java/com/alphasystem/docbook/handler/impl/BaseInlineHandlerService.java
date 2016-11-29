@@ -6,7 +6,7 @@ import com.alphasystem.docbook.handler.InlineHandlerFactory;
 /**
  * @author sali
  */
-public class CommonHandlerService extends HandlerService {
+public class BaseInlineHandlerService extends HandlerService {
 
     @Override
     public void initializeHandlers() {
