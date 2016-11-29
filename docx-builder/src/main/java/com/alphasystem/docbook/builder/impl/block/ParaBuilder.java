@@ -10,6 +10,7 @@ public class ParaBuilder extends AbstractParaBuilder<Para> {
 
     public ParaBuilder(Builder parent, Para obj, int indexInParent) {
         super(parent, obj, indexInParent);
+        this.role = source.getRole();
     }
 
     @Override

@@ -13,6 +13,8 @@ import static com.alphasystem.util.AppUtil.isInstanceOf;
  */
 public abstract class AbstractParaBuilder<T> extends BlockBuilder<T> {
 
+    protected String role;
+
     protected AbstractParaBuilder(Builder parent, T obj, int indexInParent) {
         super(parent, obj, indexInParent);
     }
@@ -22,6 +24,10 @@ public abstract class AbstractParaBuilder<T> extends BlockBuilder<T> {
         final PPr ppr = ((BlockBuilder) parent).getParaProperties();
         if (ppr != null) {
             paraProperties = new PPrBuilder(ppr, paraProperties).getObject();
+        }
+        if(role != null){
+            final PPrBuilder pPrBuilder = new PPrBuilder(paraProperties).withPStyle(role);
+            paraProperties = pPrBuilder.getObject();
         }
     }
 
