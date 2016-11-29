@@ -1,4 +1,4 @@
-package com.alphasystem.docbook.handler.impl;
+package com.alphasystem.docbook.handler.impl.inline;
 
 import com.alphasystem.docbook.handler.HandlerService;
 import com.alphasystem.docbook.handler.InlineHandlerFactory;

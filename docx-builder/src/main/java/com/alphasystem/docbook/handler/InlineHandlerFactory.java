@@ -1,8 +1,8 @@
 package com.alphasystem.docbook.handler;
 
 import com.alphasystem.docbook.ApplicationController;
-import com.alphasystem.docbook.handler.impl.ColorHandler;
-import com.alphasystem.docbook.handler.impl.StyleHandler;
+import com.alphasystem.docbook.handler.impl.inline.ColorHandler;
+import com.alphasystem.docbook.handler.impl.inline.StyleHandler;
 import com.alphasystem.docbook.model.ColorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

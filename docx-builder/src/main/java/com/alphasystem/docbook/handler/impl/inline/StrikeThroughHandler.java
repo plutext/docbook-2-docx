@@ -1,20 +1,20 @@
-package com.alphasystem.docbook.handler.impl;
+package com.alphasystem.docbook.handler.impl.inline;
 
 import com.alphasystem.docbook.handler.InlineStyleHandler;
 import com.alphasystem.openxml.builder.wml.RPrBuilder;
 
 /**
- * Handles "italic" style.
+ * Handles "strike through" style.
  *
  * @author sali
  */
-class ItalicHandler implements InlineStyleHandler {
+class StrikeThroughHandler implements InlineStyleHandler {
 
-    ItalicHandler() {
+    StrikeThroughHandler() {
     }
 
     @Override
     public RPrBuilder applyStyle(RPrBuilder rprBuilder) {
-        return rprBuilder.withI(true).withICs(true);
+        return rprBuilder.withStrike(true);
     }
 }
