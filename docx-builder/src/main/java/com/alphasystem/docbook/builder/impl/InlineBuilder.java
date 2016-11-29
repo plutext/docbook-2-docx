@@ -1,7 +1,7 @@
 package com.alphasystem.docbook.builder.impl;
 
 import com.alphasystem.docbook.builder.Builder;
-import com.alphasystem.docbook.handler.HandlerFactory;
+import com.alphasystem.docbook.handler.InlineHandlerFactory;
 import com.alphasystem.docbook.handler.InlineStyleHandler;
 import com.alphasystem.docbook.handler.impl.NullHandler;
 import com.alphasystem.openxml.builder.wml.RBuilder;
@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 public abstract class InlineBuilder<T> extends AbstractBuilder<T> {
 
     protected String styles[];
-    protected HandlerFactory handlerFactory = HandlerFactory.getInstance();
+    protected InlineHandlerFactory handlerFactory = InlineHandlerFactory.getInstance();
 
     protected InlineBuilder(Builder parent, T obj, int indexInParent) {
         super(parent, obj, indexInParent);

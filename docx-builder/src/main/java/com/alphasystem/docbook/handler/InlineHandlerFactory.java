@@ -15,7 +15,7 @@ import java.util.ServiceLoader;
 /**
  * @author sali
  */
-public final class HandlerFactory {
+public final class InlineHandlerFactory {
 
     public static final String BOLD = "bold";
     public static final String STRONG = "strong";
@@ -27,23 +27,23 @@ public final class HandlerFactory {
     public static final String SUPERSCRIPT = "superscript";
     public static final String HYPERLINK = "hyperlink";
 
-    private static HandlerFactory instance;
-    private static Logger logger = LoggerFactory.getLogger(HandlerFactory.class);
+    private static InlineHandlerFactory instance;
+    private static Logger logger = LoggerFactory.getLogger(InlineHandlerFactory.class);
     private static Map<String, InlineStyleHandler> handlers = Collections.synchronizedMap(new HashMap<>());
 
     /**
      * Do not let any one instantiate this class.
      */
-    private HandlerFactory() {
+    private InlineHandlerFactory() {
         ServiceLoader<HandlerService> loader = ServiceLoader.load(HandlerService.class);
         for (HandlerService service : loader) {
             service.initializeHandlers();
         }
     }
 
-    public static synchronized HandlerFactory getInstance() {
+    public static synchronized InlineHandlerFactory getInstance() {
         if (instance == null) {
-            instance = new HandlerFactory();
+            instance = new InlineHandlerFactory();
         }
         return instance;
     }
