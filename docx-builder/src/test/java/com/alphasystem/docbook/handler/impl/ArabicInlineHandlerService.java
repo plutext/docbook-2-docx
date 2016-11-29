@@ -1,12 +1,12 @@
 package com.alphasystem.docbook.handler.impl;
 
-import com.alphasystem.docbook.handler.HandlerService;
 import com.alphasystem.docbook.handler.InlineHandlerFactory;
+import com.alphasystem.docbook.handler.InlineHandlerService;
 
 /**
  * @author sali
  */
-public class ArabicHandlerService extends HandlerService {
+public class ArabicInlineHandlerService extends InlineHandlerService {
 
     @Override
     public void initializeHandlers() {

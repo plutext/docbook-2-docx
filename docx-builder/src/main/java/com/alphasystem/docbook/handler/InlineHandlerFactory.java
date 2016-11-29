@@ -35,8 +35,8 @@ public final class InlineHandlerFactory {
      * Do not let any one instantiate this class.
      */
     private InlineHandlerFactory() {
-        ServiceLoader<HandlerService> loader = ServiceLoader.load(HandlerService.class);
-        for (HandlerService service : loader) {
+        ServiceLoader<InlineHandlerService> loader = ServiceLoader.load(InlineHandlerService.class);
+        for (InlineHandlerService service : loader) {
             service.initializeHandlers();
         }
     }
