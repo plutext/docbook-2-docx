@@ -11,7 +11,7 @@ import org.docx4j.wml.Tbl;
  *
  * @author sali
  */
-public interface BlockHandler<T> {
+public interface BlockHandler<T> extends Handler {
 
     /**
      * Construct this block.

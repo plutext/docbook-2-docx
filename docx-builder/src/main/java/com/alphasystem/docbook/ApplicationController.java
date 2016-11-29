@@ -2,17 +2,20 @@ package com.alphasystem.docbook;
 
 import com.alphasystem.docbook.builder.model.Admonition;
 import com.alphasystem.docbook.handler.BlockHandlerFactory;
-import com.alphasystem.docbook.handler.InlineHandlerFactory;
+import com.alphasystem.docbook.handler.BlockHandlerService;
+import com.alphasystem.docbook.handler.InlineHandlerService;
 import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.docx4j.wml.Tbl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.ServiceLoader;
 
 import static com.alphasystem.docbook.handler.BlockHandlerFactory.*;
 import static com.alphasystem.util.nio.NIOFileUtils.USER_DIR;
 import static java.nio.file.Paths.get;
+import static java.util.ServiceLoader.load;
 
 /**
  * @author sali
@@ -54,8 +57,14 @@ public final class ApplicationController {
     private ApplicationController() {
         // initialize singletons
         ConfigurationUtils.getInstance();
+
+        ServiceLoader<BlockHandlerService> blockHandlerServices = load(BlockHandlerService.class);
+        blockHandlerServices.forEach(BlockHandlerService::initializeHandlers);
+
+        ServiceLoader<InlineHandlerService> inlineHandlerServices = load(InlineHandlerService.class);
+        inlineHandlerServices.forEach(InlineHandlerService::initializeHandlers);
+
         blockHandlerFactory = BlockHandlerFactory.getInstance();
-        InlineHandlerFactory.getInstance();
     }
 
     public Tbl getExampleTable() {
