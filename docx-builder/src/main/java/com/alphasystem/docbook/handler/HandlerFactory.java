@@ -7,7 +7,10 @@ import com.alphasystem.docbook.model.ColorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * @author sali
@@ -33,9 +36,7 @@ public final class HandlerFactory {
      */
     private HandlerFactory() {
         ServiceLoader<HandlerService> loader = ServiceLoader.load(HandlerService.class);
-        final Iterator<HandlerService> iterator = loader.iterator();
-        while (iterator.hasNext()) {
-            final HandlerService service = iterator.next();
+        for (HandlerService service : loader) {
             service.initializeHandlers();
         }
     }
