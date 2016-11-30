@@ -25,6 +25,7 @@ public class Setup extends AbstractTest {
     @BeforeSuite
     public void setup() {
         try {
+            ApplicationController.getInstance();
             UnmarshallerTool unmarshallerTool = new UnmarshallerTool();
             DocumentContext documentContext = new DocumentContext(unmarshallerTool.getDocumentInfo(), new Article());
             ApplicationController.startContext(documentContext);

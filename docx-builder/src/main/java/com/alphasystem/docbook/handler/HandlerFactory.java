@@ -13,7 +13,7 @@ import java.util.Map;
 public abstract class HandlerFactory<H extends Handler> {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    protected Map<String, H> handlers = Collections.synchronizedMap(new HashMap<>());
+    Map<String, H> handlers = Collections.synchronizedMap(new HashMap<>());
 
     public void registerHandler(String key, H handler) {
         if (handler == null || key == null) {
@@ -23,7 +23,7 @@ public abstract class HandlerFactory<H extends Handler> {
         // we would like to honour handler(s) from the client first, so that client can override default handler(s)
         final H h = handlers.get(key);
         if (h == null) {
-            logger.info("Loading handler \"{}\" as key \"{}\"", handler.getClass().getName(), key);
+            logger.info("Loading handler: \"{}={}\"", key, handler.getClass().getName());
             handlers.put(key, handler);
         }
     }

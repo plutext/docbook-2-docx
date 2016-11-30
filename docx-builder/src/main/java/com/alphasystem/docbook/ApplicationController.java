@@ -3,6 +3,7 @@ package com.alphasystem.docbook;
 import com.alphasystem.docbook.builder.model.Admonition;
 import com.alphasystem.docbook.handler.BlockHandlerFactory;
 import com.alphasystem.docbook.handler.BlockHandlerService;
+import com.alphasystem.docbook.handler.BuilderHandlerService;
 import com.alphasystem.docbook.handler.InlineHandlerService;
 import com.alphasystem.docbook.util.ConfigurationUtils;
 import org.docx4j.wml.Tbl;
@@ -63,6 +64,9 @@ public final class ApplicationController {
 
         ServiceLoader<InlineHandlerService> inlineHandlerServices = load(InlineHandlerService.class);
         inlineHandlerServices.forEach(InlineHandlerService::initializeHandlers);
+
+        ServiceLoader<BuilderHandlerService> builderHandlerServices = load(BuilderHandlerService.class);
+        builderHandlerServices.forEach(BuilderHandlerService::initializeHandlers);
 
         blockHandlerFactory = BlockHandlerFactory.getInstance();
     }

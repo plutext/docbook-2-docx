@@ -13,23 +13,24 @@ import org.docx4j.wml.Tbl;
  */
 abstract class AdmonitionBlockHandler implements BlockHandler<Tbl> {
 
+    private final Admonition admonition;
     private final double widthOfCaptionColumn;
-    private final String captionText;
 
     AdmonitionBlockHandler(Admonition admonition, double widthOfCaptionColumn) {
+        this.admonition = admonition;
         this.widthOfCaptionColumn = widthOfCaptionColumn;
-        final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
-        this.captionText = getAdmonitionCaption(admonition, documentInfo);
     }
 
     @Override
     public Tbl handleBlock() {
+        final AsciiDocumentInfo documentInfo = ApplicationController.getContext().getDocumentInfo();
+        String captionText = getAdmonitionCaption(admonition, documentInfo);
         double widthOfContentColumn = 100.0 - widthOfCaptionColumn;
         return new TableAdapter(widthOfCaptionColumn, widthOfContentColumn).startTable("AdmonitionTable").startRow()
                 .addColumn(0, WmlAdapter.getParagraph(captionText)).addColumn(1).endRow().getTable();
     }
 
-    public String getAdmonitionCaption(Admonition admonition, AsciiDocumentInfo documentInfo) {
+    private String getAdmonitionCaption(Admonition admonition, AsciiDocumentInfo documentInfo) {
         String title = null;
         switch (admonition) {
             case CAUTION:
