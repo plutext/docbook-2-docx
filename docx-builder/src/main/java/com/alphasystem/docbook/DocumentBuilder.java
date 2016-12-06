@@ -62,10 +62,13 @@ public class DocumentBuilder {
         return docxPath;
     }
 
-    public static Path buildDocument(Path srcPath) throws SystemException {
-        final Path docxPath = FileUtil.getDocxFile(srcPath);
+    public static Path buildDocument(Path srcPath, Path docxPath) throws SystemException {
         buildDocument(docxPath, createContext(srcPath));
         return docxPath;
+    }
+
+    public static Path buildDocument(Path srcPath) throws SystemException {
+        return buildDocument(srcPath,  FileUtil.getDocxFile(srcPath));
     }
 
     public static DocumentContext createContext(Path srcPath) throws SystemException {
