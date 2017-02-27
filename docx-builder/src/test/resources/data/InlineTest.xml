@@ -17,4 +17,6 @@
             <simpara>second point</simpara>
         </listitem>
     </itemizedlist>
+    <simpara>A simple paragraph <?asciidoc-br?>
+    with a line break</simpara>
 </article>

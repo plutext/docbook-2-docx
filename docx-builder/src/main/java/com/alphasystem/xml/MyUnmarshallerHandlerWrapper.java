@@ -74,9 +74,9 @@ public class MyUnmarshallerHandlerWrapper implements UnmarshallerHandler {
     }
 
     @Override
-    public void startElement(String arg0, String arg1, String arg2,
-                             Attributes arg3) throws SAXException {
-        handle.startElement(arg0, arg1, arg2, arg3);
+    public void startElement(String uri, String localName, String qName,
+                             Attributes attributes) throws SAXException {
+        handle.startElement(uri, localName, qName, attributes);
     }
 
     @Override
