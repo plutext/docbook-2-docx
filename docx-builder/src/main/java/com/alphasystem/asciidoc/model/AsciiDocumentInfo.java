@@ -1,16 +1,18 @@
 package com.alphasystem.asciidoc.model;
 
-import org.asciidoctor.AttributesBuilder;
-import org.asciidoctor.OptionsBuilder;
-import org.asciidoctor.Placement;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 
+import org.asciidoctor.AttributesBuilder;
+import org.asciidoctor.OptionsBuilder;
+import org.asciidoctor.Placement;
+
 import static com.alphasystem.util.AppUtil.USER_HOME_DIR;
 import static com.alphasystem.util.AppUtil.toRelativePath;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.stripToNull;
 import static org.asciidoctor.SafeMode.SAFE;
 
 /**
@@ -67,7 +69,6 @@ public class AsciiDocumentInfo {
     private boolean sectionNumbers;
     private boolean hideUriSchema;
     private File srcFile;
-    private File previewFile;
 
     public AsciiDocumentInfo() {
         attributesBuilder = AttributesBuilder.attributes();
@@ -104,7 +105,6 @@ public class AsciiDocumentInfo {
         setIconFontName(src.getIconFontName());
         setLinkCss(src.isLinkCss());
         setSrcFile(src.getSrcFile());
-        setPreviewFile(src.getPreviewFile());
         setStylesDir(src.getStylesDir());
         setCustomStyleSheetFile(src.getCustomStyleSheetFile());
         setSourceLanguage(src.getSourceLanguage());
@@ -473,16 +473,6 @@ public class AsciiDocumentInfo {
     public void setSrcFile(File srcFile) {
         this.srcFile = (srcFile == null) ? USER_HOME_DIR : srcFile;
         optionsBuilder.baseDir(this.srcFile.getParentFile());
-        setPreview(this.srcFile, previewFile);
-    }
-
-    public File getPreviewFile() {
-        return previewFile;
-    }
-
-    public void setPreviewFile(File previewFile) {
-        this.previewFile = previewFile;
-        setPreview(srcFile, this.previewFile);
     }
 
     public void populateAttributes(Map<String, Object> attributes) {
