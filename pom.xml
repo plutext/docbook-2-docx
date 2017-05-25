@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alphasystem.doc</groupId>
     <artifactId>docbook-2-docx-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>com.alphasystem</groupId>

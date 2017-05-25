@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alphasystem.docbook-2-docx</groupId>
     <artifactId>docx-builder</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
     <parent>
         <groupId>com.alphasystem.project</groupId>
         <artifactId>jar</artifactId>
@@ -68,8 +69,8 @@
     </dependencies>
     <properties>
         <maven.test.skip>false</maven.test.skip>
-        <commons.version>${project.version}</commons.version>
-        <openxml-builder.version>${project.version}</openxml-builder.version>
+        <commons.version>${project.parent.version}</commons.version>
+        <openxml-builder.version>${project.parent.version}</openxml-builder.version>
         <docbook-model.version>${project.version}</docbook-model.version>
     </properties>
 </project>

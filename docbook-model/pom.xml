@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alphasystem.docbook-2-docx</groupId>
     <artifactId>docbook-model</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
     <parent>
         <groupId>com.alphasystem.project</groupId>
         <artifactId>jar</artifactId>
