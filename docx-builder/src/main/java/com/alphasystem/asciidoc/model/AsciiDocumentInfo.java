@@ -137,6 +137,10 @@ public class AsciiDocumentInfo {
         return optionsBuilder;
     }
 
+    public String getBaseDir() {
+        return (srcFile == null) ? null : srcFile.getParent();
+    }
+
     public String getDocumentType() {
         return documentType;
     }
@@ -176,9 +180,11 @@ public class AsciiDocumentInfo {
     }
 
     public void setStylesDir(String stylesDir) {
-        this.stylesDir = isBlank(stylesDir) ? "css" : stylesDir;
+        this.stylesDir = stylesDir;
         if (linkCss) {
             attributesBuilder.stylesDir(this.stylesDir);
+        } else {
+            attributesBuilder.stylesDir(null);
         }
     }
 
@@ -202,6 +208,8 @@ public class AsciiDocumentInfo {
         this.linkCss = linkCss;
         if (this.linkCss) {
             attributesBuilder.linkCss(isLinkCss()).stylesDir(stylesDir);
+        } else {
+            attributesBuilder.stylesDir(null);
         }
     }
 
