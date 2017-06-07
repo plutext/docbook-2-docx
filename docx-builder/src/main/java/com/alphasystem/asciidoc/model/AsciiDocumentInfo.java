@@ -38,12 +38,14 @@ public class AsciiDocumentInfo {
     private File customStyleSheetFile;
     private boolean linkCss;
     private String includeDir;
+    private String docInfoDir;
     private String imagesDir;
     private String iconsDir;
     private String icons;
     private String iconFontName;
     private String idPrefix;
     private String idSeparator;
+    private String docInfo;
     private boolean docInfo2;
     private String sourceLanguage;
     private String lastUpdateLabel;
@@ -77,7 +79,7 @@ public class AsciiDocumentInfo {
         setBackend(null);
         setStylesDir(null);
         setIcons(null);
-        setLinkCss(true);
+        setLinkCss(false);
         setOmitLastUpdatedTimeStamp(true);
         setCompact(true);
         optionsBuilder.safe(SAFE);
@@ -99,6 +101,8 @@ public class AsciiDocumentInfo {
         setDocumentTitle(src.getDocumentTitle());
         setDocInfo2(src.isDocInfo2());
         setIncludeDir(src.getIncludeDir());
+        setDocInfoDir(src.getDocInfoDir());
+        setDocInfo(src.getDocInfo());
         setImagesDir(src.getImagesDir());
         setIconsDir(src.getIconsDir());
         setIcons(src.getIcons());
@@ -221,6 +225,14 @@ public class AsciiDocumentInfo {
         this.includeDir = includeDir;
     }
 
+    public String getDocInfoDir() {
+        return docInfoDir;
+    }
+
+    public void setDocInfoDir(String docInfoDir) {
+        this.docInfoDir = docInfoDir;
+    }
+
     public String getImagesDir() {
         return imagesDir;
     }
@@ -272,6 +284,14 @@ public class AsciiDocumentInfo {
 
     public void setIdSeparator(String idSeparator) {
         this.idSeparator = idSeparator;
+    }
+
+    public String getDocInfo() {
+        return docInfo;
+    }
+
+    public void setDocInfo(String docInfo) {
+        this.docInfo = docInfo;
     }
 
     public boolean isDocInfo2() {
