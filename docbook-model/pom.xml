@@ -5,38 +5,77 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alphasystem.docbook-2-docx</groupId>
     <artifactId>docbook-model</artifactId>
-    <parent>
+        <version>2.9.9</version>
+<!--    <parent>
         <groupId>com.alphasystem.project</groupId>
         <artifactId>jar</artifactId>
         <version>3.0.0-SNAPSHOT</version>
-    </parent>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-xjc-plugin</artifactId>
-                <configuration>
-                    <xsdOptions>
-                        <xsdOption>
-                            <xsd>${basedir}/src/main/resources/docbook.xsd</xsd>
-                            <bindingFile>${basedir}/src/main/resources/docbook.xjb</bindingFile>
-                            <extensionArgs>
-                                <extensionArg>-Xfluent-api</extensionArg>
-                                <extensionArg>-Xdefault-value</extensionArg>
-                                <!--<extensionArg>-Xcollection-setter-injector</extensionArg>-->
-                            </extensionArgs>
-                        </xsdOption>
-                    </xsdOptions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-    <properties>
-        <maven.test.skip>true</maven.test.skip>
-        <genOutputDirectory>${project.build.directory}/generated/src/main/java</genOutputDirectory>
-    </properties>
+        </parent>-->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-xjc-plugin</artifactId>
+				<version>2.3.0</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xsdtojava</goal>
+						</goals>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+							<xsdOptions>
+								<xsdOption>
+									<xsd>${basedir}/src/main/resources/docbook.xsd</xsd>
+									<bindingFile>${basedir}/src/main/resources/docbook.xjb</bindingFile>
+									<extensionArgs>
+										<extensionArg>-Xfluent-api</extensionArg>
+										<extensionArg>-Xdv</extensionArg>
+										<!--<extensionArg>-Xcollection-setter-injector</extensionArg> -->
+									</extensionArgs>
+								</xsdOption>
+							</xsdOptions>
+							<extensions>
+								<extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:2.3.0</extension>
+							</extensions>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.jvnet.jaxb2_commons</groupId>
+						<artifactId>jaxb2-fluent-api</artifactId>
+						<version>3.0</version>
+					</dependency>
+
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.10</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated/src/main/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+		<genOutputDirectory>${project.build.directory}/generated/src/main/java</genOutputDirectory>
+	</properties>
 </project>
