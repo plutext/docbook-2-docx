@@ -5,11 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alphasystem.docbook-2-docx</groupId>
     <artifactId>docx-builder</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <!-- 
     <parent>
         <groupId>com.alphasystem.project</groupId>
         <artifactId>jar</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
+     -->
     <build>
         <plugins>
             <plugin>
@@ -36,7 +39,7 @@
         <dependency>
             <groupId>com.alphasystem.docbook-2-docx</groupId>
             <artifactId>docbook-model</artifactId>
-            <version>${docbook-model.version}</version>
+            <version>2.9.9</version>
         </dependency>
         <dependency>
             <groupId>org.docx4j</groupId>
@@ -53,18 +56,30 @@
             <artifactId>asciidoctorj</artifactId>
             <version>1.6.0-alpha.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.uncommons</groupId>
-            <artifactId>reportng</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.uncommons</groupId>
+			<artifactId>reportng</artifactId>
+			<version>1.1.4</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.testng</groupId>
+					<artifactId>testng</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
     </dependencies>
     <properties>
         <maven.test.skip>false</maven.test.skip>
