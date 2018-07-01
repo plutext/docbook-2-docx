@@ -31,6 +31,7 @@ public class BaseBuilderHandlerService extends BuilderHandlerService {
         registerHandler(instance, new LinkHandler());
         registerHandler(instance, new ListItemHandler());
         registerHandler(instance, new LiteralHandler());
+        registerHandler(instance, new LiteralLayoutHandler());
         registerHandler(instance, new NoteHandler());
         registerHandler(instance, new OrderedListHandler());
         registerHandler(instance, new ParaHandler());
